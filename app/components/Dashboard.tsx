@@ -82,7 +82,7 @@ export default function Dashboard() {
 
     // Send message to OpenAI
     await sendMessageToOpenAI(inputMessage);
-    setInputMessage(" ");
+    setInputMessage("");
   };
 
   const handleOptionClick: HandleOptionClickType = (option) => {
@@ -98,16 +98,15 @@ export default function Dashboard() {
     updatedMessages[index].feedback![type] =
       !updatedMessages[index].feedback![type];
     setMessages(updatedMessages);
-    setInputMessage(" ");
   };
 
   return (
     <TooltipProvider>
       <div className="grid h-screen w-full md:grid-cols-[auto_1fr]">
         {!isMobile && <Sidebar isMobile={false} />}
-        <div className="flex flex-col">
+        <div className="flex flex-col h-full">
           {/* NavBar */}
-          <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 border-b bg-white px-4">
+          <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 border-b bg-white px-4 shadow">
             {isMobile && (
               <Sheet>
                 <SheetTrigger asChild>
@@ -131,7 +130,7 @@ export default function Dashboard() {
             </Button>
           </header>
 
-          <main className="flex-1 overflow-auto p-4">
+          <main className="flex-1 overflow-auto p-4 flex flex-col">
             {currentPage === "chat" && (
               <ChatInterface
                 messages={messages}
@@ -144,6 +143,8 @@ export default function Dashboard() {
             )}
             {currentPage === "settings" && <SettingsPage />}
             {currentPage === "progress" && <ProgressPage />}
+            {/* Add extra margin at the bottom of the main area */}
+            <div className="mb-16"></div>
           </main>
         </div>
       </div>
