@@ -1,9 +1,10 @@
+"use client";
+
 import React from "react";
 import { ThumbsUp, ThumbsDown, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-
-import { ChatInput } from "../components/ChatInput";
+import { ChatInput } from "./ChatInput";
 
 type MessageType = {
   type: "user" | "ai";
@@ -24,18 +25,17 @@ type ChatInterfaceProps = {
   handleFeedback: (index: number, type: "liked" | "disliked" | "sound") => void;
 };
 
-export default function ChatInterface({
+const ChatInterface: React.FC<ChatInterfaceProps> = ({
   messages,
   inputMessage,
   setInputMessage,
   handleSendMessage,
   handleOptionClick,
   handleFeedback,
-}: ChatInterfaceProps) {
+}) => {
   const renderMessageContent = (content: string) => {
     const lines = content.split("\n");
     return lines.map((line, index) => {
-      // Check for headings
       if (line.startsWith("**") && line.endsWith("**")) {
         return (
           <h3 key={index} className="font-semibold text-lg mb-2">
@@ -43,8 +43,6 @@ export default function ChatInterface({
           </h3>
         );
       }
-      // Trying to format the output message from api to be more readable
-      // Check for bullet points
       if (line.startsWith("- ")) {
         return (
           <li key={index} className="ml-6 mb-2 list-disc">
@@ -52,7 +50,6 @@ export default function ChatInterface({
           </li>
         );
       }
-      // Check for numbered lists
       if (line.match(/^\d+\.\s/)) {
         return (
           <li key={index} className="ml-6 mb-2 list-decimal">
@@ -169,4 +166,6 @@ export default function ChatInterface({
       />
     </div>
   );
-}
+};
+
+export default ChatInterface;

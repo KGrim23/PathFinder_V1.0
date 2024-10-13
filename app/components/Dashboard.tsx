@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Import axios
-import Sidebar from "../Sidebar/page";
+import Sidebar from "./Sidebar";
 import { Bell, Menu } from "lucide-react";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import ChatInterface from "../ChatInterface/page";
+import ChatInterface from "./ChatInterface";
 import SettingsPage from "../SettingPage/page";
 import ProgressPage from "../ProgressPage/page";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
