@@ -40,11 +40,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         <Textarea
           id="message"
           placeholder="Type your message here..."
-          className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
+          className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0 text-base" // Ensures no zoom on focus
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
           onKeyDown={handleKeyDown}
         />
+
         <div className="flex items-center p-3 pt-0">
           <Tooltip>
             <TooltipTrigger asChild>
