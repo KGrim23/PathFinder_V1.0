@@ -1,7 +1,8 @@
-import Image from "next/image";
+// app/layout.tsx
 import "./globals.css";
 import localFont from "next/font/local";
-import { ReactNode } from "react"; // Import ReactNode from React
+import { ReactNode } from "react";
+import { ThemeProvider } from "./components/ThemeContext";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -19,8 +20,7 @@ export const metadata = {
   description: "AI Coach",
 };
 
-// Specify the type for children
-export default function RootLayout({ children }: { children: ReactNode }) {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <head>
@@ -29,8 +29,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

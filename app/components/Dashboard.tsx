@@ -3,13 +3,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Import axios
 import Sidebar from "./Sidebar";
-import { Bell, Menu } from "lucide-react";
+import { Bell, Menu, Sun, Moon } from "lucide-react"; // Import icons
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import ChatInterface from "./ChatInterface";
 import SettingsPage from "../SettingPage/page";
 import ProgressPage from "../ProgressPage/page";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "./ThemeContext";
 
 type MessageType = {
   type: "user" | "ai";
@@ -29,11 +30,17 @@ type HandleFeedbackType = (
 ) => void;
 
 export default function Dashboard() {
+  const { isDarkMode, toggleDarkMode } = useTheme(); // Use ThemeContext
   const [currentPage, setCurrentPage] = useState<string>("chat");
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Apply dark mode class to body
+    document.body.classList.toggle("dark", isDarkMode);
+  }, [isDarkMode]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -102,11 +109,15 @@ export default function Dashboard() {
 
   return (
     <TooltipProvider>
-      <div className="grid h-screen w-full md:grid-cols-[auto_1fr]">
+      <div
+        className={`grid h-screen w-full md:grid-cols-[auto_1fr] ${
+          isDarkMode ? "dark" : ""
+        }`}
+      >
         {!isMobile && <Sidebar isMobile={false} />}
         <div className="flex flex-col h-full">
           {/* NavBar */}
-          <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 border-b bg-white px-4 shadow">
+          <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 bg-white dark:bg-black px-4 shadow">
             {isMobile && (
               <Sheet>
                 <SheetTrigger asChild>
@@ -120,6 +131,20 @@ export default function Dashboard() {
               </Sheet>
             )}
             <h1 className="text-xl font-semibold">Lumny App</h1>
+            {/* Dark Mode Toggle Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="ml-2"
+              aria-label="Toggle Dark Mode"
+              onClick={toggleDarkMode} // Toggle dark mode on click
+            >
+              {isDarkMode ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </Button>
             <Button
               variant="ghost"
               size="icon"
@@ -143,7 +168,6 @@ export default function Dashboard() {
             )}
             {currentPage === "settings" && <SettingsPage />}
             {currentPage === "progress" && <ProgressPage />}
-            {/* Add extra margin at the bottom of the main area */}
             <div className="mb-16"></div>
           </main>
         </div>

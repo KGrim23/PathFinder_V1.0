@@ -1,6 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { useTheme } from "./ThemeContext";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   Tooltip,
   TooltipTrigger,
@@ -14,7 +17,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   MessageSquarePlus,
   History,
@@ -26,24 +28,58 @@ import {
   CreditCard,
   LogOut,
 } from "lucide-react";
-import Image from "next/image";
 
 export default function Sidebar({ isMobile }: { isMobile: boolean }) {
+  const { isDarkMode } = useTheme();
   const [currentPage, setCurrentPage] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(true); // State for sidebar visibility
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen); // Toggle sidebar visibility
+  };
 
   return (
     <aside
-      className={`flex flex-col h-full border-r bg-white ${
-        isMobile ? "w-64" : "w-16"
+      className={`flex flex-col h-full ${
+        isDarkMode ? "bg-black text-white" : "bg-white text-black"
+      } ${
+        isOpen ? (isMobile ? "w-64" : "w-64") : "w-0"
       } transition-width duration-300 ease-in-out`}
+      style={{ overflow: isOpen ? "visible" : "hidden" }} // Prevent overflow when closed
     >
+      {/* Close Button */}
+      {isOpen && (
+        <button
+          type="button"
+          className="absolute right-4 top-4 rounded-sm opacity-100 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          onClick={toggleSidebar}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-x h-4 w-4"
+          >
+            <path d="M18 6L6 18"></path>
+            <path d="M6 6l12 12"></path>
+          </svg>
+          <span className="sr-only">Close</span>
+        </button>
+      )}
+
       {/* Logo Section */}
-      <div className="p-4 flex items-center justify-center">
+      <div className="p-4 flex items-start justify-center">
         <Button
           variant="ghost"
           size="icon"
           aria-label="Home"
-          className="w-full"
+          className="w-full flex items-center justify-start"
         >
           <Image
             src="/lumny_logo_1.png"
@@ -193,7 +229,9 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-lg w-full flex items-center justify-start p-2"
+              className={`rounded-lg w-full flex items-center justify-start p-2 ${
+                isDarkMode ? "text-white" : "text-black"
+              }`}
             >
               <Avatar>
                 <AvatarImage src="/profile-1.png" alt="profile pic" />
@@ -203,7 +241,11 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>
-              <div className="flex flex-col space-y-1 bg-white p-2 rounded-lg">
+              <div
+                className={`flex flex-col space-y-1 ${
+                  isDarkMode ? "bg-gray-800 text-white" : "bg-white text-black"
+                } p-2 rounded-lg`}
+              >
                 <p className="font-semibold">Emily Paris</p>
                 <p className="text-sm text-muted-foreground">Free trial tier</p>
               </div>

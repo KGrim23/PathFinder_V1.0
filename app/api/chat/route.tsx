@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -40,7 +40,8 @@ export async function POST(req: Request) {
           content: message,
         },
       ],
-      max_tokens: 200, // Increased token limit for more complex responses
+
+      max_tokens: 300, // Increased token limit for more complex responses
     });
 
     const aiMessage = response.choices[0].message.content;

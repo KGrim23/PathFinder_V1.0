@@ -5,6 +5,7 @@ import { ThumbsUp, ThumbsDown, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChatInput } from "./ChatInput";
+import { useTheme } from "./ThemeContext";
 
 type MessageType = {
   type: "user" | "ai";
@@ -33,6 +34,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   handleOptionClick,
   handleFeedback,
 }) => {
+  const { isDarkMode } = useTheme();
+
   const renderMessageContent = (content: string) => {
     const lines = content.split("\n");
     return lines.map((line, index) => {
@@ -67,8 +70,16 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="mb-4 rounded-lg bg-muted p-4">
+    <div
+      className={`flex flex-col h-full ${
+        isDarkMode ? "bg-black text-white" : "bg-white text-black"
+      }`}
+    >
+      <div
+        className={`mb-4 rounded-lg p-4 ${
+          isDarkMode ? "bg-black" : "bg-muted"
+        }`}
+      >
         <h2 className="mb-2 text-lg font-semibold">
           How can I assist you today?
         </h2>
@@ -106,7 +117,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         </div>
       </div>
       <div className="flex-1 overflow-auto mb-4">
-        <Badge variant="outline" className="mb-2">
+        <Badge
+          variant="outline"
+          className={`mb-2 ${isDarkMode ? "text-white" : "text-black"}`}
+        >
           Chat
         </Badge>
         {messages.map((message, index) => (
@@ -120,6 +134,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               className={`inline-block p-3 rounded-lg ${
                 message.type === "user"
                   ? "bg-primary text-primary-foreground"
+                  : isDarkMode
+                  ? "bg-black"
                   : "bg-muted"
               } shadow-md transition-transform`}
               style={{
