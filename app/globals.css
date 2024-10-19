@@ -7,3 +7,23 @@
   background-color: #000000;
   color: #ffffff;
 }
+
+.rounded-button {
+  border-radius: 0.375rem;
+  border-color: black;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.rounded-button.white-border {
+  border-color: white; /* White border in dark mode */
+}
+
+.rounded-button:hover {
+  background-color: white;
+  color: black;
+}
+
+.rounded-button:hover.white-border {
+  background-color: #1f2937;
+  color: white;
+}

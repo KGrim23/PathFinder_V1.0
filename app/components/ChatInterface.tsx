@@ -76,11 +76,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       }`}
     >
       <div
-        className={`mb-4 rounded-lg p-4 ${
+        className={`mb-2 rounded-lg p-4 ${
           isDarkMode ? "bg-black" : "bg-muted"
         }`}
       >
-        <h2 className="mb-2 text-lg font-semibold">
+        <h2 className="mb-6 text-lg font-semibold">
           How can I assist you today?
         </h2>
         <div className="flex flex-wrap gap-2">
@@ -96,6 +96,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               key={option}
               variant="outline"
               size="sm"
+              className={`rounded-button ${isDarkMode ? "white-border" : ""}`}
               onClick={() => handleOptionClick(option)}
             >
               <span className="mr-2">
@@ -143,7 +144,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 wordWrap: "break-word",
               }}
             >
-              <div className="text-sm leading-relaxed">
+              <div className="text-md leading-relaxed">
                 {renderMessageContent(message.content)}
               </div>
             </div>

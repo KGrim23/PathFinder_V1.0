@@ -38,7 +38,6 @@ export default function Dashboard() {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    // Apply dark mode class to body
     document.body.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
 
@@ -54,7 +53,7 @@ export default function Dashboard() {
   // Function to send message to OpenAI API
   const sendMessageToOpenAI = async (message: string) => {
     try {
-      setLoading(true); // Set loading state to true
+      setLoading(true);
       const response = await axios.post("/api/chat", {
         message,
       });
@@ -137,7 +136,7 @@ export default function Dashboard() {
               size="icon"
               className="ml-2"
               aria-label="Toggle Dark Mode"
-              onClick={toggleDarkMode} // Toggle dark mode on click
+              onClick={toggleDarkMode}
             >
               {isDarkMode ? (
                 <Sun className="h-5 w-5" />
