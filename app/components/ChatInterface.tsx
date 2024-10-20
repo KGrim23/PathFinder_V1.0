@@ -208,7 +208,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   : "bg-gray-100 text-black" // AI message background in light mode
               }`}
               style={{
-                maxWidth: "80%",
+                maxWidth: "95%",
                 wordWrap: "break-word",
               }}
             >
