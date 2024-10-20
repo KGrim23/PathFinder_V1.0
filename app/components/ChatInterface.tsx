@@ -3,12 +3,11 @@
 import React, { useState } from "react"; // Import useState
 import { ThumbsUp, ThumbsDown, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
 
 type MessageType = {
-  type: "user" | "ai";
+  type: "user" | "ai"; // Removed 'system' type
   content:
     | string
     | {
@@ -45,16 +44,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   // Function to handle sending messages
   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
-    setIsLoading(true); // Set loading to true
-    const previousInput = inputMessage; // Store previous input for processing later
-    setInputMessage(""); // Clear input field immediately
+    setIsLoading(true);
+    setInputMessage("");
 
-    await handleSendMessage(e); // Call the original send message function
+    await handleSendMessage(e);
 
-    // Optionally, you can handle additional logic after response is received
-    setIsLoading(false); // Reset loading state
+    setIsLoading(false);
   };
 
   // Render options only if no messages have been sent
@@ -201,13 +198,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             }`}
           >
             <div
-              className={`inline-block p-3 rounded-lg ${
+              className={`inline-block p-3 rounded-xl shadow-md transition-transform ${
                 message.type === "user"
-                  ? "bg-primary text-primary-foreground"
+                  ? isDarkMode
+                    ? "bg-blue-950 text-white" // User message background in dark mode
+                    : "bg-blue-200 text-black" // User message background in light mode
                   : isDarkMode
-                  ? "bg-black"
-                  : "bg-muted"
-              } shadow-md transition-transform`}
+                  ? "bg-gray-900 text-white" // AI message background in dark mode
+                  : "bg-gray-100 text-black" // AI message background in light mode
+              }`}
               style={{
                 maxWidth: "80%",
                 wordWrap: "break-word",
@@ -250,8 +249,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         {/* Display loading indicator */}
         {isLoading && (
           <div className="flex justify-center mt-4">
-            <p className="text-lg">Loading...</p>{" "}
-            {/* You can replace this with a spinner */}
+            <p className="text-lg">Loading...</p>
           </div>
         )}
       </div>
@@ -268,12 +266,12 @@ export default ChatInterface;
 
 // "use client";
 
-// import React from "react";
+// import React, { useState } from "react"; // Import useState
 // import { ThumbsUp, ThumbsDown, Volume2 } from "lucide-react";
 // import { Button } from "@/components/ui/button";
-// import { Badge } from "@/components/ui/badge";
-// import { ChatInput } from "./ChatInput";
+
 // import { useTheme } from "./ThemeContext";
+// import ChatInput from "./ChatInput";
 
 // type MessageType = {
 //   type: "user" | "ai";
@@ -295,7 +293,7 @@ export default ChatInterface;
 //   messages: MessageType[];
 //   inputMessage: string;
 //   setInputMessage: React.Dispatch<React.SetStateAction<string>>;
-//   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => void;
+//   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => Promise<void>; // Ensure this returns a Promise
 //   handleOptionClick: (option: string) => void;
 //   handleFeedback: (index: number, type: "liked" | "disliked" | "sound") => void;
 // };
@@ -309,6 +307,20 @@ export default ChatInterface;
 //   handleFeedback,
 // }) => {
 //   const { isDarkMode } = useTheme();
+//   const [isLoading, setIsLoading] = useState(false); // State for loading
+
+//   // Function to handle sending messages
+//   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+
+//     setIsLoading(true);
+//     const previousInput = inputMessage;
+//     setInputMessage("");
+
+//     await handleSendMessage(e);
+
+//     setIsLoading(false);
+//   };
 
 //   // Render options only if no messages have been sent
 //   const renderOptions = () => {
@@ -446,12 +458,6 @@ export default ChatInterface;
 //     >
 //       {renderOptions()}
 //       <div className="flex-1 overflow-auto mb-4">
-//         {/* <Badge
-//           variant="outline"
-//           className={`mb-2 ${isDarkMode ? "text-white" : "text-black"}`}
-//         >
-//           Chat
-//         </Badge> */}
 //         {messages.map((message, index) => (
 //           <div
 //             key={index}
@@ -505,11 +511,19 @@ export default ChatInterface;
 //             )}
 //           </div>
 //         ))}
+
+//         {/* Display loading indicator */}
+//         {isLoading && (
+//           <div className="flex justify-center mt-4">
+//             <p className="text-lg">Loading...</p>{" "}
+//             {/* You can replace this with a spinner */}
+//           </div>
+//         )}
 //       </div>
 //       <ChatInput
 //         inputMessage={inputMessage}
 //         setInputMessage={setInputMessage}
-//         handleSendMessage={handleSendMessage}
+//         handleSendMessage={handleMessageSend} // Use new handler
 //       />
 //     </div>
 //   );
