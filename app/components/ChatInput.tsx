@@ -31,7 +31,7 @@ const ChatInput: React.FC<{
         <Textarea
           id="message"
           placeholder="Type your message here..."
-          className={`min-h-6 resize-none border-0 p-3 mb-2 shadow-none focus-visible:ring-0 text-base rounded-lg ${
+          className={`min-h-6 resize-none border-0 p-3 mb-2 shadow-none focus-visible:ring-0 text-base rounded-xl ${
             isDarkMode ? "bg-gray-600 text-white" : "bg-gray-200 text-black"
           }`}
           value={inputMessage}
@@ -60,7 +60,9 @@ const ChatInput: React.FC<{
           <Button
             type="submit"
             size="sm"
-            className="ml-auto gap-1.5 text-white bg-black rounded-full px-3.5 py-2"
+            className={`ml-auto gap-1.5 text-white ${
+              isDarkMode ? "bg-gray-600" : "bg-black"
+            } rounded-full px-3.5 py-2`}
           >
             Send Message
             <CornerDownLeft className="size-3.5" />
