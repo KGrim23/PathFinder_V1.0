@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -8,54 +7,63 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { useTheme } from "../components/ThemeContext";
 
-export default function SettingsPage() {
+const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("general");
+  const { isDarkMode, toggleDarkMode } = useTheme(); // Use ThemeContext
+
+  // Effect to toggle dark mode class
+  useEffect(() => {
+    document.body.classList.toggle("dark", isDarkMode);
+  }, [isDarkMode]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex space-x-4 border-b">
+    <div className={` ${isDarkMode ? "dark" : ""}`}>
+      <div className="flex space-x-6 p-4 items-center justify-center">
         <Button
           variant={activeTab === "general" ? "default" : "ghost"}
           onClick={() => setActiveTab("general")}
+          className="flex-1"
         >
           General
         </Button>
         <Button
-          variant={activeTab === "ai-personality" ? "default" : "ghost"}
-          onClick={() => setActiveTab("ai-personality")}
-        >
-          AI Personality
-        </Button>
-        <Button
           variant={activeTab === "goals-focus" ? "default" : "ghost"}
           onClick={() => setActiveTab("goals-focus")}
+          className="flex-1"
         >
           Goals & Focus
         </Button>
         <Button
           variant={activeTab === "privacy" ? "default" : "ghost"}
           onClick={() => setActiveTab("privacy")}
+          className="flex-1"
         >
           Privacy
         </Button>
       </div>
 
-      {/* General Settings Tab */}
+      {/* Dark Mode Toggle */}
+      <div className="flex items-center mb-4">
+        <Switch
+          id="dark-mode-toggle"
+          checked={isDarkMode}
+          onCheckedChange={toggleDarkMode}
+        />
+        {/* <Label htmlFor="dark-mode-toggle" className="ml-2">
+          Dark Mode
+        </Label> */}
+      </div>
+
       {activeTab === "general" && (
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold">General Settings</h2>
-          <Card>
+        <div className="space-y-6 p-4">
+          <h2 className="text-3xl font-semibold">General Settings</h2>
+
+          <Card className="border-none">
             <CardHeader>
               <CardTitle>Notifications</CardTitle>
               <CardDescription>
@@ -68,7 +76,7 @@ export default function SettingsPage() {
                   <Label htmlFor="email-notifications">
                     Email Notifications
                   </Label>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-400">
                     Receive notifications about new messages and updates via
                     email
                   </p>
@@ -78,7 +86,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label htmlFor="push-notifications">Push Notifications</Label>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-gray-400">
                     Receive push notifications on your device for important
                     updates
                   </p>
@@ -87,76 +95,14 @@ export default function SettingsPage() {
               </div>
             </CardContent>
           </Card>
-          {/* Additional General Settings */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Theme</CardTitle>
-              <CardDescription>
-                Customize the appearance of the application
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <Label htmlFor="theme">Select Theme</Label>
-                <Select>
-                  <SelectTrigger id="theme">
-                    <SelectValue placeholder="Select a theme" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="light">Light</SelectItem>
-                    <SelectItem value="dark">Dark</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       )}
 
-      {/* AI Personality Settings Tab */}
-      {activeTab === "ai-personality" && (
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold">AI Personality Settings</h2>
-          <Card>
-            <CardHeader>
-              <CardTitle>Conversation Style</CardTitle>
-              <CardDescription>
-                Choose how the AI assistant communicates with you
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <Label htmlFor="conversation-style">
-                  Select Conversation Style
-                </Label>
-                <Select>
-                  <SelectTrigger id="conversation-style">
-                    <SelectValue placeholder="Select a conversation style" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="supportive">
-                      Supportive and Encouraging
-                    </SelectItem>
-                    <SelectItem value="analytical">
-                      Analytical and Objective
-                    </SelectItem>
-                    <SelectItem value="motivational">
-                      Motivational and Inspiring
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Goals & Focus Settings Tab */}
       {activeTab === "goals-focus" && (
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold">Goals & Focus Settings</h2>
-          <Card>
+        <div className="space-y-6 p-4">
+          <h2 className="text-3xl font-semibold">Goals & Focus Settings</h2>
+
+          <Card className="border-none">
             <CardHeader>
               <CardTitle>Personal Goals</CardTitle>
               <CardDescription>
@@ -172,8 +118,42 @@ export default function SettingsPage() {
                   "Career Development",
                   "Work-Life Balance",
                 ].map((goal) => (
-                  <Button key={goal} variant="outline" size="sm">
+                  <Button
+                    key={goal}
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                  >
                     {goal}
+                  </Button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-none">
+            <CardHeader>
+              <CardTitle>Soft Skills Focus</CardTitle>
+              <CardDescription>
+                Choose the soft skills you want to improve
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "Active Listening",
+                  "Empathy",
+                  "Conflict Resolution",
+                  "Time Management",
+                  "Leadership",
+                ].map((skill) => (
+                  <Button
+                    key={skill}
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                  >
+                    {skill}
                   </Button>
                 ))}
               </div>
@@ -182,27 +162,27 @@ export default function SettingsPage() {
         </div>
       )}
 
-      {/* Privacy Settings Tab */}
       {activeTab === "privacy" && (
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold">Privacy Settings</h2>
-          <Card>
+        <div className="space-y-6 p-4">
+          <h2 className="text-3xl font-semibold">Privacy Settings</h2>
+
+          <Card className="border-none">
             <CardHeader>
               <CardTitle>Data Collection</CardTitle>
               <CardDescription>
-                Control how we collect and use your data
+                Information about our data collection practices
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center space-x-2">
-                <Switch id="data-collection" />
-                <Label htmlFor="data-collection">
-                  Allow data collection for service improvement
-                </Label>
-              </div>
+              <p className="text-sm text-gray-400">
+                By using this app, you accept our terms that we will collect and
+                use your interactions with the AI for training purposes. This
+                helps us improve our services and provide better assistance.
+              </p>
             </CardContent>
           </Card>
-          <Card>
+
+          <Card className="border-none">
             <CardHeader>
               <CardTitle>Chat History</CardTitle>
               <CardDescription>
@@ -215,35 +195,13 @@ export default function SettingsPage() {
                 <Label htmlFor="save-chat-history">Save chat history</Label>
               </div>
               <Button variant="outline">Clear Chat History</Button>
+              <Button variant="outline">Download Chat History</Button>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Third-Party Integrations</CardTitle>
-              <CardDescription>
-                Manage permissions for third-party services
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-2">
-                  <Switch id="calendar-integration" />
-                  <Label htmlFor="calendar-integration">
-                    Allow calendar integration
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Switch id="social-media-integration" />
-                  <Label htmlFor="social-media-integration">
-                    Allow social media integration
-                  </Label>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Button variant="destructive">Delete All Data</Button>
         </div>
       )}
     </div>
   );
-}
+};
+
+export default SettingsPage;

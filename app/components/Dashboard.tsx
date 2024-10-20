@@ -11,6 +11,7 @@ import ProgressPage from "../ProgressPage/page";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
+import { Notifications } from "./notification";
 
 type MessageType = {
   type: "user" | "ai";
@@ -149,6 +150,10 @@ export default function Dashboard() {
               size="icon"
               className="ml-auto"
               aria-label="Notifications"
+              onClick={() => {
+                // Handle notifications
+                <Notifications />;
+              }}
             >
               <Bell className="size-4" />
             </Button>
