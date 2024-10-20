@@ -3,8 +3,9 @@
 import React, { useState } from "react"; // Import useState
 import { ThumbsUp, ThumbsDown, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ChatInput } from "./ChatInput";
+
 import { useTheme } from "./ThemeContext";
+import ChatInput from "./ChatInput";
 
 type MessageType = {
   type: "user" | "ai";
