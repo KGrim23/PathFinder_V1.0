@@ -80,7 +80,9 @@ export default function Dashboard() {
     }
   };
 
-  const handleSendMessage: HandleSendMessageType = async (e) => {
+  const handleSendMessage: (
+    e: React.FormEvent<HTMLFormElement>
+  ) => Promise<void> = async (e) => {
     e.preventDefault();
     if (inputMessage.trim() === "") return;
 
