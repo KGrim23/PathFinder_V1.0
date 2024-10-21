@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useTheme } from "./ThemeContext"; // Make sure this path is correct
+import { useTheme } from "./ThemeContext"; // Ensure this path is correct
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,14 @@ const ChatInput: React.FC<{
   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => void;
 }> = ({ inputMessage, setInputMessage, handleSendMessage }) => {
   const { isDarkMode } = useTheme(); // Get isDarkMode from useTheme
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      // Check for Enter key and not Shift
+      e.preventDefault(); // Prevent default behavior (e.g., adding a new line)
+      handleSendMessage(e as unknown as React.FormEvent<HTMLFormElement>);
+    }
+  };
 
   return (
     <form
@@ -38,6 +46,7 @@ const ChatInput: React.FC<{
           }`}
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
+          onKeyDown={handleKeyDown} // Add onKeyDown event
         />
 
         <div className="flex items-center p-3 pt-0">

@@ -223,10 +223,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               className={`inline-block p-3 rounded-xl shadow-md transition-transform ${
                 message.type === "user"
                   ? isDarkMode
-                    ? "bg-blue-950 text-white"
+                    ? "bg-white text-black"
                     : "bg-blue-200 text-black"
                   : isDarkMode
-                  ? "bg-gray-900 text-white"
+                  ? "bg-black text-white"
                   : "bg-gray-100 text-black"
               }`}
               style={{
