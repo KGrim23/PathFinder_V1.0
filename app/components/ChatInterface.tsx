@@ -120,7 +120,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             {content.dialogue.map(
               (msg: { speaker: string; message: string }, index: number) => (
                 <div key={index} className="mb-2">
-                  <strong>{msg.speaker}:</strong> {msg.message}
+                  {msg.message}
                 </div>
               )
             )}
