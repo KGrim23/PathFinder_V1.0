@@ -59,9 +59,12 @@ export default function Dashboard() {
         message,
       });
 
+      // Assuming the response format is { response: "..." }
+      const aiResponseContent = response.data?.response; // Safely accessing response
+
       const aiMessage: MessageType = {
         type: "ai",
-        content: response.data.response,
+        content: aiResponseContent || "Sorry, I didn't understand that.", // Fallback message
         feedback: { liked: false, disliked: false, sound: false },
       };
 
@@ -80,9 +83,7 @@ export default function Dashboard() {
     }
   };
 
-  const handleSendMessage: (
-    e: React.FormEvent<HTMLFormElement>
-  ) => Promise<void> = async (e) => {
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputMessage.trim() === "") return;
 

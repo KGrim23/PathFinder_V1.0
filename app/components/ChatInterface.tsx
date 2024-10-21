@@ -1,20 +1,15 @@
 "use client";
 
-import React, { useState } from "react"; // Import useState
+import React, { useState } from "react";
 import { ThumbsUp, ThumbsDown, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
 
-type MessageType = {
-  type: "user" | "ai"; // Removed 'system' type
-  content:
-    | string
-    | {
-        heading: string;
-        subheading: string;
-        steps: string[];
-      };
+// User Message Type
+type UserMessage = {
+  type: "user";
+  content: string; // Only a string for user messages
   feedback?: {
     liked: boolean;
     disliked: boolean;
@@ -22,11 +17,26 @@ type MessageType = {
   };
 };
 
+// AI Message Type
+type AIMessage = {
+  type: "ai";
+  content:
+    | {
+        dialogue?: Array<{ speaker: string; message: string }>;
+        steps?: Array<{ step_number: number; instruction: string }>;
+        rawMessage?: string; // Fallback for unstructured content
+      }
+    | string; // Allow raw message string as a fallback
+};
+
+// Combined Message Type
+type MessageType = UserMessage | AIMessage;
+
 type ChatInterfaceProps = {
   messages: MessageType[];
   inputMessage: string;
   setInputMessage: React.Dispatch<React.SetStateAction<string>>;
-  handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => Promise<void>; // Ensure this returns a Promise
+  handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   handleOptionClick: (option: string) => void;
   handleFeedback: (index: number, type: "liked" | "disliked" | "sound") => void;
 };
@@ -40,21 +50,16 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   handleFeedback,
 }) => {
   const { isDarkMode } = useTheme();
-  const [isLoading, setIsLoading] = useState(false); // State for loading
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Function to handle sending messages
   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setIsLoading(true);
     setInputMessage("");
-
     await handleSendMessage(e);
-
     setIsLoading(false);
   };
 
-  // Render options only if no messages have been sent
   const renderOptions = () => {
     if (messages.length === 0) {
       return (
@@ -105,53 +110,68 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     return null;
   };
 
-  // Function to render AI message content (structured)
   const renderAIMessageContent = (content: any) => {
-    let parsedContent;
-
-    // Check if the content is a string and needs to be parsed as JSON
-    if (typeof content === "string") {
-      try {
-        parsedContent = JSON.parse(content);
-      } catch (error) {
-        console.error("Failed to parse AI message content", error);
-        return <p>{content}</p>; // Fallback to displaying as plain text
+    // Check if content is an object
+    if (typeof content === "object" && content !== null) {
+      // Check for 'dialogue' array
+      if (content.dialogue && Array.isArray(content.dialogue)) {
+        return (
+          <div>
+            {content.dialogue.map(
+              (msg: { speaker: string; message: string }, index: number) => (
+                <div key={index} className="mb-2">
+                  <strong>{msg.speaker}:</strong> {msg.message}
+                </div>
+              )
+            )}
+          </div>
+        );
       }
-    } else {
-      parsedContent = content;
+      // Check for 'steps' array
+      if (content.steps && Array.isArray(content.steps)) {
+        return (
+          <div className="mt-4">
+            <ul className="ml-6 list-disc">
+              {content.steps.map(
+                (
+                  step: { step_number: number; instruction: string },
+                  index: number
+                ) => (
+                  <li key={index} className="mb-2">
+                    {step.step_number}. {step.instruction}
+                  </li>
+                )
+              )}
+            </ul>
+          </div>
+        );
+      }
+      // Handle raw message if no structured data available
+      return <p>{content.rawMessage || "No structured content available."}</p>;
     }
 
-    // Render the structured content
-    if (
-      parsedContent &&
-      parsedContent.heading &&
-      parsedContent.subheading &&
-      parsedContent.steps
-    ) {
-      return (
-        <div>
-          <h3 className="font-semibold text-lg mb-2">
-            {parsedContent.heading}
-          </h3>
-          <p className="mb-2 text-md italic">{parsedContent.subheading}</p>
-          <ul className="ml-6 mb-2 list-disc">
-            {parsedContent.steps.map((step: string, index: number) => (
-              <li key={index} className="mb-2">
-                {step}
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
-    } else {
-      return <p>{content}</p>; // If content isn't structured, show it as plain text
+    // Handle string content
+    if (typeof content === "string") {
+      // If the string is in JSON format, parse it
+      try {
+        const parsedContent = JSON.parse(content);
+        return renderAIMessageContent(parsedContent);
+      } catch {
+        // If parsing fails, return the raw string
+        return <p>{content}</p>;
+      }
     }
+
+    // Fallback for any other types
+    return <p>No valid content available.</p>;
   };
 
-  // Function to render user message content (as string)
   const renderUserMessageContent = (content: string) => {
+    // Split the content by new lines
     const lines = content.split("\n");
+
     return lines.map((line, index) => {
+      // Check for bold text
       if (line.startsWith("**") && line.endsWith("**")) {
         return (
           <h3 key={index} className="font-semibold text-lg mb-2">
@@ -159,6 +179,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </h3>
         );
       }
+      // Check for bullet points
       if (line.startsWith("- ")) {
         return (
           <li key={index} className="ml-6 mb-2 list-disc">
@@ -166,19 +187,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </li>
         );
       }
+      // Check for numbered lists
       if (line.match(/^\d+\.\s/)) {
         return (
           <li key={index} className="ml-6 mb-2 list-decimal">
             {line.replace(/^\d+\.\s/, "")}
           </li>
         );
-      } else {
-        return (
-          <p key={index} className="mb-2 last:mb-0">
-            {line}
-          </p>
-        );
       }
+      // Default to paragraph
+      return (
+        <p key={index} className="mb-2 last:mb-0">
+          {line}
+        </p>
+      );
     });
   };
 
@@ -201,11 +223,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               className={`inline-block p-3 rounded-xl shadow-md transition-transform ${
                 message.type === "user"
                   ? isDarkMode
-                    ? "bg-blue-950 text-white" // User message background in dark mode
-                    : "bg-blue-200 text-black" // User message background in light mode
+                    ? "bg-blue-950 text-white"
+                    : "bg-blue-200 text-black"
                   : isDarkMode
-                  ? "bg-gray-900 text-white" // AI message background in dark mode
-                  : "bg-gray-100 text-black" // AI message background in light mode
+                  ? "bg-gray-900 text-white"
+                  : "bg-gray-100 text-black"
               }`}
               style={{
                 maxWidth: "95%",
@@ -214,39 +236,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             >
               <div className="text-md leading-relaxed">
                 {message.type === "user"
-                  ? renderUserMessageContent(message.content as string)
+                  ? renderUserMessageContent(message.content)
                   : renderAIMessageContent(message.content)}
               </div>
             </div>
-            {message.type === "ai" && (
-              <div className="mt-2 flex items-center space-x-2">
-                <Button
-                  variant={message.feedback?.liked ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => handleFeedback(index, "liked")}
-                >
-                  <ThumbsUp className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant={message.feedback?.disliked ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => handleFeedback(index, "disliked")}
-                >
-                  <ThumbsDown className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant={message.feedback?.sound ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => handleFeedback(index, "sound")}
-                >
-                  <Volume2 className="h-4 w-4" />
-                </Button>
-              </div>
-            )}
           </div>
         ))}
 
-        {/* Display loading indicator */}
         {isLoading && (
           <div className="flex justify-center mt-4">
             <p className="text-lg">Loading...</p>
@@ -256,7 +252,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <ChatInput
         inputMessage={inputMessage}
         setInputMessage={setInputMessage}
-        handleSendMessage={handleMessageSend} // Use new handler
+        handleSendMessage={handleMessageSend}
       />
     </div>
   );

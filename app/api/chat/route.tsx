@@ -33,31 +33,55 @@ export async function POST(req: Request) {
       response_format: {
         type: "json_schema",
         json_schema: {
-          name: "guide_schema",
+          name: "conversation_output",
           strict: true,
           schema: {
             type: "object",
             properties: {
-              heading: {
-                type: "string",
-                description: "The main title of the guide.",
-              },
-              subheading: {
-                type: "string",
+              dialogue: {
+                type: "array",
                 description:
-                  "A brief description or subtitle that provides additional context.",
+                  "A sequence of dialogue exchanges in the conversation.",
+                items: {
+                  type: "object",
+                  properties: {
+                    speaker: {
+                      type: "string",
+                      description:
+                        "The person or entity that is speaking in this exchange.",
+                    },
+                    message: {
+                      type: "string",
+                      description: "The text of the message spoken.",
+                    },
+                  },
+                  required: ["speaker", "message"],
+                  additionalProperties: false,
+                },
               },
               steps: {
                 type: "array",
                 description:
-                  "A list of steps or bullet points involved in the guide.",
+                  "A step-by-step guide related to the conversation, if applicable.",
                 items: {
-                  type: "string",
-                  description: "Each step or bullet point in the guide.",
+                  type: "object",
+                  properties: {
+                    step_number: {
+                      type: "integer",
+                      description: "The order of the step in the guide.",
+                    },
+                    instruction: {
+                      type: "string",
+                      description:
+                        "Detailed instruction or information provided in this step.",
+                    },
+                  },
+                  required: ["step_number", "instruction"],
+                  additionalProperties: false,
                 },
               },
             },
-            required: ["heading", "subheading", "steps"],
+            required: ["dialogue", "steps"],
             additionalProperties: false,
           },
         },
@@ -65,7 +89,7 @@ export async function POST(req: Request) {
     });
 
     const aiMessage = response.choices[0].message.content;
-
+    console.log("AI Response:", aiMessage);
     return new Response(JSON.stringify({ response: aiMessage }), {
       status: 200,
     });
