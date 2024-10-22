@@ -224,19 +224,6 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           </TooltipTrigger>
           {!isMobile && <TooltipContent side="right">Help</TooltipContent>}
         </Tooltip>
-
-        {/* Test Navigation Button */}
-        <div className="mt-4">
-          <Button
-            variant="default"
-            onClick={() => {
-              console.log("Navigating to homepage");
-              router.push("/"); // Navigate to the homepage
-            }}
-          >
-            Go to Home
-          </Button>
-        </div>
       </nav>
 
       {/* Help and Profile Section */}
@@ -252,10 +239,9 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
               }`}
             >
               <Avatar>
-                <AvatarImage src="/profile.jpg" alt="Profile" />
-                <AvatarFallback>U</AvatarFallback>
+                <AvatarImage src="/profile-1.png" alt="Profile" />
               </Avatar>
-              {isMobile && <span className="ml-2">User Name</span>}
+              {isMobile && <span className="ml-2">Sarah Parker</span>}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>

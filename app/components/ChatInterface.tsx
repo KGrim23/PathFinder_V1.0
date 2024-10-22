@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ThumbsUp, ThumbsDown, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
@@ -222,14 +221,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             }`}
           >
             <div
-              className={`inline-block p-3 rounded-xl shadow-md transition-transform ${
+              className={`inline-block p-3 rounded-xl transition-transform ${
                 message.type === "user"
                   ? isDarkMode
                     ? "bg-white text-black"
-                    : "bg-blue-200 text-black"
+                    : "bg-black text-white"
                   : isDarkMode
                   ? "bg-black text-white"
-                  : "bg-gray-100 text-black"
+                  : "bg-white text-black"
               }`}
               style={{
                 maxWidth: "100%", // Allow full width while preventing overflow

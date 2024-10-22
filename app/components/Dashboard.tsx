@@ -2,15 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
 import ChatInterface from "./ChatInterface";
 import SettingsPage from "../SettingPage/page";
 import ProgressPage from "../ProgressPage/page";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Navbar from "./Navbar";
 import { useTheme } from "./ThemeContext";
-import SavedChatsPage from "./SavedChatsPage";
 import Sidebar from "./Sidebar";
+import SavedChatsPage from "../saved-chats/page";
+import { useRouter } from "next/navigation"; // Changed from next/router to next/navigation
 
 type MessageType = {
   type: "user" | "ai";
@@ -29,6 +29,8 @@ export default function Dashboard() {
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     document.body.classList.toggle("dark", isDarkMode);
@@ -108,6 +110,10 @@ export default function Dashboard() {
     setMessages(updatedMessages);
   };
 
+  const navigateToSavedChats = () => {
+    router.push("/saved-chats");
+  };
+
   return (
     <TooltipProvider>
       <div
@@ -117,7 +123,6 @@ export default function Dashboard() {
       >
         {!isMobile && <Sidebar isMobile={false} />}
         <div className="flex flex-col h-full">
-          {/* NavBar */}
           <Navbar isMobile={isMobile} />
 
           <main className="flex-1 overflow-auto p-4 flex flex-col">
@@ -139,7 +144,7 @@ export default function Dashboard() {
                     Save Chat
                   </button>
                   <button
-                    onClick={() => setCurrentPage("saved-chats")}
+                    onClick={navigateToSavedChats}
                     className="bg-black border-2 border-green-700 text-white rounded px-4 py-1"
                   >
                     View Chats
