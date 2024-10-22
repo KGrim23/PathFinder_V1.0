@@ -59,7 +59,6 @@ export default function Dashboard() {
         message,
       });
 
-      // Assuming the response format is { response: "..." }
       const aiResponseContent = response.data?.response; // Safely accessing response
 
       const aiMessage: MessageType = {

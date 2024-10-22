@@ -17,7 +17,7 @@ type UserMessage = {
   };
 };
 
-// AI Message Type
+// AI Message Type as AI response is more compliacted than User Message
 type AIMessage = {
   type: "ai";
   content:
@@ -111,9 +111,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   };
 
   const renderAIMessageContent = (content: any) => {
-    // Check if content is an object
     if (typeof content === "object" && content !== null) {
-      // Check for 'dialogue' array
       if (content.dialogue && Array.isArray(content.dialogue)) {
         return (
           <div>
