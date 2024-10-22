@@ -135,8 +135,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   step: { step_number: number; instruction: string },
                   index: number
                 ) => (
-                  <li key={index} className="mb-2">
-                    {step.step_number}. {step.instruction}
+                  <li key={step.step_number}>
+                    {step.instruction.replace(/\*/g, "").trim()}
                   </li>
                 )
               )}
