@@ -17,6 +17,7 @@ export async function POST(req: Request) {
             You are an advisor and coach who offers friendly, supportive, and practical advice. 
             Always start with a conversational approach before recommending a step-by-step guide.
             Your goal is to help users navigate their paths, make informed decisions, and find fulfillment in their lives.
+            Provide your responses in the following format without any markdown or special formatting:
             Provide responses in the following format:
 
             {
