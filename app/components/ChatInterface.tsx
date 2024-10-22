@@ -232,11 +232,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   : "bg-gray-100 text-black"
               }`}
               style={{
-                maxWidth: "95%",
-                wordWrap: "break-word",
+                maxWidth: "100%", // Allow full width while preventing overflow
+                width: "auto", // Set width to auto for dynamic sizing
+                wordWrap: "break-word", // Enable word wrapping
+                overflowWrap: "break-word", // Enable overflow wrapping
               }}
             >
-              <div className="text-md leading-relaxed">
+              <div className="text-md leading-relaxed break-all">
+                {" "}
+                {/* Added break-all */}
                 {message.type === "user"
                   ? renderUserMessageContent(message.content)
                   : renderAIMessageContent(message.content)}
