@@ -22,12 +22,7 @@ export async function POST(req: Request) {
             {
               "dialogue": [
                 { "speaker": "assistant", "message": "Here's how you can manage stress:" },
-                { "speaker": "assistant", "message": "Stress can be a motivator if handled well." }
               ],
-              "steps": [
-                { "step_number": 1, "instruction": "Start your day with a relaxed routine." },
-                { "step_number": 2, "instruction": "Stay organized by prioritizing tasks." }
-              ]
             }
           `,
         },
