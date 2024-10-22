@@ -37,6 +37,12 @@ const SavedChatsPage: React.FC = () => {
     }
   }, []);
 
+  const deleteAllChats = () => {
+    setSavedChats([]); // Clear state
+    localStorage.removeItem("savedChats"); // Remove from local storage
+    alert("All chats have been deleted!"); // Optional alert for feedback
+  };
+
   const renderUserMessageContent = (content: string) => {
     const lines = content.split("\n");
 
@@ -151,6 +157,14 @@ const SavedChatsPage: React.FC = () => {
               </div>
             </div>
           ))}
+          <div className="flex justify-end mt-4">
+            <button
+              className="mt-4 p-2 bg-rose-900 text-white rounded"
+              onClick={deleteAllChats}
+            >
+              Delete Chat
+            </button>
+          </div>
         </div>
       )}
     </div>

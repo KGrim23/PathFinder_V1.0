@@ -84,9 +84,7 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           className="w-full flex items-center justify-start"
         >
           <Image src="/New_logo.png" alt="Lumny Logo" width={45} height={45} />
-          {isMobile && (
-            <h1 className="text-md ml-2 font-semibold">Lumny App</h1>
-          )}
+          {isMobile && <h1 className="text-md ml-4 font-semibold">Lumny</h1>}
         </Button>
       </div>
 
@@ -104,7 +102,11 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
                   : "text-gray-700"
               } ${isMobile ? "justify-start" : "justify-center"} w-full p-2`}
               aria-label="New Chat"
-              onClick={() => setCurrentPage("chat")}
+              onClick={() => {
+                setCurrentPage("chat");
+                console.log("Navigating to homepage");
+                router.push("/"); // Navigate to the homepage
+              }}
             >
               <MessageSquarePlus
                 className={`size-5 ${isMobile ? "mr-2" : ""}`}
@@ -222,6 +224,19 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           </TooltipTrigger>
           {!isMobile && <TooltipContent side="right">Help</TooltipContent>}
         </Tooltip>
+
+        {/* Test Navigation Button */}
+        <div className="mt-4">
+          <Button
+            variant="default"
+            onClick={() => {
+              console.log("Navigating to homepage");
+              router.push("/"); // Navigate to the homepage
+            }}
+          >
+            Go to Home
+          </Button>
+        </div>
       </nav>
 
       {/* Help and Profile Section */}
@@ -237,34 +252,23 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
               }`}
             >
               <Avatar>
-                <AvatarImage src="/profile-1.png" alt="profile pic" />
-                <AvatarFallback>EP</AvatarFallback>
+                <AvatarImage src="/profile.jpg" alt="Profile" />
+                <AvatarFallback>U</AvatarFallback>
               </Avatar>
+              {isMobile && <span className="ml-2">User Name</span>}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>
-              <div
-                className={`flex flex-col space-y-1 ${
-                  isDarkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-                } p-2 rounded-lg`}
-              >
-                <p className="font-semibold">Emily Paris</p>
-                <p className="text-sm text-muted-foreground">Free trial tier</p>
-              </div>
-            </DropdownMenuLabel>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>User Menu</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>Account</span>
+              <User className="mr-2" /> Profile
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <CreditCard className="mr-2 h-4 w-4" />
-              <span>Billing</span>
+              <CreditCard className="mr-2" /> Payments
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
+              <LogOut className="mr-2" /> Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
