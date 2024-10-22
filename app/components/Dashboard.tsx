@@ -3,15 +3,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Import axios
 import Sidebar from "./Sidebar";
-import { Bell, Menu, Sun, Moon } from "lucide-react"; // Import icons
-import { TooltipProvider } from "@radix-ui/react-tooltip";
 import ChatInterface from "./ChatInterface";
 import SettingsPage from "../SettingPage/page";
 import ProgressPage from "../ProgressPage/page";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { useTheme } from "./ThemeContext";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { Notifications } from "./notification";
+import Navbar from "./Navbar";
+import { useTheme } from "./ThemeContext";
 
 type MessageType = {
   type: "user" | "ai";
@@ -23,15 +21,8 @@ type MessageType = {
   };
 };
 
-type HandleSendMessageType = (e: React.FormEvent<HTMLFormElement>) => void;
-type HandleOptionClickType = (option: string) => void;
-type HandleFeedbackType = (
-  index: number,
-  type: "liked" | "disliked" | "sound"
-) => void;
-
 export default function Dashboard() {
-  const { isDarkMode, toggleDarkMode } = useTheme(); // Use ThemeContext
+  const { isDarkMode } = useTheme(); // Use ThemeContext
   const [currentPage, setCurrentPage] = useState<string>("chat");
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
@@ -94,7 +85,7 @@ export default function Dashboard() {
     setInputMessage("");
   };
 
-  const handleOptionClick: HandleOptionClickType = (option) => {
+  const handleOptionClick = (option: string) => {
     const newUserMessage: MessageType = { type: "user", content: option };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
 
@@ -102,7 +93,10 @@ export default function Dashboard() {
     sendMessageToOpenAI(option);
   };
 
-  const handleFeedback: HandleFeedbackType = (index, type) => {
+  const handleFeedback = (
+    index: number,
+    type: "liked" | "disliked" | "sound"
+  ) => {
     const updatedMessages = [...messages];
     updatedMessages[index].feedback![type] =
       !updatedMessages[index].feedback![type];
@@ -119,48 +113,7 @@ export default function Dashboard() {
         {!isMobile && <Sidebar isMobile={false} />}
         <div className="flex flex-col h-full">
           {/* NavBar */}
-          <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 bg-white dark:bg-black px-4 shadow">
-            {isMobile && (
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="mr-2">
-                    <Menu className="h-6 w-6" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="p-0 w-64">
-                  <Sidebar isMobile={true} />
-                </SheetContent>
-              </Sheet>
-            )}
-            <h1 className="text-xl font-semibold">Lumny App</h1>
-            {/* Dark Mode Toggle Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="ml-2"
-              aria-label="Toggle Dark Mode"
-              onClick={toggleDarkMode}
-            >
-              {isDarkMode ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )}
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="ml-auto"
-              aria-label="Notifications"
-              onClick={() => {
-                // Handle notifications
-                <Notifications />;
-              }}
-            >
-              <Bell className="size-4" />
-            </Button>
-          </header>
-
+          <Navbar isMobile={isMobile} /> {/* Use Navbar component here */}
           <main className="flex-1 overflow-auto p-4 flex flex-col">
             {currentPage === "chat" && (
               <ChatInterface
