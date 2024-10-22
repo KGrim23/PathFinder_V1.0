@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Sidebar from "./Sidebar";
+
 import ChatInterface from "./ChatInterface";
 import SettingsPage from "../SettingPage/page";
 import ProgressPage from "../ProgressPage/page";
@@ -10,6 +10,7 @@ import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Navbar from "./Navbar";
 import { useTheme } from "./ThemeContext";
 import SavedChatsPage from "./SavedChatsPage";
+import Sidebar from "./Sidebar";
 
 type MessageType = {
   type: "user" | "ai";

@@ -136,7 +136,7 @@ const SavedChatsPage: React.FC = () => {
                 className={`inline-block p-3 rounded-xl shadow-md transition-transform ${
                   message.type === "user"
                     ? "bg-blue-200 text-black"
-                    : "bg-gray-100 text-black"
+                    : "bg-black text-white"
                 }`}
                 style={{
                   maxWidth: "95%",
