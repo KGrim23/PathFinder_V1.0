@@ -5,9 +5,15 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request) {
-  const { message } = await req.json();
+  const { message, chatHistory } = await req.json();
 
   try {
+    // Ensure chatHistory is an array, defaulting to an empty array if it's not provided
+    const updatedChatHistory = [
+      ...(Array.isArray(chatHistory) ? chatHistory : []),
+      { role: "user", content: message },
+    ];
+
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
@@ -27,10 +33,7 @@ export async function POST(req: Request) {
             }
           `,
         },
-        {
-          role: "user",
-          content: message, // User input
-        },
+        ...updatedChatHistory, // Include the full chat history
       ],
       temperature: 1,
       max_tokens: 2048,
