@@ -21,7 +21,6 @@ const ChatInput: React.FC<{
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      // Check for Enter key and not Shift
       e.preventDefault(); // Prevent default behavior (e.g., adding a new line)
       handleSendMessage(e as unknown as React.FormEvent<HTMLFormElement>);
     }
