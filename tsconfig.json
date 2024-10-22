@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"], // Ensure DOM types are included
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ], // Ensure DOM types are included
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,8 +22,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    }
+      "@/*": [
+        "./*"
+      ]
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
@@ -28,9 +35,10 @@
     "public/**/*.ts", // Include service worker TypeScript file
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
-
 // {
 //   "compilerOptions": {
 //     "lib": ["dom", "dom.iterable", "esnext"],
