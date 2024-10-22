@@ -1,15 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Import axios
-import Sidebar from "./Sidebar";
+import axios from "axios";
+
 import ChatInterface from "./ChatInterface";
 import SettingsPage from "../SettingPage/page";
 import ProgressPage from "../ProgressPage/page";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import { Notifications } from "./notification";
 import Navbar from "./Navbar";
 import { useTheme } from "./ThemeContext";
+import SavedChatsPage from "./SavedChatsPage";
+import Sidebar from "./Sidebar";
 
 type MessageType = {
   type: "user" | "ai";
@@ -22,7 +23,7 @@ type MessageType = {
 };
 
 export default function Dashboard() {
-  const { isDarkMode } = useTheme(); // Use ThemeContext
+  const { isDarkMode } = useTheme();
   const [currentPage, setCurrentPage] = useState<string>("chat");
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
@@ -42,6 +43,12 @@ export default function Dashboard() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Function to save chat history to local storage
+  const saveChatHistory = () => {
+    localStorage.setItem("savedChats", JSON.stringify(messages));
+    alert("Chat history saved!");
+  };
+
   // Function to send message to OpenAI API
   const sendMessageToOpenAI = async (message: string) => {
     try {
@@ -50,11 +57,11 @@ export default function Dashboard() {
         message,
       });
 
-      const aiResponseContent = response.data?.response; // Safely accessing response
+      const aiResponseContent = response.data?.response;
 
       const aiMessage: MessageType = {
         type: "ai",
-        content: aiResponseContent || "Sorry, I didn't understand that.", // Fallback message
+        content: aiResponseContent || "Sorry, I didn't understand that.",
         feedback: { liked: false, disliked: false, sound: false },
       };
 
@@ -80,7 +87,6 @@ export default function Dashboard() {
     const newUserMessage: MessageType = { type: "user", content: inputMessage };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
 
-    // Send message to OpenAI
     await sendMessageToOpenAI(inputMessage);
     setInputMessage("");
   };
@@ -89,7 +95,6 @@ export default function Dashboard() {
     const newUserMessage: MessageType = { type: "user", content: option };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
 
-    // Send option as message to OpenAI
     sendMessageToOpenAI(option);
   };
 
@@ -113,20 +118,38 @@ export default function Dashboard() {
         {!isMobile && <Sidebar isMobile={false} />}
         <div className="flex flex-col h-full">
           {/* NavBar */}
-          <Navbar isMobile={isMobile} /> {/* Use Navbar component here */}
+          <Navbar isMobile={isMobile} />
+
           <main className="flex-1 overflow-auto p-4 flex flex-col">
             {currentPage === "chat" && (
-              <ChatInterface
-                messages={messages}
-                inputMessage={inputMessage}
-                setInputMessage={setInputMessage}
-                handleSendMessage={handleSendMessage}
-                handleOptionClick={handleOptionClick}
-                handleFeedback={handleFeedback}
-              />
+              <>
+                <ChatInterface
+                  messages={messages}
+                  inputMessage={inputMessage}
+                  setInputMessage={setInputMessage}
+                  handleSendMessage={handleSendMessage}
+                  handleOptionClick={handleOptionClick}
+                  handleFeedback={handleFeedback}
+                />
+                <div className="flex justify-center space-x-2">
+                  <button
+                    onClick={saveChatHistory}
+                    className="bg-blue-500 text-white rounded p-2"
+                  >
+                    Save Chat
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage("saved-chats")}
+                    className="bg-green-500 text-white rounded p-2"
+                  >
+                    View Chats
+                  </button>
+                </div>
+              </>
             )}
             {currentPage === "settings" && <SettingsPage />}
             {currentPage === "progress" && <ProgressPage />}
+            {currentPage === "saved-chats" && <SavedChatsPage />}
             <div className="mb-16"></div>
           </main>
         </div>
