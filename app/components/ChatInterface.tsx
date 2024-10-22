@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import { ThumbsUp, ThumbsDown, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,7 +15,7 @@ type UserMessage = {
   };
 };
 
-// AI Message Type as AI response is more compliacted than User Message
+// AI Message Type as AI response is more complicated than User Message
 type AIMessage = {
   type: "ai";
   content:
@@ -58,6 +56,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setInputMessage("");
     await handleSendMessage(e);
     setIsLoading(false);
+  };
+
+  // Save chat history to local storage
+  const saveChatHistory = () => {
+    localStorage.setItem("chatHistory", JSON.stringify(messages));
+    alert("Chat history saved!");
   };
 
   const renderOptions = () => {
@@ -247,6 +251,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </div>
         )}
       </div>
+
       <ChatInput
         inputMessage={inputMessage}
         setInputMessage={setInputMessage}

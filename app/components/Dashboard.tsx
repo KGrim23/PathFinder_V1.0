@@ -7,9 +7,9 @@ import ChatInterface from "./ChatInterface";
 import SettingsPage from "../SettingPage/page";
 import ProgressPage from "../ProgressPage/page";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import { Notifications } from "./notification";
 import Navbar from "./Navbar";
 import { useTheme } from "./ThemeContext";
+import SavedChatsPage from "./SavedChatsPage";
 
 type MessageType = {
   type: "user" | "ai";
@@ -41,6 +41,12 @@ export default function Dashboard() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Function to save chat history to local storage
+  const saveChatHistory = () => {
+    localStorage.setItem("savedChats", JSON.stringify(messages));
+    alert("Chat history saved!");
+  };
 
   // Function to send message to OpenAI API
   const sendMessageToOpenAI = async (message: string) => {
@@ -116,17 +122,29 @@ export default function Dashboard() {
           <Navbar isMobile={isMobile} /> {/* Use Navbar component here */}
           <main className="flex-1 overflow-auto p-4 flex flex-col">
             {currentPage === "chat" && (
-              <ChatInterface
-                messages={messages}
-                inputMessage={inputMessage}
-                setInputMessage={setInputMessage}
-                handleSendMessage={handleSendMessage}
-                handleOptionClick={handleOptionClick}
-                handleFeedback={handleFeedback}
-              />
+              <>
+                <ChatInterface
+                  messages={messages}
+                  inputMessage={inputMessage}
+                  setInputMessage={setInputMessage}
+                  handleSendMessage={handleSendMessage}
+                  handleOptionClick={handleOptionClick}
+                  handleFeedback={handleFeedback}
+                />
+                <button
+                  onClick={saveChatHistory}
+                  className="mt-4 bg-blue-500 text-white rounded p-2"
+                >
+                  Save Chat History
+                </button>
+              </>
             )}
             {currentPage === "settings" && <SettingsPage />}
             {currentPage === "progress" && <ProgressPage />}
+            {currentPage === "saved-chats" && (
+              <SavedChatsPage messages={messages} />
+            )}{" "}
+            {/* Add new page */}
             <div className="mb-16"></div>
           </main>
         </div>
