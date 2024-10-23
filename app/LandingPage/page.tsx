@@ -5,7 +5,7 @@ import React from "react";
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen">
+    <div className="relative flex flex-col items-center justify-center h-screen mb-6 mt-6">
       {/* Background Image Section */}
       <div className="relative w-full h-screen">
         <Image
