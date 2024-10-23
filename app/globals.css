@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden; /* Use 'auto' if you want to allow scrolling */
+}
+
 /* Dark mode styles */
 .dark {
   background-color: #000000;

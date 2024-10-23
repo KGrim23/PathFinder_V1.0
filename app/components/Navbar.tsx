@@ -29,7 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           </SheetContent>
         </Sheet>
       )}
-      <Link href="/" passHref>
+      <Link href="/Dashboard" passHref>
         <Button className="text-xl font-semibold cursor-pointer bg-transparent border-none">
           Lumny
         </Button>
