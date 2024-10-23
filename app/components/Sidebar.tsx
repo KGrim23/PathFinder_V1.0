@@ -83,7 +83,7 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           aria-label="Home"
           className="w-full flex items-center justify-start"
         >
-          <Image src="/lumny-new.png" alt="Lumny Logo" width={45} height={45} />
+          <Image src="/New_logo.png" alt="Lumny Logo" width={45} height={45} />
           {isMobile && <h1 className="text-md ml-4 font-semibold">Lumny</h1>}
         </Button>
       </div>
