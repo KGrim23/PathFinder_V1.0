@@ -12,6 +12,7 @@ const LandingPage: React.FC = () => {
           src="/landing.jpg"
           alt="Background Image"
           layout="fill"
+          priority
           objectFit="cover"
           quality={100}
           className="absolute z-0"
