@@ -21,7 +21,7 @@ const LandingPage: React.FC = () => {
 
         {/* Content Over the Image */}
         <div className="absolute inset-0 flex flex-col justify-between items-center z-10">
-          <div className="flex items-center space-x-4 mt-8">
+          <div className="flex flex-col items-center space-x-4 gap-4 mt-16">
             {/* Logo */}
             <Image
               src="/lumny-new.png"
@@ -31,7 +31,7 @@ const LandingPage: React.FC = () => {
             />
 
             {/* Centered Heading */}
-            <h1 className="text-4xl md:text-6xl text-black font-bold">
+            <h1 className="text-3xl md:text-6xl text-gray-950 font-semibold">
               Lumny App
             </h1>
           </div>
@@ -43,7 +43,7 @@ const LandingPage: React.FC = () => {
           <div className="mb-16 flex flex-col items-center">
             <Link
               href="/Dashboard"
-              className="px-6 py-1 text-lg bg-white text-black rounded-xl hover:bg-blue-700 transition"
+              className="px-6 py-1 text-lg bg-black text-white border-2 border-white rounded-xl hover:bg-blue-700 transition"
             >
               Log In
             </Link>
