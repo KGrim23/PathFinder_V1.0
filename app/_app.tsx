@@ -1,4 +1,3 @@
-// app/layout.tsx (if using the new app directory)
 import "./globals.css";
 
 export const metadata = {

@@ -30,9 +30,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
 
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} mb-4 min-h-screen`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
