@@ -14,7 +14,7 @@ type UserMessage = {
   };
 };
 
-// AI Message Type as AI response is more complicated than User Message
+// AI Message Type
 type AIMessage = {
   type: "ai";
   content:
@@ -231,17 +231,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   : isDarkMode
                   ? "bg-black text-white"
                   : "bg-white text-black"
-              }`}
+              } max-w-[90%] break-words overflow-wrap word-break`}
               style={{
-                maxWidth: "100%",
-                width: "auto",
                 wordWrap: "break-word",
                 overflowWrap: "break-word",
+                whiteSpace: "pre-wrap",
               }}
             >
-              <div className="text-md leading-relaxed break-all">
-                {" "}
-                {/* Added break-all */}
+              <div className="text-md leading-relaxed">
                 {message.type === "user"
                   ? renderUserMessageContent(message.content)
                   : renderAIMessageContent(message.content)}
