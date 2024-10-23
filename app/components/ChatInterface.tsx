@@ -87,7 +87,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 key={option}
                 variant="outline"
                 size="sm"
-                className={`rounded-button ${isDarkMode ? "white-border" : ""}`}
+                className={`rounded-button rounded-full ${
+                  isDarkMode ? "white-border" : ""
+                }`}
                 onClick={() => handleOptionClick(option)}
               >
                 <span className="mr-2">
@@ -231,10 +233,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   : "bg-white text-black"
               }`}
               style={{
-                maxWidth: "100%", // Allow full width while preventing overflow
-                width: "auto", // Set width to auto for dynamic sizing
-                wordWrap: "break-word", // Enable word wrapping
-                overflowWrap: "break-word", // Enable overflow wrapping
+                maxWidth: "100%",
+                width: "auto",
+                wordWrap: "break-word",
+                overflowWrap: "break-word",
               }}
             >
               <div className="text-md leading-relaxed break-all">

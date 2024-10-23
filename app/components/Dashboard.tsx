@@ -143,12 +143,12 @@ export default function Dashboard() {
                   >
                     Save Chat
                   </button>
-                  <button
+                  {/* <button
                     onClick={navigateToSavedChats}
                     className="bg-black border-2 border-green-700 text-white rounded px-4 py-1"
                   >
                     View Chats
-                  </button>
+                  </button> */}
                 </div>
               </>
             )}
