@@ -5,9 +5,9 @@ import React from "react";
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="relative flex flex-col items-center justify-center h-screen mb-6 mt-6">
+    <div className="relative flex flex-col items-center justify-center min-h-screen">
       {/* Background Image Section */}
-      <div className="relative w-full h-screen">
+      <div className="relative w-full min-h-screen">
         <Image
           src="/landing.jpg"
           alt="Background Image"
@@ -35,9 +35,6 @@ const LandingPage: React.FC = () => {
               Lumny App
             </h1>
           </div>
-
-          {/*
-
 
           {/* Sign-up Button and Footer Links at the Bottom */}
           <div className="mb-16 flex flex-col items-center">
