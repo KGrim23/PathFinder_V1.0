@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ChatInterface from "./ChatInterface";
+import ChatInterface from "../components/ChatInterface";
 import SettingsPage from "../SettingPage/page";
 import ProgressPage from "../ProgressPage/page";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import Navbar from "./Navbar";
-import { useTheme } from "./ThemeContext";
-import Sidebar from "./Sidebar";
+import Navbar from "../components/Navbar";
+import { useTheme } from "../components/ThemeContext";
+import Sidebar from "../components/Sidebar";
 import SavedChatsPage from "../saved-chats/page";
 import { useRouter } from "next/navigation"; // Changed from next/router to next/navigation
 

@@ -1,10 +1,12 @@
 import React from "react";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./Dashboard/page";
+import LandingPage from "./LandingPage/page";
 
 const page = () => {
   return (
     <div>
-      <Dashboard />
+      <LandingPage />
+      {/* <Dashboard /> */}
     </div>
   );
 };
