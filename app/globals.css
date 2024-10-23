@@ -2,12 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
-}
-
+html,
 body {
-  overflow: hidden; /* Use 'auto' if you want to allow scrolling */
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 /* Dark mode styles */
