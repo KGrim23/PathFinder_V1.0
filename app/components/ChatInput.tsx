@@ -29,7 +29,7 @@ const ChatInput: React.FC<{
   return (
     <form
       onSubmit={handleSendMessage}
-      className="sticky bottom-0 bg-background p-4"
+      className="sticky bottom-0 bg-background p-2"
     >
       <div className="relative overflow-hidden rounded-lg bg-background focus-within:ring-1 focus-within:ring-ring">
         <Label htmlFor="message" className="sr-only">
@@ -38,7 +38,7 @@ const ChatInput: React.FC<{
         <Textarea
           id="message"
           placeholder="Type your message here..."
-          className={`min-h-2 border-0 p-2 mb-2 shadow-none focus-visible:ring-0 text-base rounded-xl ${
+          className={`min-h-1 border-0 p-2 mb-2 shadow-none focus-visible:ring-0 text-base rounded-xl ${
             isDarkMode
               ? "bg-black text-white border-2 border-white"
               : "bg-gray-300 text-black"

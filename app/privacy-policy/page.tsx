@@ -1,4 +1,3 @@
-// pages/privacy-policy.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar"; // Import Sidebar component
@@ -9,7 +8,7 @@ import { useTheme } from "../components/ThemeContext"; // Dark mode context
 const PrivacyPolicy: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const { isDarkMode, toggleDarkMode } = useTheme(); // Access dark mode state
+  const { isDarkMode, toggleDarkMode } = useTheme();
 
   // Effect to track if it's mobile view
   useEffect(() => {
@@ -33,16 +32,7 @@ const PrivacyPolicy: React.FC = () => {
           isDarkMode ? "dark" : ""
         }`}
       >
-        {!isMobile && <Sidebar isMobile={false} />}{" "}
-        {/* Sidebar for larger screens */}
-        {isMobile && (
-          <button
-            className="md:hidden p-4 text-gray-800 dark:text-gray-200"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            {isSidebarOpen ? "Close Menu" : "Open Menu"}
-          </button>
-        )}
+        {/* Mobile Sidebar */}
         {isMobile && isSidebarOpen && <Sidebar isMobile={true} />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
@@ -52,7 +42,7 @@ const PrivacyPolicy: React.FC = () => {
                 <h1 className="text-xl font-bold mb-6">
                   Privacy Policy for Lumny App
                 </h1>
-                <p className="mb-6">
+                <p className="mb-6 text-sm">
                   Last updated: {new Date().toLocaleDateString()}
                 </p>
 
@@ -123,8 +113,7 @@ const PrivacyPolicy: React.FC = () => {
                   6. Contact Us
                 </h2>
                 <p className="mb-6">
-                  If you have questions, contact us at [Your Contact
-                  Information].
+                  If you have questions, contact us at Lumny.com
                 </p>
               </div>
             </div>
