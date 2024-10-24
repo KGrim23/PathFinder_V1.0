@@ -136,6 +136,20 @@ export default function Dashboard() {
                   handleOptionClick={handleOptionClick}
                   handleFeedback={handleFeedback}
                 />
+                <div className="flex justify-center space-x-8 mt-8">
+                  <button
+                    onClick={saveChatHistory}
+                    className="bg-black border-2 border-blue-700 text-white rounded px-4 py-1"
+                  >
+                    Save Chat
+                  </button>
+                  {/* <button
+                    onClick={navigateToSavedChats}
+                    className="bg-black border-2 border-green-700 text-white rounded px-4 py-1"
+                  >
+                    View Chats
+                  </button> */}
+                </div>
               </>
             )}
             {currentPage === "settings" && <SettingsPage />}
