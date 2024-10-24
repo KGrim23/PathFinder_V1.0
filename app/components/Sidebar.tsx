@@ -109,7 +109,7 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
               onClick={() => {
                 setCurrentPage("chat");
                 console.log("Navigating to homepage");
-                router.push("/"); // Navigate to the homepage
+                router.push("/Dashboard"); // Navigate to the homepage
               }}
             >
               <MessageSquarePlus
