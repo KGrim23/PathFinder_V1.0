@@ -136,26 +136,15 @@ export default function Dashboard() {
                   handleOptionClick={handleOptionClick}
                   handleFeedback={handleFeedback}
                 />
-                <div className="flex justify-center space-x-8 mt-8">
-                  <button
-                    onClick={saveChatHistory}
-                    className="bg-black border-2 border-blue-700 text-white rounded px-4 py-1"
-                  >
-                    Save Chat
-                  </button>
-                  {/* <button
-                    onClick={navigateToSavedChats}
-                    className="bg-black border-2 border-green-700 text-white rounded px-4 py-1"
-                  >
-                    View Chats
-                  </button> */}
-                </div>
               </>
             )}
             {currentPage === "settings" && <SettingsPage />}
             {currentPage === "progress" && <ProgressPage />}
             {currentPage === "saved-chats" && <SavedChatsPage />}
-            <div className="mb-16"></div>
+            <p className="flex m-4 items-center justify-center text-xs text-grey-600">
+              <span>Lumny AI</span> &nbsp;can make mistakes. Check important
+              info.
+            </p>
           </main>
         </div>
       </div>
