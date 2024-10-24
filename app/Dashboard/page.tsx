@@ -10,7 +10,7 @@ import Navbar from "../components/Navbar";
 import { useTheme } from "../components/ThemeContext";
 import Sidebar from "../components/Sidebar";
 import SavedChatsPage from "../saved-chats/page";
-import { useRouter } from "next/navigation"; // Changed from next/router to next/navigation
+import { useRouter } from "next/navigation";
 
 type MessageType = {
   type: "user" | "ai";
@@ -143,12 +143,6 @@ export default function Dashboard() {
                   >
                     Save Chat
                   </button>
-                  {/* <button
-                    onClick={navigateToSavedChats}
-                    className="bg-black border-2 border-green-700 text-white rounded px-4 py-1"
-                  >
-                    View Chats
-                  </button> */}
                 </div>
               </>
             )}

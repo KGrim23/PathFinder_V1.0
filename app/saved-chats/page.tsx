@@ -1,11 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar"; // Import Sidebar component
-import Navbar from "../components/Navbar"; // Import Navbar component
-import { TooltipProvider } from "@radix-ui/react-tooltip"; // Ensure the tooltip provider is wrapped around the components
-import { useTheme } from "../components/ThemeContext"; // Import theme context for dark mode handling
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { useTheme } from "../components/ThemeContext";
 
-// Define UserMessage type
 export type UserMessage = {
   type: "user";
   content: string;
@@ -172,8 +171,9 @@ const SavedChatsPage: React.FC = () => {
                           : "bg-black text-white"
                       }`}
                       style={{
-                        maxWidth: "95%",
                         wordWrap: "break-word",
+                        overflowWrap: "break-word",
+                        whiteSpace: "pre-wrap",
                       }}
                     >
                       <div className="text-md leading-relaxed">
@@ -186,7 +186,7 @@ const SavedChatsPage: React.FC = () => {
                 ))}
                 <div className="flex justify-end mt-4">
                   <button
-                    className="mt-4 p-2 bg-rose-900 text-white rounded"
+                    className="mt-4 p-2 bg-black text-white border-2 border-white rounded"
                     onClick={deleteAllChats}
                   >
                     Delete Chat
