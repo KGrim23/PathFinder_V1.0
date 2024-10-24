@@ -74,7 +74,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <h2 className="mb-6 text-lg font-semibold">
             How can I assist you today?
           </h2>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 items-center justify-self-auto">
             {[
               "Emotional Support",
               "Career Advice",
@@ -87,7 +87,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 key={option}
                 variant="outline"
                 size="sm"
-                className={`rounded-button rounded-full ${
+                className={`rounded-full items-center ${
                   isDarkMode ? "white-border" : ""
                 }`}
                 onClick={() => handleOptionClick(option)}
