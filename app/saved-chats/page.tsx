@@ -35,6 +35,10 @@ const SavedChatsPage: React.FC = () => {
   const [savedChats, setSavedChats] = useState<MessageType[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false); // Track if it's mobile view
 
+  useEffect(() => {
+    document.body.classList.toggle("dark", isDarkMode);
+  }, [isDarkMode]);
+
   // Load saved chats from localStorage on component mount
   useEffect(() => {
     const saved = localStorage.getItem("savedChats");
