@@ -148,37 +148,56 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     let textToRead = "";
 
     if (typeof content === "object" && content !== null) {
-      if (content.rawMessage) {
-        textToRead = content.rawMessage;
-      } else if (Array.isArray(content.dialogue)) {
+      if (content.dialogue && Array.isArray(content.dialogue)) {
+        // Get only the message text from dialogue without speaker info
         textToRead = content.dialogue
-          .map((msg: { message: string }) => msg.message) // Access only the message
+          .map((msg: { message: any }) => msg.message)
           .join(" ");
-      } else if (Array.isArray(content.steps)) {
+      } else if (content.steps && Array.isArray(content.steps)) {
+        // Get only the instructions without step numbers
         textToRead = content.steps
-          .map((step: { instruction: string }) => step.instruction) // Access only the instruction
+          .map((step: { instruction: any }) => step.instruction)
           .join(" ");
+      } else if (content.rawMessage) {
+        // Use rawMessage if available
+        textToRead = content.rawMessage;
+      }
+    } else if (typeof content === "string") {
+      try {
+        // Try to parse JSON string
+        const parsed = JSON.parse(content);
+        if (parsed.dialogue) {
+          textToRead = parsed.dialogue
+            .map((msg: { message: string }) => msg.message)
+            .join(" ");
+        } else if (parsed.steps) {
+          textToRead = parsed.steps
+            .map((step: { instruction: string }) => step.instruction)
+            .join(" ");
+        } else if (parsed.rawMessage) {
+          textToRead = parsed.rawMessage;
+        }
+      } catch {
+        // If not JSON, use the string directly
+        textToRead = content;
       }
     }
-    // If content is a string, use it directly
-    else if (typeof content === "string") {
-      textToRead = content;
-    }
 
-    // Clean up any special characters and formatting
+    // Clean up the text
     textToRead = textToRead
-      .replace(/\*\*/g, "") // Remove bold markers
-      .replace(/\n/g, " ") // Replace newlines with spaces
-      .trim(); // Remove extra whitespace
+      .replace(/\*\*/g, "")
+      .replace(/\n/g, " ")
+      .replace(/Assistant:|Human:|Speaker:|Dialog:|^\s*-\s*/gim, "")
+      .replace(/\s+/g, " ")
+      .trim();
 
-    // Speech synthesis setup
     if (currentUtterance && window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel(); // Stop speaking if already speaking
+      window.speechSynthesis.cancel();
       setCurrentUtterance(null);
-    } else {
-      const utterance = new SpeechSynthesisUtterance(textToRead); // Create utterance
+    } else if (textToRead) {
+      const utterance = new SpeechSynthesisUtterance(textToRead);
       setCurrentUtterance(utterance);
-      window.speechSynthesis.speak(utterance); // Speak the text
+      window.speechSynthesis.speak(utterance);
     }
   };
 
