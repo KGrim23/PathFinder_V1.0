@@ -135,17 +135,19 @@ export default function Dashboard() {
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 
-          <main className="flex-1 overflow-auto p-4 flex flex-col">
+          <main className="flex-1 overflow-auto p-4 flex flex-col relative">
+            {" "}
+            {/* Set relative positioning here */}
             {currentPage === "chat" && (
               <>
                 <div className="flex justify-end items-center mb-6">
                   {messages.length > 0 && ( // Conditional rendering of the button
                     <button
                       onClick={closeChat}
-                      className="rounded-full p-2"
+                      className="rounded-full p-2 fixed top-12 right-4 z-10 dark:text-white"
                       aria-label="Close chat"
                     >
-                      <CircleX className="dark:text-white" />
+                      <CircleX />
                     </button>
                   )}
                 </div>
@@ -164,7 +166,6 @@ export default function Dashboard() {
             {currentPage === "progress" && <ProgressPage />}
             {currentPage === "saved-chats" && <SavedChatsPage />}
             {currentPage === "sidebar" && <Sidebar isMobile={false} />}
-
             <p className="flex m-4 items-center justify-center text-xs text-grey-600">
               <span>Lumny AI</span> &nbsp;can make mistakes. Check important
               info.
