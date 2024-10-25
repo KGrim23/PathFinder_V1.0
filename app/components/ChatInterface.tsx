@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
-import { Import } from "lucide-react";
+import { Import, Volume2 } from "lucide-react"; // Import the audio icon
 
 // User Message Type
 type UserMessage = {
@@ -38,7 +38,7 @@ type ChatInterfaceProps = {
   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   handleOptionClick: (option: string) => void;
   handleFeedback: (index: number, type: "liked" | "disliked" | "sound") => void;
-  saveChatHistory: () => void; // Add saveChatHistory prop here
+  saveChatHistory: () => void;
 };
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -48,10 +48,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   handleSendMessage,
   handleOptionClick,
   handleFeedback,
-  saveChatHistory, // Receive saveChatHistory here
+  saveChatHistory,
 }) => {
   const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
+  const [currentUtterance, setCurrentUtterance] =
+    useState<SpeechSynthesisUtterance | null>(null);
 
   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -142,6 +144,110 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     });
   };
 
+  const handleReadAloud = (content: any) => {
+    let textToRead = "";
+
+    if (typeof content === "object" && content !== null) {
+      if (content.dialogue && Array.isArray(content.dialogue)) {
+        textToRead = content.dialogue
+          .map((msg: { message: any }) => msg.message)
+          .join(" ");
+      } else if (content.steps && Array.isArray(content.steps)) {
+        textToRead = content.steps
+          .map((step: { instruction: any }) => step.instruction)
+          .join(" ");
+      } else if (content.rawMessage) {
+        textToRead = content.rawMessage;
+      }
+    } else if (typeof content === "string") {
+      try {
+        const parsed = JSON.parse(content);
+        if (parsed.dialogue) {
+          textToRead = parsed.dialogue
+            .map((msg: { message: string }) => msg.message)
+            .join(" ");
+        } else if (parsed.steps) {
+          textToRead = parsed.steps
+            .map((step: { instruction: string }) => step.instruction)
+            .join(" ");
+        } else if (parsed.rawMessage) {
+          textToRead = parsed.rawMessage;
+        }
+      } catch {
+        textToRead = content;
+      }
+    }
+
+    // Clean up the text
+    textToRead = textToRead
+      .replace(/\*\*/g, "")
+      .replace(/\n/g, " ")
+      .replace(/Assistant:|Human:|Speaker:|Dialog:|^\s*-\s*/gim, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (currentUtterance && window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+      setCurrentUtterance(null);
+    } else if (textToRead) {
+      const utterance = new SpeechSynthesisUtterance(textToRead);
+
+      // Get available voices
+      const voices = window.speechSynthesis.getVoices();
+
+      // Try to find a high-quality English voice
+      const preferredVoice =
+        voices.find(
+          (voice) =>
+            (voice.name.includes("Google") || // Prefer Google voices
+              voice.name.includes("Premium") ||
+              voice.name.includes("Enhanced")) &&
+            voice.lang.startsWith("en") // English voices
+        ) ||
+        voices.find(
+          (voice) => voice.lang.startsWith("en") // Fallback to any English voice
+        );
+
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+
+      // Optimize speech parameters
+      utterance.rate = 1.0; // Normal speed
+      utterance.pitch = 1.0; // Normal pitch
+      utterance.volume = 1.0; // Full volume
+
+      // Add better speaking rhythm with punctuation
+      textToRead = textToRead
+        .replace(/([.!?])\s*/g, "$1. ") // Add slight pause after sentences
+        .replace(/([,;])\s*/g, "$1, "); // Add slight pause after commas
+
+      setCurrentUtterance(utterance);
+
+      // Handle voice loading if necessary
+      if (voices.length === 0) {
+        window.speechSynthesis.addEventListener("voiceschanged", () => {
+          const updatedVoices = window.speechSynthesis.getVoices();
+          const updatedPreferredVoice =
+            updatedVoices.find(
+              (voice) =>
+                (voice.name.includes("Google") ||
+                  voice.name.includes("Premium") ||
+                  voice.name.includes("Enhanced")) &&
+                voice.lang.startsWith("en")
+            ) || updatedVoices.find((voice) => voice.lang.startsWith("en"));
+
+          if (updatedPreferredVoice) {
+            utterance.voice = updatedPreferredVoice;
+          }
+          window.speechSynthesis.speak(utterance);
+        });
+      } else {
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+  };
+
   return (
     <div
       className={`flex flex-col h-full ${
@@ -173,9 +279,25 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               }}
             >
               <div className="text-md leading-relaxed">
-                {message.type === "user"
-                  ? renderUserMessageContent(message.content)
-                  : renderAIMessageContent(message.content)}
+                {message.type === "user" ? (
+                  renderUserMessageContent(message.content)
+                ) : (
+                  <div className="flex flex-row items-end">
+                    {renderAIMessageContent(message.content)}
+                    <button
+                      onClick={() => handleReadAloud(message.content)}
+                      className="ml-2"
+                    >
+                      <Volume2
+                        className={`border-2 rounded-full p-1 ${
+                          isDarkMode
+                            ? "text-gray-200 border-white hover:bg-gray-600"
+                            : "text-black border-black hover:bg-gray-300"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -193,7 +315,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <button
             onClick={saveChatHistory}
             className={`flex items-center font-normal py-2 px-4 rounded-xl transition-colors duration-200
-           
             focus:ring-2 focus:ring-offset-2 ${
               isDarkMode
                 ? "focus:ring-gray-600 focus:ring-offset-gray-800"

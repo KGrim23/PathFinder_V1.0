@@ -14,6 +14,7 @@ import Sidebar from "../components/Sidebar";
 import { CircleX } from "lucide-react";
 import Card from "../components/Card";
 import { Button } from "@/components/ui/button";
+import VoiceInput from "../components/VoiceInput";
 
 type MessageType = {
   type: "user" | "ai";
@@ -214,6 +215,7 @@ export default function Dashboard() {
         {!isMobile && <Sidebar isMobile={false} />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
+          <VoiceInput onReceiveText={sendMessageToOpenAI} />
 
           <main className="flex-1 overflow-auto p-4 flex flex-col relative">
             {renderOptions()}
