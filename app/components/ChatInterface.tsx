@@ -38,7 +38,7 @@ type ChatInterfaceProps = {
   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   handleOptionClick: (option: string) => void;
   handleFeedback: (index: number, type: "liked" | "disliked" | "sound") => void;
-  saveChatHistory: () => void; // Add saveChatHistory prop here
+  saveChatHistory: () => void;
 };
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -145,32 +145,40 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   };
 
   const handleReadAloud = (content: any) => {
-    let messageContent = "";
+    let textToRead = "";
 
     if (typeof content === "object" && content !== null) {
       if (content.rawMessage) {
-        messageContent = content.rawMessage;
-      } else if (content.dialogue && Array.isArray(content.dialogue)) {
-        messageContent = content.dialogue
-          .map((msg: { message: string }) => msg.message)
+        textToRead = content.rawMessage;
+      } else if (Array.isArray(content.dialogue)) {
+        textToRead = content.dialogue
+          .map((msg: { message: string }) => msg.message) // Access only the message
           .join(" ");
-      } else if (content.steps && Array.isArray(content.steps)) {
-        messageContent = content.steps
-          .map((step: { instruction: any }) => step.instruction)
+      } else if (Array.isArray(content.steps)) {
+        textToRead = content.steps
+          .map((step: { instruction: string }) => step.instruction) // Access only the instruction
           .join(" ");
       }
-    } else if (typeof content === "string") {
-      messageContent = content;
+    }
+    // If content is a string, use it directly
+    else if (typeof content === "string") {
+      textToRead = content;
     }
 
+    // Clean up any special characters and formatting
+    textToRead = textToRead
+      .replace(/\*\*/g, "") // Remove bold markers
+      .replace(/\n/g, " ") // Replace newlines with spaces
+      .trim(); // Remove extra whitespace
+
+    // Speech synthesis setup
     if (currentUtterance && window.speechSynthesis.speaking) {
-      // If speaking, stop it
-      window.speechSynthesis.cancel();
+      window.speechSynthesis.cancel(); // Stop speaking if already speaking
       setCurrentUtterance(null);
     } else {
-      const utterance = new SpeechSynthesisUtterance(messageContent);
+      const utterance = new SpeechSynthesisUtterance(textToRead); // Create utterance
       setCurrentUtterance(utterance);
-      window.speechSynthesis.speak(utterance);
+      window.speechSynthesis.speak(utterance); // Speak the text
     }
   };
 
