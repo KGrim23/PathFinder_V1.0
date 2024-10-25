@@ -149,22 +149,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
     if (typeof content === "object" && content !== null) {
       if (content.dialogue && Array.isArray(content.dialogue)) {
-        // Get only the message text from dialogue without speaker info
         textToRead = content.dialogue
           .map((msg: { message: any }) => msg.message)
           .join(" ");
       } else if (content.steps && Array.isArray(content.steps)) {
-        // Get only the instructions without step numbers
         textToRead = content.steps
           .map((step: { instruction: any }) => step.instruction)
           .join(" ");
       } else if (content.rawMessage) {
-        // Use rawMessage if available
         textToRead = content.rawMessage;
       }
     } else if (typeof content === "string") {
       try {
-        // Try to parse JSON string
         const parsed = JSON.parse(content);
         if (parsed.dialogue) {
           textToRead = parsed.dialogue
@@ -178,7 +174,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           textToRead = parsed.rawMessage;
         }
       } catch {
-        // If not JSON, use the string directly
         textToRead = content;
       }
     }
@@ -196,8 +191,60 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       setCurrentUtterance(null);
     } else if (textToRead) {
       const utterance = new SpeechSynthesisUtterance(textToRead);
+
+      // Get available voices
+      const voices = window.speechSynthesis.getVoices();
+
+      // Try to find a high-quality English voice
+      const preferredVoice =
+        voices.find(
+          (voice) =>
+            (voice.name.includes("Google") || // Prefer Google voices
+              voice.name.includes("Premium") ||
+              voice.name.includes("Enhanced")) &&
+            voice.lang.startsWith("en") // English voices
+        ) ||
+        voices.find(
+          (voice) => voice.lang.startsWith("en") // Fallback to any English voice
+        );
+
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+
+      // Optimize speech parameters
+      utterance.rate = 1.0; // Normal speed
+      utterance.pitch = 1.0; // Normal pitch
+      utterance.volume = 1.0; // Full volume
+
+      // Add better speaking rhythm with punctuation
+      textToRead = textToRead
+        .replace(/([.!?])\s*/g, "$1. ") // Add slight pause after sentences
+        .replace(/([,;])\s*/g, "$1, "); // Add slight pause after commas
+
       setCurrentUtterance(utterance);
-      window.speechSynthesis.speak(utterance);
+
+      // Handle voice loading if necessary
+      if (voices.length === 0) {
+        window.speechSynthesis.addEventListener("voiceschanged", () => {
+          const updatedVoices = window.speechSynthesis.getVoices();
+          const updatedPreferredVoice =
+            updatedVoices.find(
+              (voice) =>
+                (voice.name.includes("Google") ||
+                  voice.name.includes("Premium") ||
+                  voice.name.includes("Enhanced")) &&
+                voice.lang.startsWith("en")
+            ) || updatedVoices.find((voice) => voice.lang.startsWith("en"));
+
+          if (updatedPreferredVoice) {
+            utterance.voice = updatedPreferredVoice;
+          }
+          window.speechSynthesis.speak(utterance);
+        });
+      } else {
+        window.speechSynthesis.speak(utterance);
+      }
     }
   };
 
