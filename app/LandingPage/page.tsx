@@ -12,7 +12,7 @@ const LandingPage: React.FC = () => {
           src="/landing.jpg"
           alt="Background Image"
           layout="fill"
-          priority
+          priority // Ensures this image loads first
           objectFit="cover"
           quality={100}
           className="absolute z-0"
@@ -28,6 +28,7 @@ const LandingPage: React.FC = () => {
               alt="Lumny Logo"
               width={55}
               height={55}
+              priority // Also set priority for the logo image
             />
 
             {/* Centered Heading */}

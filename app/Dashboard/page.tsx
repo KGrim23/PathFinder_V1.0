@@ -132,16 +132,21 @@ export default function Dashboard() {
     { title: "Guided Meditation", link: "https://example.com/react" },
     { title: "Get more focus", link: "https://example.com/next" },
     { title: "Advanced Leadership", link: "https://example.com/js" },
-    { title: "Creative Side", link: "https://example.com/css" },
-    { title: "Latest News", link: "https://example.com/web" },
+    { title: "Leadership", link: "https://example.com/js" },
+    { title: "Personal Development", link: "https://example.com/react" },
   ];
 
   // Function to render cards
   const renderCards = () => {
     return (
-      <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-2">
+      <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-2">
         {articles.map((article, index) => (
-          <Card key={index} title={article.title} link={article.link} />
+          <Card
+            key={index}
+            title={article.title}
+            link={article.link}
+            imageSrc="https://images.unsplash.com/photo-1729366790976-81844c8dd310?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          />
         ))}
       </div>
     );

@@ -2,6 +2,18 @@ import withPWA from "next-pwa";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "source.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com", // Also cover images served by Unsplash
+      },
+    ],
+  },
   // other Next.js config options can go here
 };
 
