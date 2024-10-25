@@ -21,11 +21,11 @@ const Card: React.FC<CardProps> = ({ title, link, imageSrc }) => {
             src={imageSrc}
             alt={title}
             className="object-cover w-full h-full rounded-xl"
-            width={200} // Adjusted for square image responsiveness
+            width={200}
             height={200}
           />
         ) : (
-          <span className="text-gray-400 text-sm text-center px-4">
+          <span className="text-gray-400 text-xs text-center px-4">
             {title}
           </span>
         )}

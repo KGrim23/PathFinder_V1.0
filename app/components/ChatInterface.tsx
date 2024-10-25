@@ -192,11 +192,15 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <div className="flex justify-end p-3 mt-8">
           <button
             onClick={saveChatHistory}
-            className={`bg-slate-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl ${
-              isDarkMode ? "bg-black text-white" : "bg-white text-black"
+            className={`flex items-center font-normal py-2 px-4 rounded-xl transition-colors duration-200
+           
+            focus:ring-2 focus:ring-offset-2 ${
+              isDarkMode
+                ? "focus:ring-gray-600 focus:ring-offset-gray-800"
+                : "focus:ring-gray-300 focus:ring-offset-white"
             }`}
           >
-            <Import className="dark:text-white" />
+            <Import className="mr-2" />
           </button>
         </div>
       )}
