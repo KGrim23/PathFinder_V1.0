@@ -1,7 +1,9 @@
+"use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
+import { Import } from "lucide-react";
 
 // User Message Type
 type UserMessage = {
@@ -36,6 +38,7 @@ type ChatInterfaceProps = {
   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   handleOptionClick: (option: string) => void;
   handleFeedback: (index: number, type: "liked" | "disliked" | "sound") => void;
+  saveChatHistory: () => void; // Add saveChatHistory prop here
 };
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -45,6 +48,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   handleSendMessage,
   handleOptionClick,
   handleFeedback,
+  saveChatHistory, // Receive saveChatHistory here
 }) => {
   const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
@@ -55,12 +59,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setInputMessage("");
     await handleSendMessage(e);
     setIsLoading(false);
-  };
-
-  // Save chat history to local storage
-  const saveChatHistory = () => {
-    localStorage.setItem("chatHistory", JSON.stringify(messages));
-    alert("Chat history saved!");
   };
 
   const renderOptions = () => {
@@ -130,7 +128,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </div>
         );
       }
-      // Check for 'steps' array
       if (content.steps && Array.isArray(content.steps)) {
         return (
           <div className="mt-4">
@@ -149,32 +146,25 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </div>
         );
       }
-      // Handle raw message if no structured data available
       return <p>{content.rawMessage || "No structured content available."}</p>;
     }
 
-    // Handle string content
     if (typeof content === "string") {
-      // If the string is in JSON format, parse it
       try {
         const parsedContent = JSON.parse(content);
         return renderAIMessageContent(parsedContent);
       } catch {
-        // If parsing fails, return the raw string
         return <p>{content}</p>;
       }
     }
 
-    // Fallback for any other types
     return <p>No valid content available.</p>;
   };
 
   const renderUserMessageContent = (content: string) => {
-    // Split the content by new lines
     const lines = content.split("\n");
 
     return lines.map((line, index) => {
-      // Check for bold text
       if (line.startsWith("**") && line.endsWith("**")) {
         return (
           <h3 key={index} className="font-semibold text-lg mb-2">
@@ -182,7 +172,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </h3>
         );
       }
-      // Check for bullet points
       if (line.startsWith("- ")) {
         return (
           <li key={index} className="ml-6 mb-2 list-disc">
@@ -190,7 +179,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </li>
         );
       }
-      // Check for numbered lists
       if (line.match(/^\d+\.\s/)) {
         return (
           <li key={index} className="ml-6 mb-2 list-decimal">
@@ -198,7 +186,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </li>
         );
       }
-      // Default to paragraph
       return (
         <p key={index} className="mb-2 last:mb-0">
           {line}
@@ -253,6 +240,17 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </div>
         )}
       </div>
+
+      {messages.length > 0 && (
+        <div className="flex justify-end p-3 mt-8">
+          <button
+            onClick={saveChatHistory}
+            className="bg-black border-2 border-white text-white rounded px-4 py-1"
+          >
+            <Import className="dark:text-white" />
+          </button>
+        </div>
+      )}
 
       <ChatInput
         inputMessage={inputMessage}

@@ -169,10 +169,10 @@ const SavedChatsPage: React.FC = () => {
                     }`}
                   >
                     <div
-                      className={`inline-block p-3 rounded-xl shadow-md transition-transform ${
+                      className={`inline-block p-3 rounded-xl transition-transform ${
                         message.type === "user"
-                          ? "bg-blue-200 text-black"
-                          : "bg-black text-white"
+                          ? "bg-white border-2 border-black text-black"
+                          : "bg-zinc-800 text-white"
                       }`}
                       style={{
                         wordWrap: "break-word",
@@ -188,9 +188,13 @@ const SavedChatsPage: React.FC = () => {
                     </div>
                   </div>
                 ))}
-                <div className="flex justify-end mt-4">
+                <div className="flex justify-end mt-16">
                   <button
-                    className="mt-4 p-2 bg-black text-white border-2 border-white rounded"
+                    className={`ml-auto gap-1.5 text-white ${
+                      isDarkMode
+                        ? "bg-black text-white border-2 border-white"
+                        : "bg-black"
+                    } rounded-full px-3.5 py-2`}
                     onClick={deleteAllChats}
                   >
                     Delete Chat
