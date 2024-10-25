@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { useTheme } from "./ThemeContext"; // Ensure this path is correct
+import React, { useState } from "react";
+import { useTheme } from "./ThemeContext";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -17,11 +17,49 @@ const ChatInput: React.FC<{
   setInputMessage: React.Dispatch<React.SetStateAction<string>>;
   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => void;
 }> = ({ inputMessage, setInputMessage, handleSendMessage }) => {
-  const { isDarkMode } = useTheme(); // Get isDarkMode from useTheme
+  const { isDarkMode } = useTheme();
+  const [isListening, setIsListening] = useState(false);
+
+  const SpeechRecognition =
+    typeof window !== "undefined" &&
+    (window.SpeechRecognition || (window as any).webkitSpeechRecognition);
+
+  const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+  const startListening = () => {
+    if (recognition) {
+      setIsListening(true);
+      recognition.lang = "en-US";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onstart = () => console.log("Voice recognition started.");
+
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
+        const transcript = event.results[0][0].transcript;
+        setInputMessage(transcript);
+        recognition.stop(); // Stop listening after getting the result
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        console.log("Voice recognition ended.");
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } else {
+      console.error("Speech recognition not supported in this browser.");
+    }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // Prevent default behavior (e.g., adding a new line)
+      e.preventDefault();
       handleSendMessage(e as unknown as React.FormEvent<HTMLFormElement>);
     }
   };
@@ -45,7 +83,7 @@ const ChatInput: React.FC<{
           }`}
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          onKeyDown={handleKeyDown} // Add onKeyDown event
+          onKeyDown={handleKeyDown}
         />
 
         <div className="flex items-center p-3 pt-0">
@@ -60,13 +98,25 @@ const ChatInput: React.FC<{
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Mic className="size-4" />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={startListening}
+                disabled={isListening}
+              >
+                <Mic
+                  className={`size-4 ${
+                    isListening ? "text-red-500 size-5" : ""
+                  }`}
+                />
                 <span className="sr-only">Use Microphone</span>
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="top">Use Microphone</TooltipContent>
+            <TooltipContent side="top">
+              {isListening ? "Listening..." : "Use Microphone"}
+            </TooltipContent>
           </Tooltip>
+
           <Button
             type="submit"
             size="sm"
