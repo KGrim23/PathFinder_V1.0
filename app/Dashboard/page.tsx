@@ -11,6 +11,7 @@ import { useTheme } from "../components/ThemeContext";
 import SavedChatsPage from "../saved-chats/page";
 import { useRouter } from "next/navigation";
 import Sidebar from "../components/Sidebar";
+import { CircleX } from "lucide-react";
 
 type MessageType = {
   type: "user" | "ai";
@@ -26,7 +27,6 @@ export default function Dashboard() {
   const { isDarkMode } = useTheme();
   const [currentPage, setCurrentPage] = useState<string>("chat");
   const [messages, setMessages] = useState<MessageType[]>([]);
-
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -118,6 +118,12 @@ export default function Dashboard() {
     router.push("/saved-chats");
   };
 
+  // Function to close the current chat and reset the state
+  const closeChat = () => {
+    setMessages([]);
+    setInputMessage("");
+  };
+
   return (
     <TooltipProvider>
       <div
@@ -132,6 +138,17 @@ export default function Dashboard() {
           <main className="flex-1 overflow-auto p-4 flex flex-col">
             {currentPage === "chat" && (
               <>
+                <div className="flex justify-end items-center mb-6">
+                  {messages.length > 0 && ( // Conditional rendering of the button
+                    <button
+                      onClick={closeChat}
+                      className="rounded-full p-2"
+                      aria-label="Close chat"
+                    >
+                      <CircleX className="dark:text-white" />
+                    </button>
+                  )}
+                </div>
                 <ChatInterface
                   messages={messages}
                   inputMessage={inputMessage}
