@@ -53,32 +53,6 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
       } transition-all duration-300 ease-in-out`}
       style={{ overflow: isOpen ? "visible" : "hidden" }} // Prevent overflow when closed
     >
-      {/* Close Button */}
-      {isOpen && (
-        <button
-          type="button"
-          className="absolute right-4 top-4 rounded-full p-2 bg-gray-200 dark:bg-gray-700 transition-opacity hover:bg-gray-300 dark:hover:bg-gray-600"
-          onClick={toggleSidebar}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-x h-4 w-4"
-          >
-            <path d="M18 6L6 18"></path>
-            <path d="M6 6l12 12"></path>
-          </svg>
-          <span className="sr-only">Close</span>
-        </button>
-      )}
-
       {/* Logo Section */}
       <div className="p-4 flex items-start justify-center">
         <Button
