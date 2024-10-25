@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
-import { Import } from "lucide-react";
+import { Import, Volume2 } from "lucide-react"; // Import the audio icon
 
 // User Message Type
 type UserMessage = {
@@ -48,10 +48,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   handleSendMessage,
   handleOptionClick,
   handleFeedback,
-  saveChatHistory, // Receive saveChatHistory here
+  saveChatHistory,
 }) => {
   const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
+  const [currentUtterance, setCurrentUtterance] =
+    useState<SpeechSynthesisUtterance | null>(null);
 
   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -142,6 +144,36 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     });
   };
 
+  const handleReadAloud = (content: any) => {
+    let messageContent = "";
+
+    if (typeof content === "object" && content !== null) {
+      if (content.rawMessage) {
+        messageContent = content.rawMessage;
+      } else if (content.dialogue && Array.isArray(content.dialogue)) {
+        messageContent = content.dialogue
+          .map((msg: { message: string }) => msg.message)
+          .join(" ");
+      } else if (content.steps && Array.isArray(content.steps)) {
+        messageContent = content.steps
+          .map((step: { instruction: any }) => step.instruction)
+          .join(" ");
+      }
+    } else if (typeof content === "string") {
+      messageContent = content;
+    }
+
+    if (currentUtterance && window.speechSynthesis.speaking) {
+      // If speaking, stop it
+      window.speechSynthesis.cancel();
+      setCurrentUtterance(null);
+    } else {
+      const utterance = new SpeechSynthesisUtterance(messageContent);
+      setCurrentUtterance(utterance);
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
   return (
     <div
       className={`flex flex-col h-full ${
@@ -173,9 +205,25 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               }}
             >
               <div className="text-md leading-relaxed">
-                {message.type === "user"
-                  ? renderUserMessageContent(message.content)
-                  : renderAIMessageContent(message.content)}
+                {message.type === "user" ? (
+                  renderUserMessageContent(message.content)
+                ) : (
+                  <div className="flex flex-row items-end">
+                    {renderAIMessageContent(message.content)}
+                    <button
+                      onClick={() => handleReadAloud(message.content)}
+                      className="ml-2"
+                    >
+                      <Volume2
+                        className={`border-2 rounded-full p-1 ${
+                          isDarkMode
+                            ? "text-gray-200 border-white hover:bg-gray-600"
+                            : "text-black border-black hover:bg-gray-300"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -193,7 +241,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <button
             onClick={saveChatHistory}
             className={`flex items-center font-normal py-2 px-4 rounded-xl transition-colors duration-200
-           
             focus:ring-2 focus:ring-offset-2 ${
               isDarkMode
                 ? "focus:ring-gray-600 focus:ring-offset-gray-800"
