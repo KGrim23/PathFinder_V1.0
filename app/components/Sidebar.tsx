@@ -50,14 +50,14 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
         isDarkMode ? "bg-black text-white" : "bg-white text-black"
       } ${
         isOpen ? (isMobile ? "w-64" : "w-36") : "w-0"
-      } transition-width duration-300 ease-in-out`}
+      } transition-all duration-300 ease-in-out`}
       style={{ overflow: isOpen ? "visible" : "hidden" }} // Prevent overflow when closed
     >
       {/* Close Button */}
       {isOpen && (
         <button
           type="button"
-          className="absolute right-4 top-4 rounded-sm opacity-100 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          className="absolute right-4 top-4 rounded-full p-2 bg-gray-200 dark:bg-gray-700 transition-opacity hover:bg-gray-300 dark:hover:bg-gray-600"
           onClick={toggleSidebar}
         >
           <svg
@@ -85,6 +85,10 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           variant="ghost"
           size="icon"
           aria-label="Home"
+          onClick={() => {
+            setCurrentPage("chat");
+            router.push("/"); // Navigate to Landing Page
+          }}
           className="w-full flex items-center justify-start"
         >
           <Image src="/New_logo.png" alt="Lumny Logo" width={45} height={45} />
@@ -258,7 +262,15 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
               <CreditCard className="mr-2" /> Payments
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <LogOut className="mr-2" /> Logout
+              <LogOut
+                onClick={() => {
+                  setCurrentPage("chat");
+                  console.log("Navigating to homepage");
+                  router.push("/"); // Navigate to the homepage
+                }}
+                className="mr-2"
+              />{" "}
+              Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Bell, Menu, Sun, Moon } from "lucide-react"; // Import icons
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -14,6 +14,7 @@ export type NavbarProps = {
 
 const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
   const { isDarkMode, toggleDarkMode } = useTheme();
+  const [currentPage, setCurrentPage] = useState<string>("");
 
   return (
     <header className="sticky top-0 z-10 flex h-[57px] items-center justify-between bg-white dark:bg-black px-4 shadow">
@@ -29,8 +30,13 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           </SheetContent>
         </Sheet>
       )}
-      <Link href="/Dashboard" passHref>
-        <Button className="text-xl font-semibold cursor-pointer bg-transparent border-none">
+      <Link href="/" passHref>
+        <Button
+          onClick={() => {
+            setCurrentPage("chat");
+          }}
+          className="text-xl font-semibold cursor-pointer bg-transparent border-none"
+        >
           Lumny
         </Button>
       </Link>
