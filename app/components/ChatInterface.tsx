@@ -61,58 +61,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setIsLoading(false);
   };
 
-  const renderOptions = () => {
-    if (messages.length === 0) {
-      return (
-        <div
-          className={`mb-2 rounded-lg p-4 ${
-            isDarkMode ? "bg-black" : "bg-muted"
-          }`}
-        >
-          <h2 className="mb-6 text-lg font-semibold">
-            How can I assist you today?
-          </h2>
-          <div className="flex flex-wrap gap-2 items-center justify-self-auto">
-            {[
-              "Emotional Support",
-              "Career Advice",
-              "Personal Growth",
-              "Stress Management",
-              "Time Management",
-              "Work-Life Balance",
-            ].map((option) => (
-              <Button
-                key={option}
-                variant="outline"
-                size="sm"
-                className={`rounded-full items-center ${
-                  isDarkMode ? "white-border" : ""
-                }`}
-                onClick={() => handleOptionClick(option)}
-              >
-                <span className="mr-2">
-                  {option === "Emotional Support"
-                    ? "💬"
-                    : option === "Career Advice"
-                    ? "🎯"
-                    : option === "Personal Growth"
-                    ? "🌱"
-                    : option === "Stress Management"
-                    ? "🧘"
-                    : option === "Time Management"
-                    ? "⏳"
-                    : "⚖️"}
-                </span>
-                {option}
-              </Button>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
   const renderAIMessageContent = (content: any) => {
     if (typeof content === "object" && content !== null) {
       if (content.dialogue && Array.isArray(content.dialogue)) {
@@ -200,7 +148,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         isDarkMode ? "bg-black text-white" : "bg-white text-black"
       }`}
     >
-      {renderOptions()}
       <div className="flex-1 overflow-auto mb-4">
         {messages.map((message, index) => (
           <div

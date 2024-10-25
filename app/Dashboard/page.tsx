@@ -12,6 +12,8 @@ import SavedChatsPage from "../saved-chats/page";
 import { useRouter } from "next/navigation";
 import Sidebar from "../components/Sidebar";
 import { CircleX } from "lucide-react";
+import Card from "../components/Card";
+import { Button } from "@/components/ui/button";
 
 type MessageType = {
   type: "user" | "ai";
@@ -124,6 +126,79 @@ export default function Dashboard() {
     setInputMessage("");
   };
 
+  // Example articles data
+  const articles = [
+    { title: "Understanding AI", link: "https://example.com/ai" },
+    { title: "Guided Meditation", link: "https://example.com/react" },
+    { title: "Get more focus", link: "https://example.com/next" },
+    { title: "Advanced Leadership", link: "https://example.com/js" },
+    { title: "Creative Side", link: "https://example.com/css" },
+    { title: "Latest News", link: "https://example.com/web" },
+  ];
+
+  // Function to render cards
+  const renderCards = () => {
+    return (
+      <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-2">
+        {articles.map((article, index) => (
+          <Card key={index} title={article.title} link={article.link} />
+        ))}
+      </div>
+    );
+  };
+
+  const renderOptions = () => {
+    if (messages.length === 0) {
+      return (
+        <div
+          className={`mb-2 rounded-lg p-4 ${
+            isDarkMode ? "bg-black" : "bg-muted"
+          }`}
+        >
+          <h2 className="mb-6 text-lg font-semibold">
+            How can I assist you today?
+          </h2>
+          <div className="flex flex-wrap gap-2 items-center justify-self-auto text-sm">
+            {[
+              "Emotional Support",
+              "Career Advice",
+              "Personal Growth",
+              "Stress Management",
+              "Time Management",
+              "Work-Life Balance",
+            ].map((option) => (
+              <Button
+                key={option}
+                variant="outline"
+                size="sm"
+                className={`rounded-full items-center ${
+                  isDarkMode ? "white-border" : ""
+                }`}
+                onClick={() => handleOptionClick(option)}
+              >
+                <span className="mr-2">
+                  {option === "Emotional Support"
+                    ? "💬"
+                    : option === "Career Advice"
+                    ? "🎯"
+                    : option === "Personal Growth"
+                    ? "🌱"
+                    : option === "Stress Management"
+                    ? "🧘"
+                    : option === "Time Management"
+                    ? "⏳"
+                    : "⚖️"}
+                </span>
+                {option}
+              </Button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <TooltipProvider>
       <div
@@ -136,21 +211,30 @@ export default function Dashboard() {
           <Navbar isMobile={isMobile} />
 
           <main className="flex-1 overflow-auto p-4 flex flex-col relative">
-            {" "}
-            {/* Set relative positioning here */}
+            {renderOptions()}
             {currentPage === "chat" && (
               <>
-                <div className="flex justify-end items-center mb-6">
+                <div className="flex justify-start items-center mb-6 mt-4 ml-4">
+                  {" "}
+                  {/* Added margin-top and margin-left */}
                   {messages.length > 0 && ( // Conditional rendering of the button
                     <button
                       onClick={closeChat}
-                      className="rounded-full p-2 fixed top-12 right-4 z-10 dark:text-white"
+                      className="rounded-full p-2 z-10 dark:text-white"
                       aria-label="Close chat"
                     >
                       <CircleX />
                     </button>
                   )}
                 </div>
+
+                {/* Render Cards Section only when there are no messages */}
+                {messages.length === 0 && (
+                  <div className="flex flex-wrap justify-between mt-4">
+                    {renderCards()}
+                  </div>
+                )}
+
                 <ChatInterface
                   messages={messages}
                   inputMessage={inputMessage}
@@ -166,6 +250,7 @@ export default function Dashboard() {
             {currentPage === "progress" && <ProgressPage />}
             {currentPage === "saved-chats" && <SavedChatsPage />}
             {currentPage === "sidebar" && <Sidebar isMobile={false} />}
+
             <p className="flex m-4 items-center justify-center text-xs text-grey-600">
               <span>Lumny AI</span> &nbsp;can make mistakes. Check important
               info.
