@@ -180,7 +180,7 @@ const SavedChatsPage: React.FC = () => {
                   <div
                     key={chatIndex}
                     className={`p-4 rounded-xl justify-center items-center ${
-                      isDarkMode ? "bg-gray-800" : "bg-black text-white"
+                      isDarkMode ? "bg-zinc-950" : "bg-black text-white"
                     }`}
                   >
                     <div className="flex justify-between items-center">
@@ -208,8 +208,8 @@ const SavedChatsPage: React.FC = () => {
                             key={messageIndex}
                             className={`inline-block p-3 rounded-xl w-full ${
                               message.type === "user"
-                                ? "bg-zinc-800 text-white"
-                                : "text-zinc-800 bg-zinc-200"
+                                ? "bg-zinc-950 text-white text-right"
+                                : "bg-zinc-950 text-white text-left"
                             }`}
                           >
                             <div className="text-md leading-relaxed">
