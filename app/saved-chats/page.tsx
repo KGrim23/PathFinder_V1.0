@@ -175,7 +175,7 @@ const SavedChatsPage: React.FC = () => {
             {savedChats.length === 0 ? (
               <p>No saved chats found.</p>
             ) : (
-              <div>
+              <div className="gap-4 flex flex-col">
                 {savedChats.map((chat, chatIndex) => (
                   <div
                     key={chatIndex}
