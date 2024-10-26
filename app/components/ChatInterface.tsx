@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
-import { Import, Volume2 } from "lucide-react"; // Import the audio icon
+import { Import, Volume2 } from "lucide-react";
 
 // User Message Type
 type UserMessage = {
@@ -23,7 +23,7 @@ type AIMessage = {
     | {
         dialogue?: Array<{ speaker: string; message: string }>;
         steps?: Array<{ step_number: number; instruction: string }>;
-        rawMessage?: string; // Fallback for unstructured content
+        rawMessage?: string;
       }
     | string;
 };

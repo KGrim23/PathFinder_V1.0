@@ -66,7 +66,7 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           className="w-full flex items-center justify-start"
         >
           <Image src="/New_logo.png" alt="Lumny Logo" width={45} height={45} />
-          {isMobile && <h1 className="text-md ml-4 font-semibold">Lumny</h1>}
+          {isMobile && <h1 className="text-lg ml-2 font-semibold">Lumny</h1>}
         </Button>
       </div>
 
@@ -195,9 +195,15 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
               variant="ghost"
               size={isMobile ? "default" : "icon"}
               className={`rounded-lg transition-colors duration-200 ${
-                isMobile ? "justify-start" : "justify-center"
-              } w-full p-2`}
-              aria-label="Help"
+                currentPage === "settings"
+                  ? "bg-muted text-primary"
+                  : "text-gray-700"
+              } ${isMobile ? "justify-start" : "justify-center"} w-full p-2`}
+              aria-label="Help Page"
+              onClick={() => {
+                setCurrentPage("help");
+                router.push("/HelpPage");
+              }}
             >
               <LifeBuoy className={`size-5 ${isMobile ? "mr-2" : ""}`} />
               {isMobile && <span>Help</span>}
@@ -208,7 +214,7 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
       </nav>
 
       {/* Help and Profile Section */}
-      <nav className="p-2">
+      <nav className="p-2 mb-4">
         {/* Profile Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -222,7 +228,7 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
               <Avatar>
                 <AvatarImage src="/profile-1.png" alt="Profile" />
               </Avatar>
-              {isMobile && <span className="ml-2">Sarah Parker</span>}
+              {isMobile && <span className="ml-4">Sarah Parker</span>}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
