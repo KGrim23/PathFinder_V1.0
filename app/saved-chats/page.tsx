@@ -30,7 +30,7 @@ export type MessageType = UserMessage | AIMessage;
 
 const SavedChatsPage: React.FC = () => {
   const { isDarkMode } = useTheme();
-  const [savedChats, setSavedChats] = useState<MessageType[][]>([]); // this save messages as an array of arrays
+  const [savedChats, setSavedChats] = useState<MessageType[][]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [selectedChatIndex, setSelectedChatIndex] = useState<number | null>(
     null
@@ -68,6 +68,13 @@ const SavedChatsPage: React.FC = () => {
     setSavedChats([]);
     localStorage.removeItem("chatSessions");
     alert("All chats have been deleted!");
+  };
+
+  const deleteChatSession = (chatIndex: number) => {
+    const updatedChats = savedChats.filter((_, index) => index !== chatIndex);
+    setSavedChats(updatedChats);
+    localStorage.setItem("chatSessions", JSON.stringify(updatedChats));
+    alert(`Chat Session ${chatIndex + 1} has been deleted!`);
   };
 
   const renderUserMessageContent = (content: string) => {
@@ -170,14 +177,29 @@ const SavedChatsPage: React.FC = () => {
             ) : (
               <div>
                 {savedChats.map((chat, chatIndex) => (
-                  <div key={chatIndex} className="mb-6 border-b pb-4">
-                    <div
-                      className={`mb-2 cursor-pointer ${
-                        selectedChatIndex === chatIndex ? "font-bold" : ""
-                      }`}
-                      onClick={() => handleChatClick(chatIndex)}
-                    >
-                      Chat Session {chatIndex + 1}
+                  <div
+                    key={chatIndex}
+                    className={`p-4 rounded-xl justify-center items-center ${
+                      isDarkMode ? "bg-gray-800" : "bg-black text-white"
+                    }`}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div
+                        className={`cursor-pointer ${
+                          selectedChatIndex === chatIndex ? "font-bold" : ""
+                        }`}
+                        onClick={() => handleChatClick(chatIndex)}
+                      >
+                        Session {chatIndex + 1}
+                      </div>
+                      <button
+                        className={`ml-4 ${
+                          isDarkMode ? "text-white" : "bg-black text-white"
+                        }`}
+                        onClick={() => deleteChatSession(chatIndex)}
+                      >
+                        Delete
+                      </button>
                     </div>
                     {selectedChatIndex === chatIndex && (
                       <div className="space-y-4">
@@ -201,7 +223,7 @@ const SavedChatsPage: React.FC = () => {
                     )}
                   </div>
                 ))}
-                <div className="flex justify-end mt-16">
+                <div className="flex justify-end mt-24">
                   <button
                     className={`ml-auto gap-1.5 text-white ${
                       isDarkMode
