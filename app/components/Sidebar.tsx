@@ -131,7 +131,10 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
                   : "text-gray-700"
               } ${isMobile ? "justify-start" : "justify-center"} w-full p-2`}
               aria-label="Feedback"
-              onClick={() => setCurrentPage("feedback")}
+              onClick={() => {
+                setCurrentPage("feedback");
+                router.push("/FeedbackPage");
+              }}
             >
               <Flag className={`size-5 ${isMobile ? "mr-2" : ""}`} />
               {isMobile && <span>Feedback</span>}
