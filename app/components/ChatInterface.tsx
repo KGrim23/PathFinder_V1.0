@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
@@ -37,7 +37,6 @@ type ChatInterfaceProps = {
   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   handleOptionClick: (option: string) => void;
   handleFeedback: (index: number, type: "liked" | "disliked" | "sound") => void;
-  saveChatHistory: () => void;
 };
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -47,12 +46,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   handleSendMessage,
   handleOptionClick,
   handleFeedback,
-  saveChatHistory,
 }) => {
   const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [currentUtterance, setCurrentUtterance] =
     useState<SpeechSynthesisUtterance | null>(null);
+  const [chatSessions, setChatSessions] = useState<Array<MessageType[]>>([]);
+
+  useEffect(() => {
+    // Load existing chat sessions from local storage
+    const existingSessions = JSON.parse(
+      localStorage.getItem("chatSessions") || "[]"
+    );
+    setChatSessions(existingSessions);
+  }, []);
 
   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,6 +67,16 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setInputMessage("");
     await handleSendMessage(e);
     setIsLoading(false);
+  };
+
+  const saveChatHistory = () => {
+    const existingSessions = JSON.parse(
+      localStorage.getItem("chatSessions") || "[]"
+    ) as MessageType[][];
+    const newSession = messages; // Save the current chat messages as a new session
+    existingSessions.push(newSession);
+    localStorage.setItem("chatSessions", JSON.stringify(existingSessions));
+    setChatSessions(existingSessions); // Update state to reflect the new session
   };
 
   const renderAIMessageContent = (content: any) => {
@@ -260,44 +277,24 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               message.type === "user" ? "text-right" : "text-left"
             }`}
           >
-            <div
-              className={`inline-block p-3 rounded-xl transition-transform ${
-                message.type === "user"
-                  ? isDarkMode
-                    ? "bg-white text-black"
-                    : "bg-black text-white"
-                  : isDarkMode
-                  ? "bg-black text-white"
-                  : "bg-white text-black"
-              } max-w-[90%] break-words overflow-wrap word-break`}
-              style={{
-                wordWrap: "break-word",
-                overflowWrap: "break-word",
-                whiteSpace: "pre-wrap",
-              }}
-            >
-              <div className="text-md leading-relaxed">
-                {message.type === "user" ? (
-                  renderUserMessageContent(message.content)
-                ) : (
-                  <div className="flex flex-row items-end">
-                    {renderAIMessageContent(message.content)}
-                    <button
-                      onClick={() => handleReadAloud(message.content)}
-                      className="ml-2"
-                    >
-                      <Volume2
-                        className={`border-2 rounded-full p-1 ${
-                          isDarkMode
-                            ? "text-gray-200 border-white hover:bg-gray-600"
-                            : "text-black border-black hover:bg-gray-300"
-                        }`}
-                      />
-                    </button>
-                  </div>
-                )}
+            {message.type === "ai" ? (
+              <div>
+                {/* <p className="font-bold">Assistant:</p> */}
+                {renderAIMessageContent(message.content)}
               </div>
-            </div>
+            ) : (
+              <div>
+                {/* <p className="font-bold">You:</p> */}
+                {renderUserMessageContent(message.content)}
+              </div>
+            )}
+            {message.type === "ai" && (
+              <div className="flex justify-end">
+                <Button onClick={() => handleReadAloud(message.content)}>
+                  <Volume2 className="mr-2" />
+                </Button>
+              </div>
+            )}
           </div>
         ))}
 
