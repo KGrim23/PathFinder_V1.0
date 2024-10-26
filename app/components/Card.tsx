@@ -4,7 +4,7 @@ import React from "react";
 type CardProps = {
   title: string;
   link: string;
-  imageSrc?: string; // Optional image source
+  imageSrc?: string;
 };
 
 const Card: React.FC<CardProps> = ({ title, link, imageSrc }) => {
@@ -18,7 +18,7 @@ const Card: React.FC<CardProps> = ({ title, link, imageSrc }) => {
       <div className="aspect-square relative bg-gray-200 dark:bg-gray-700 flex items-center justify-center rounded-xl">
         {imageSrc ? (
           <Image
-            src={imageSrc} // Dynamically set imageSrc from props
+            src={imageSrc}
             alt={title}
             className="object-cover w-full h-full rounded-xl"
             width={200}
