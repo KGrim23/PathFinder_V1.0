@@ -177,10 +177,10 @@ export default function Dashboard() {
                 key={option}
                 variant="outline"
                 size="sm"
-                className={`rounded-full p-4 items-center ${
+                className={`rounded-full p-3 items-center ${
                   isDarkMode
                     ? "bg-gray-800 border-0 shadow-xs shadow-slate-100"
-                    : "bg-gray-600 text-white p-4 border-0 shadow-xs shadow-slate-100"
+                    : "bg-gray-600 text-white border-0 shadow-xs shadow-slate-100"
                 }`}
                 onClick={() => handleOptionClick(option)}
               >
