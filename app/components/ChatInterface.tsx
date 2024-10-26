@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
-import { Import, Volume2 } from "lucide-react";
+import { Import, Volume2, VolumeX } from "lucide-react";
 
 // User Message Type
 type UserMessage = {
@@ -51,6 +51,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [currentUtterance, setCurrentUtterance] =
     useState<SpeechSynthesisUtterance | null>(null);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [chatSessions, setChatSessions] = useState<Array<MessageType[]>>([]);
 
   useEffect(() => {
@@ -73,10 +74,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     const existingSessions = JSON.parse(
       localStorage.getItem("chatSessions") || "[]"
     ) as MessageType[][];
-    const newSession = messages; // Save the current chat messages as a new session
+    const newSession = messages;
     existingSessions.push(newSession);
     localStorage.setItem("chatSessions", JSON.stringify(existingSessions));
-    setChatSessions(existingSessions); // Update state to reflect the new session
+    setChatSessions(existingSessions);
   };
 
   const renderAIMessageContent = (content: any) => {
@@ -163,6 +164,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const handleReadAloud = (content: any) => {
     let textToRead = "";
 
+    // Build the text to read
     if (typeof content === "object" && content !== null) {
       if (content.dialogue && Array.isArray(content.dialogue)) {
         textToRead = content.dialogue
@@ -205,23 +207,20 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     if (currentUtterance && window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
       setCurrentUtterance(null);
+      setIsAudioPlaying(false);
     } else if (textToRead) {
       const utterance = new SpeechSynthesisUtterance(textToRead);
 
+      // Set voice and parameters...
       const voices = window.speechSynthesis.getVoices();
-
-      // Try to find a high-quality English voice - not sure it is working
       const preferredVoice =
         voices.find(
           (voice) =>
-            (voice.name.includes("Google") || // Prefer Google voices
+            (voice.name.includes("Google") ||
               voice.name.includes("Premium") ||
               voice.name.includes("Enhanced")) &&
-            voice.lang.startsWith("en") // English voices
-        ) ||
-        voices.find(
-          (voice) => voice.lang.startsWith("en") // Fallback to any English voice
-        );
+            voice.lang.startsWith("en")
+        ) || voices.find((voice) => voice.lang.startsWith("en"));
 
       if (preferredVoice) {
         utterance.voice = preferredVoice;
@@ -232,34 +231,28 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       utterance.pitch = 1.0;
       utterance.volume = 1.0;
 
-      // Add better speaking rhythm with punctuation
-      textToRead = textToRead
-        .replace(/([.!?])\s*/g, "$1. ")
-        .replace(/([,;])\s*/g, "$1, ");
-
       setCurrentUtterance(utterance);
 
-      // Handle voice loading if necessary
-      if (voices.length === 0) {
-        window.speechSynthesis.addEventListener("voiceschanged", () => {
-          const updatedVoices = window.speechSynthesis.getVoices();
-          const updatedPreferredVoice =
-            updatedVoices.find(
-              (voice) =>
-                (voice.name.includes("Google") ||
-                  voice.name.includes("Premium") ||
-                  voice.name.includes("Enhanced")) &&
-                voice.lang.startsWith("en")
-            ) || updatedVoices.find((voice) => voice.lang.startsWith("en"));
+      // When speech starts
+      utterance.onstart = () => {
+        setIsAudioPlaying(true);
+      };
 
-          if (updatedPreferredVoice) {
-            utterance.voice = updatedPreferredVoice;
-          }
-          window.speechSynthesis.speak(utterance);
-        });
-      } else {
-        window.speechSynthesis.speak(utterance);
-      }
+      // When speech ends
+      utterance.onend = () => {
+        setIsAudioPlaying(false);
+        setCurrentUtterance(null);
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const handleStopReading = () => {
+    if (currentUtterance) {
+      window.speechSynthesis.cancel();
+      setIsAudioPlaying(false);
+      setCurrentUtterance(null);
     }
   };
 
@@ -290,8 +283,26 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             )}
             {message.type === "ai" && (
               <div className="flex justify-end">
-                <Button onClick={() => handleReadAloud(message.content)}>
-                  <Volume2 className="mr-2" />
+                <Button
+                  onClick={() => {
+                    if (isAudioPlaying) {
+                      handleStopReading(); // Stop audio if playing
+                    } else {
+                      handleReadAloud(message.content); // Start audio otherwise
+                    }
+                  }}
+                >
+                  {isAudioPlaying ? (
+                    <>
+                      <VolumeX className="mr-2" />
+                      {/* <span>Stop</span> */}
+                    </>
+                  ) : (
+                    <>
+                      <Volume2 className="mr-2" />
+                      {/* <span>Read Aloud</span> */}
+                    </>
+                  )}
                 </Button>
               </div>
             )}
