@@ -16,6 +16,7 @@ const ChatInput: React.FC<{
   inputMessage: string;
   setInputMessage: React.Dispatch<React.SetStateAction<string>>;
   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleOptionClick: (option: string) => void;
 }> = ({ inputMessage, setInputMessage, handleSendMessage }) => {
   const { isDarkMode } = useTheme();
   const [isListening, setIsListening] = useState(false);
@@ -29,10 +30,11 @@ const ChatInput: React.FC<{
   const startListening = () => {
     if (recognition) {
       setIsListening(true);
-      recognition.lang = "en-US";
+      recognition.lang = "en-UK";
       recognition.continuous = false;
       recognition.interimResults = false;
 
+      //debugging
       recognition.onstart = () => console.log("Voice recognition started.");
 
       recognition.onresult = (event: SpeechRecognitionEvent) => {

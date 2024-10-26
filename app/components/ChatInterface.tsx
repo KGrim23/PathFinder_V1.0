@@ -4,6 +4,16 @@ import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
 import { Import, Volume2, VolumeX } from "lucide-react";
+import AWS from "aws-sdk";
+
+// Configure Polly - go to AWS console
+AWS.config.update({
+  accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
+  region: "us-west-2",
+});
+
+const polly = new AWS.Polly();
 
 // User Message Type
 type UserMessage = {
@@ -49,10 +59,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 }) => {
   const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
-  const [currentUtterance, setCurrentUtterance] =
-    useState<SpeechSynthesisUtterance | null>(null);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [chatSessions, setChatSessions] = useState<Array<MessageType[]>>([]);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Track audio playing state
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
+    null
+  ); // Reference to the audio object
+  const [chatSessions, setChatSessions] = useState<Array<MessageType[]>>([]); // for saving chat sessions
 
   useEffect(() => {
     // Load existing chat sessions from local storage
@@ -161,7 +172,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     });
   };
 
-  const handleReadAloud = (content: any) => {
+  const handleReadAloud = async (content: any) => {
     let textToRead = "";
 
     // Build the text to read
@@ -196,63 +207,114 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       }
     }
 
-    // Clean up the text
-    textToRead = textToRead
-      .replace(/\*\*/g, "")
-      .replace(/\n/g, " ")
-      .replace(/Assistant:|Human:|Speaker:|Dialog:|^\s*-\s*/gim, "")
-      .replace(/\s+/g, " ")
-      .trim();
+    // Create SSML content
+    const ssmlText = `<speak>${textToRead}</speak>`;
 
-    if (currentUtterance && window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel();
-      setCurrentUtterance(null);
-      setIsAudioPlaying(false);
-    } else if (textToRead) {
-      const utterance = new SpeechSynthesisUtterance(textToRead);
+    const params = {
+      OutputFormat: "mp3",
+      Text: ssmlText,
+      TextType: "ssml", //this is to make sure non robotic voice and use natural voice
+      VoiceId: "Matthew",
+    };
 
-      // Set voice and parameters...
-      const voices = window.speechSynthesis.getVoices();
-      const preferredVoice =
-        voices.find(
-          (voice) =>
-            (voice.name.includes("Google") ||
-              voice.name.includes("Premium") ||
-              voice.name.includes("Enhanced")) &&
-            voice.lang.startsWith("en")
-        ) || voices.find((voice) => voice.lang.startsWith("en"));
+    try {
+      const { AudioStream } = await polly.synthesizeSpeech(params).promise();
+      if (AudioStream instanceof Buffer) {
+        const audioBlob = new Blob([AudioStream], { type: "audio/mp3" });
+        const audioURL = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioURL);
 
-      if (preferredVoice) {
-        utterance.voice = preferredVoice;
+        audio.onplay = () => {
+          setIsAudioPlaying(true);
+          setCurrentAudio(audio); // Set current audio
+        };
+        audio.onended = () => {
+          setIsAudioPlaying(false);
+          setCurrentAudio(null); // Clear current audio
+        };
+
+        audio.play();
       }
-
-      // Optimize speech parameters
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
-      utterance.volume = 1.0;
-
-      setCurrentUtterance(utterance);
-
-      // When speech starts
-      utterance.onstart = () => {
-        setIsAudioPlaying(true);
-      };
-
-      // When speech ends
-      utterance.onend = () => {
-        setIsAudioPlaying(false);
-        setCurrentUtterance(null);
-      };
-
-      window.speechSynthesis.speak(utterance);
+    } catch (error) {
+      console.error("Error synthesizing speech:", error);
     }
   };
 
+  // const handleReadAloud = async (content: any) => {
+  //   let textToRead = "";
+
+  //   // Build the text to read
+  //   if (typeof content === "object" && content !== null) {
+  //     if (content.dialogue && Array.isArray(content.dialogue)) {
+  //       textToRead = content.dialogue
+  //         .map((msg: { message: any }) => msg.message)
+  //         .join(" ");
+  //     } else if (content.steps && Array.isArray(content.steps)) {
+  //       textToRead = content.steps
+  //         .map((step: { instruction: any }) => step.instruction)
+  //         .join(" ");
+  //     } else if (content.rawMessage) {
+  //       textToRead = content.rawMessage;
+  //     }
+  //   } else if (typeof content === "string") {
+  //     try {
+  //       const parsed = JSON.parse(content);
+  //       if (parsed.dialogue) {
+  //         textToRead = parsed.dialogue
+  //           .map((msg: { message: string }) => msg.message)
+  //           .join(" ");
+  //       } else if (parsed.steps) {
+  //         textToRead = parsed.steps
+  //           .map((step: { instruction: string }) => step.instruction)
+  //           .join(" ");
+  //       } else if (parsed.rawMessage) {
+  //         textToRead = parsed.rawMessage;
+  //       }
+  //     } catch {
+  //       textToRead = content;
+  //     }
+  //   }
+
+  //   const params = {
+  //     OutputFormat: "mp3",
+  //     Text: textToRead,
+  //     VoiceId: "Russell",
+  //   };
+  //   //voice id:
+  //   // Amy(Female);
+  //   // Emma(Female, Neural);
+  //   // Brian(Male);
+  //   // Russell(Male, Neural);
+
+  //   try {
+  //     const { AudioStream } = await polly.synthesizeSpeech(params).promise();
+  //     if (AudioStream instanceof Buffer) {
+  //       const audioBlob = new Blob([AudioStream], { type: "audio/mp3" });
+  //       const audioURL = URL.createObjectURL(audioBlob);
+  //       const audio = new Audio(audioURL);
+
+  //       audio.onplay = () => {
+  //         setIsAudioPlaying(true);
+  //         setCurrentAudio(audio); // Set current audio
+  //       };
+  //       audio.onended = () => {
+  //         setIsAudioPlaying(false);
+  //         setCurrentAudio(null); // Clear current audio
+  //       };
+
+  //       audio.play();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error synthesizing speech:", error);
+  //   }
+  // };
+
   const handleStopReading = () => {
-    if (currentUtterance) {
-      window.speechSynthesis.cancel();
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
       setIsAudioPlaying(false);
-      setCurrentUtterance(null);
+      setCurrentAudio(null);
     }
   };
 
@@ -271,36 +333,28 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             }`}
           >
             {message.type === "ai" ? (
-              <div>
-                {/* <p className="font-bold">Assistant:</p> */}
-                {renderAIMessageContent(message.content)}
-              </div>
+              <div>{renderAIMessageContent(message.content)}</div>
             ) : (
-              <div>
-                {/* <p className="font-bold">You:</p> */}
-                {renderUserMessageContent(message.content)}
-              </div>
+              <div>{renderUserMessageContent(message.content)}</div>
             )}
             {message.type === "ai" && (
               <div className="flex justify-end">
                 <Button
                   onClick={() => {
                     if (isAudioPlaying) {
-                      handleStopReading(); // Stop audio if playing
+                      handleStopReading();
                     } else {
-                      handleReadAloud(message.content); // Start audio otherwise
+                      handleReadAloud(message.content);
                     }
                   }}
                 >
                   {isAudioPlaying ? (
                     <>
                       <VolumeX className="mr-2" />
-                      {/* <span>Stop</span> */}
                     </>
                   ) : (
                     <>
                       <Volume2 className="mr-2" />
-                      {/* <span>Read Aloud</span> */}
                     </>
                   )}
                 </Button>
@@ -317,26 +371,25 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </div>
 
       {messages.length > 0 && (
-        <div className="flex justify-end p-3 mt-8">
-          <button
+        <div className="flex justify-center mb-4">
+          <Button
+            className="ml-4 bg-primary hover:bg-primary-dark text-white"
             onClick={saveChatHistory}
-            className={`flex items-center font-normal py-2 px-4 rounded-xl transition-colors duration-200
-            focus:ring-2 focus:ring-offset-2 ${
-              isDarkMode
-                ? "focus:ring-gray-600 focus:ring-offset-gray-800"
-                : "focus:ring-gray-300 focus:ring-offset-white"
-            }`}
           >
             <Import className="mr-2" />
-          </button>
+            Save Chat
+          </Button>
         </div>
       )}
 
-      <ChatInput
-        inputMessage={inputMessage}
-        setInputMessage={setInputMessage}
-        handleSendMessage={handleMessageSend}
-      />
+      <div className="mt-auto">
+        <ChatInput
+          inputMessage={inputMessage}
+          setInputMessage={setInputMessage}
+          handleSendMessage={handleMessageSend}
+          handleOptionClick={handleOptionClick}
+        />
+      </div>
     </div>
   );
 };
