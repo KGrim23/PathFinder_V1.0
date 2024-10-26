@@ -36,7 +36,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   const themeStyles = isDarkMode
     ? { background: "#000000", color: "#FFFFFF" } // Dark mode colors
-    : { background: "#F2F2F2", color: "#333333" }; // Light mode with off-white background
+    : { background: "#FFFFFF", color: "#333333" }; // Light mode with off-white background
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode, themeStyles }}>
