@@ -249,7 +249,6 @@ export default function Dashboard() {
                   handleSendMessage={handleSendMessage}
                   handleOptionClick={handleOptionClick}
                   handleFeedback={handleFeedback}
-                  saveChatHistory={saveChatHistory}
                 />
               </>
             )}
