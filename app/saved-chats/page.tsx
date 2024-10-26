@@ -15,7 +15,6 @@ export type UserMessage = {
   };
 };
 
-// Define AI Message type
 export type AIMessage = {
   type: "ai";
   content:
@@ -31,8 +30,11 @@ export type MessageType = UserMessage | AIMessage;
 
 const SavedChatsPage: React.FC = () => {
   const { isDarkMode } = useTheme();
-  const [savedChats, setSavedChats] = useState<MessageType[]>([]);
-  const [isMobile, setIsMobile] = useState<boolean>(false); // Track if it's mobile view
+  const [savedChats, setSavedChats] = useState<MessageType[][]>([]);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [selectedChatIndex, setSelectedChatIndex] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     document.body.classList.toggle("dark", isDarkMode);
@@ -40,9 +42,16 @@ const SavedChatsPage: React.FC = () => {
 
   // Load saved chats from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem("savedChats");
+    const saved = localStorage.getItem("chatSessions");
     if (saved) {
-      setSavedChats(JSON.parse(saved));
+      try {
+        const parsedSavedChats = JSON.parse(saved);
+        if (Array.isArray(parsedSavedChats)) {
+          setSavedChats(parsedSavedChats);
+        }
+      } catch (error) {
+        console.error("Failed to parse saved chats:", error);
+      }
     }
   }, []);
 
@@ -56,9 +65,16 @@ const SavedChatsPage: React.FC = () => {
   }, []);
 
   const deleteAllChats = () => {
-    setSavedChats([]); // Clear the state
-    localStorage.removeItem("savedChats");
+    setSavedChats([]);
+    localStorage.removeItem("chatSessions");
     alert("All chats have been deleted!");
+  };
+
+  const deleteChatSession = (chatIndex: number) => {
+    const updatedChats = savedChats.filter((_, index) => index !== chatIndex);
+    setSavedChats(updatedChats);
+    localStorage.setItem("chatSessions", JSON.stringify(updatedChats));
+    alert(`Chat Session ${chatIndex + 1} has been deleted!`);
   };
 
   const renderUserMessageContent = (content: string) => {
@@ -93,8 +109,16 @@ const SavedChatsPage: React.FC = () => {
     });
   };
 
-  // Function to render AI messages
   const renderAIMessageContent = (content: any) => {
+    if (typeof content === "string") {
+      try {
+        const parsedContent = JSON.parse(content);
+        content = parsedContent;
+      } catch {
+        return <p>{content}</p>;
+      }
+    }
+
     if (typeof content === "object" && content !== null) {
       if (content.dialogue && Array.isArray(content.dialogue)) {
         return (
@@ -114,10 +138,7 @@ const SavedChatsPage: React.FC = () => {
           <div className="mt-4">
             <ul className="ml-6 list-disc">
               {content.steps.map(
-                (
-                  step: { step_number: number; instruction: string },
-                  index: number
-                ) => (
+                (step: { step_number: number; instruction: string }) => (
                   <li key={step.step_number}>
                     {step.instruction.replace(/\*/g, "").trim()}
                   </li>
@@ -127,19 +148,16 @@ const SavedChatsPage: React.FC = () => {
           </div>
         );
       }
-      return <p>{content.rawMessage || "No structured content available."}</p>;
-    }
-
-    if (typeof content === "string") {
-      try {
-        const parsedContent = JSON.parse(content);
-        return renderAIMessageContent(parsedContent);
-      } catch {
-        return <p>{content}</p>;
+      if (content.rawMessage) {
+        return <p>{content.rawMessage}</p>;
       }
     }
 
     return <p>No valid content available.</p>;
+  };
+
+  const handleChatClick = (index: number) => {
+    setSelectedChatIndex(selectedChatIndex === index ? null : index);
   };
 
   return (
@@ -149,44 +167,63 @@ const SavedChatsPage: React.FC = () => {
           isDarkMode ? "dark" : ""
         }`}
       >
-        {!isMobile && <Sidebar isMobile={false} />} {/* Render sidebar */}
+        {!isMobile && <Sidebar isMobile={false} />}
         <div className="flex flex-col h-full">
-          {/* Render Navbar */}
           <Navbar isMobile={isMobile} />
           <main className="flex-1 overflow-auto p-4 flex flex-col">
             <h2 className="text-2xl font-bold mb-4">Saved Chats</h2>
             {savedChats.length === 0 ? (
               <p>No saved chats found.</p>
             ) : (
-              <div>
-                {savedChats.map((message, index) => (
+              <div className="gap-4 flex flex-col">
+                {savedChats.map((chat, chatIndex) => (
                   <div
-                    key={index}
-                    className={`mb-4 ${
-                      message.type === "user" ? "text-right" : "text-left"
+                    key={chatIndex}
+                    className={`p-4 rounded-xl justify-center items-center ${
+                      isDarkMode ? "bg-gray-800" : "bg-black text-white"
                     }`}
                   >
-                    <div
-                      className={`inline-block p-3 rounded-xl transition-transform ${
-                        message.type === "user"
-                          ? "bg-zinc-800 text-white"
-                          : "text-zinc-800 bg-zinc-200"
-                      }`}
-                      style={{
-                        wordWrap: "break-word",
-                        overflowWrap: "break-word",
-                        whiteSpace: "pre-wrap",
-                      }}
-                    >
-                      <div className="text-md leading-relaxed">
-                        {message.type === "user"
-                          ? renderUserMessageContent(message.content)
-                          : renderAIMessageContent(message.content)}
+                    <div className="flex justify-between items-center">
+                      <div
+                        className={`cursor-pointer ${
+                          selectedChatIndex === chatIndex ? "font-bold" : ""
+                        }`}
+                        onClick={() => handleChatClick(chatIndex)}
+                      >
+                        Session {chatIndex + 1}
                       </div>
+                      <button
+                        className={`ml-4 ${
+                          isDarkMode ? "text-white" : "bg-black text-white"
+                        }`}
+                        onClick={() => deleteChatSession(chatIndex)}
+                      >
+                        Delete
+                      </button>
                     </div>
+                    {selectedChatIndex === chatIndex && (
+                      <div className="space-y-4">
+                        {chat.map((message, messageIndex) => (
+                          <div
+                            key={messageIndex}
+                            className={`inline-block p-3 rounded-xl w-full ${
+                              message.type === "user"
+                                ? "bg-zinc-800 text-white"
+                                : "text-zinc-800 bg-zinc-200"
+                            }`}
+                          >
+                            <div className="text-md leading-relaxed">
+                              {message.type === "user"
+                                ? renderUserMessageContent(message.content)
+                                : renderAIMessageContent(message.content)}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
-                <div className="flex justify-end mt-16">
+                <div className="flex justify-end mt-24">
                   <button
                     className={`ml-auto gap-1.5 text-white ${
                       isDarkMode
@@ -195,7 +232,7 @@ const SavedChatsPage: React.FC = () => {
                     } rounded-full px-3.5 py-2`}
                     onClick={deleteAllChats}
                   >
-                    Delete Chat
+                    Delete All Chats
                   </button>
                 </div>
               </div>
