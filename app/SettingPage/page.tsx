@@ -11,13 +11,13 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useTheme } from "../components/ThemeContext";
-import Sidebar from "../components/Sidebar"; // Import Sidebar component
-import Navbar from "../components/Navbar"; // Import Navbar component
-import { TooltipProvider } from "@radix-ui/react-tooltip"; // Tooltip provider for tooltips
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("general");
-  const { isDarkMode, toggleDarkMode } = useTheme(); // Use ThemeContext
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // Effect to toggle dark mode class

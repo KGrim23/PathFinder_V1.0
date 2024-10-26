@@ -1,8 +1,8 @@
-"use client"; // Added for client-side rendering
+"use client";
 import React, { useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar"; // Import Sidebar component
-import Navbar from "../components/Navbar"; // Import Navbar component
-import { TooltipProvider } from "@radix-ui/react-tooltip"; // Tooltip provider for tooltips
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { useTheme } from "../components/ThemeContext";
 
 const Terms: React.FC = () => {

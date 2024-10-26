@@ -61,7 +61,7 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           aria-label="Home"
           onClick={() => {
             setCurrentPage("chat");
-            router.push("/"); // Navigate to Landing Page
+            router.push("/"); //Landing Page
           }}
           className="w-full flex items-center justify-start"
         >
@@ -86,8 +86,7 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
               aria-label="New Chat"
               onClick={() => {
                 setCurrentPage("chat");
-                console.log("Navigating to homepage");
-                router.push("/"); // Navigate to the homepage
+                router.push("/Dashboard"); // Navigate to the homepage
               }}
             >
               <MessageSquarePlus
@@ -240,7 +239,7 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
                 onClick={() => {
                   setCurrentPage("chat");
                   console.log("Navigating to homepage");
-                  router.push("/"); // Navigate to the homepage
+                  router.push("/"); //landing page
                 }}
                 className="mr-2"
               />{" "}

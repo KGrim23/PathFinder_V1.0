@@ -8,16 +8,14 @@ import React, {
   useEffect,
 } from "react";
 
-// Define the context type
 type ThemeContextType = {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
+  themeStyles: { background: string; color: string };
 };
 
-// Create the context
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// Create a provider component
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -36,14 +34,28 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("darkMode", String(isDarkMode));
   }, [isDarkMode]);
 
+  const themeStyles = isDarkMode
+    ? { background: "#000000", color: "#FFFFFF" } // Dark mode colors
+    : { background: "#F2F2F2", color: "#333333" }; // Light mode with off-white background
+
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
-      {children}
+    <ThemeContext.Provider value={{ isDarkMode, toggleDarkMode, themeStyles }}>
+      <div
+        style={{
+          background: themeStyles.background,
+          color: themeStyles.color,
+          minHeight: "100vh",
+          minWidth: "100vw",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 };
 
-// Custom hook to use the ThemeContext
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {

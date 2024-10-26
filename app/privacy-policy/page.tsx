@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Sidebar from "../components/Sidebar"; // Import Sidebar component
-import Navbar from "../components/Navbar"; // Import Navbar component
-import { TooltipProvider } from "@radix-ui/react-tooltip"; // Tooltip provider for tooltips
-import { useTheme } from "../components/ThemeContext"; // Dark mode context
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { useTheme } from "../components/ThemeContext";
 
 const PrivacyPolicy: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

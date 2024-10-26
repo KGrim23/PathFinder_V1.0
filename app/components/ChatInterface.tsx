@@ -8,7 +8,7 @@ import { Import, Volume2 } from "lucide-react"; // Import the audio icon
 // User Message Type
 type UserMessage = {
   type: "user";
-  content: string; // Only a string for user messages
+  content: string;
   feedback?: {
     liked: boolean;
     disliked: boolean;
@@ -25,10 +25,9 @@ type AIMessage = {
         steps?: Array<{ step_number: number; instruction: string }>;
         rawMessage?: string; // Fallback for unstructured content
       }
-    | string; // Allow raw message string as a fallback
+    | string;
 };
 
-// Combined Message Type
 type MessageType = UserMessage | AIMessage;
 
 type ChatInterfaceProps = {
@@ -192,10 +191,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     } else if (textToRead) {
       const utterance = new SpeechSynthesisUtterance(textToRead);
 
-      // Get available voices
       const voices = window.speechSynthesis.getVoices();
 
-      // Try to find a high-quality English voice
+      // Try to find a high-quality English voice - not sure it is working
       const preferredVoice =
         voices.find(
           (voice) =>
@@ -213,14 +211,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       }
 
       // Optimize speech parameters
-      utterance.rate = 1.0; // Normal speed
-      utterance.pitch = 1.0; // Normal pitch
-      utterance.volume = 1.0; // Full volume
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
 
       // Add better speaking rhythm with punctuation
       textToRead = textToRead
-        .replace(/([.!?])\s*/g, "$1. ") // Add slight pause after sentences
-        .replace(/([,;])\s*/g, "$1, "); // Add slight pause after commas
+        .replace(/([.!?])\s*/g, "$1. ")
+        .replace(/([,;])\s*/g, "$1, ");
 
       setCurrentUtterance(utterance);
 

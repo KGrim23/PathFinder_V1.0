@@ -27,11 +27,10 @@ export type AIMessage = {
     | string;
 };
 
-// Define the combined MessageType
 export type MessageType = UserMessage | AIMessage;
 
 const SavedChatsPage: React.FC = () => {
-  const { isDarkMode } = useTheme(); // Get dark mode state from context
+  const { isDarkMode } = useTheme();
   const [savedChats, setSavedChats] = useState<MessageType[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false); // Track if it's mobile view
 
@@ -39,7 +38,7 @@ const SavedChatsPage: React.FC = () => {
     document.body.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
 
-  // Load saved chats from localStorage on component mount
+  // Load saved chats from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("savedChats");
     if (saved) {
@@ -58,11 +57,10 @@ const SavedChatsPage: React.FC = () => {
 
   const deleteAllChats = () => {
     setSavedChats([]); // Clear the state
-    localStorage.removeItem("savedChats"); // Remove saved chats from localStorage
-    alert("All chats have been deleted!"); // Optional feedback
+    localStorage.removeItem("savedChats");
+    alert("All chats have been deleted!");
   };
 
-  // Function to render user messages
   const renderUserMessageContent = (content: string) => {
     const lines = content.split("\n");
     return lines.map((line, index) => {
@@ -171,8 +169,8 @@ const SavedChatsPage: React.FC = () => {
                     <div
                       className={`inline-block p-3 rounded-xl transition-transform ${
                         message.type === "user"
-                          ? "bg-white border-2 border-black text-black"
-                          : "bg-zinc-800 text-white"
+                          ? "bg-zinc-800 text-white"
+                          : "text-zinc-800 bg-zinc-200"
                       }`}
                       style={{
                         wordWrap: "break-word",
