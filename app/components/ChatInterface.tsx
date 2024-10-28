@@ -277,8 +277,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                     } else {
                       handleReadAloud(message.content);
                     }
-                    setIsAudioPlaying(!isAudioPlaying); // Ensure the state is toggled
+                    setIsAudioPlaying(!isAudioPlaying); // Toggle state
                   }}
+                  style={{ zIndex: 10 }} // Set a high z-index value
                 >
                   {isAudioPlaying ? (
                     <VolumeX className="mr-2" />
