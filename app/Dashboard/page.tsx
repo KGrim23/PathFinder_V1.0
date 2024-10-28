@@ -157,14 +157,14 @@ export default function Dashboard() {
     if (messages.length === 0) {
       return (
         <div
-          className={`mb-2 rounded-lg p-4 ${
+          className={`mb-2 rounded-lg p-2 ${
             isDarkMode ? "bg-black" : "bg-muted"
           }`}
         >
           <h2 className="mb-6 text-lg font-semibold">
             How can I assist you today?
           </h2>
-          <div className="flex flex-wrap gap-2 items-center justify-self-auto text-sm">
+          <div className="flex flex-wrap gap-2 items-center justify-self-auto text-xs">
             {[
               "Emotional Support",
               "Career Advice",
@@ -219,7 +219,7 @@ export default function Dashboard() {
           <Navbar isMobile={isMobile} />
           <VoiceInput onReceiveText={sendMessageToOpenAI} />
 
-          <main className="flex-1 overflow-auto p-4 flex flex-col relative">
+          <main className="flex-1 overflow-auto p-3 flex flex-col relative">
             {renderOptions()}
             {currentPage === "chat" && (
               <>
