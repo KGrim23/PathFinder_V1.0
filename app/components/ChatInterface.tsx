@@ -62,7 +62,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Track audio playing state
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
     null
-  ); // Reference to the audio object
+  );
   const [chatSessions, setChatSessions] = useState<Array<MessageType[]>>([]); // for saving chat sessions
 
   useEffect(() => {
@@ -240,75 +240,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     }
   };
 
-  // const handleReadAloud = async (content: any) => {
-  //   let textToRead = "";
-
-  //   // Build the text to read
-  //   if (typeof content === "object" && content !== null) {
-  //     if (content.dialogue && Array.isArray(content.dialogue)) {
-  //       textToRead = content.dialogue
-  //         .map((msg: { message: any }) => msg.message)
-  //         .join(" ");
-  //     } else if (content.steps && Array.isArray(content.steps)) {
-  //       textToRead = content.steps
-  //         .map((step: { instruction: any }) => step.instruction)
-  //         .join(" ");
-  //     } else if (content.rawMessage) {
-  //       textToRead = content.rawMessage;
-  //     }
-  //   } else if (typeof content === "string") {
-  //     try {
-  //       const parsed = JSON.parse(content);
-  //       if (parsed.dialogue) {
-  //         textToRead = parsed.dialogue
-  //           .map((msg: { message: string }) => msg.message)
-  //           .join(" ");
-  //       } else if (parsed.steps) {
-  //         textToRead = parsed.steps
-  //           .map((step: { instruction: string }) => step.instruction)
-  //           .join(" ");
-  //       } else if (parsed.rawMessage) {
-  //         textToRead = parsed.rawMessage;
-  //       }
-  //     } catch {
-  //       textToRead = content;
-  //     }
-  //   }
-
-  //   const params = {
-  //     OutputFormat: "mp3",
-  //     Text: textToRead,
-  //     VoiceId: "Russell",
-  //   };
-  //   //voice id:
-  //   // Amy(Female);
-  //   // Emma(Female, Neural);
-  //   // Brian(Male);
-  //   // Russell(Male, Neural);
-
-  //   try {
-  //     const { AudioStream } = await polly.synthesizeSpeech(params).promise();
-  //     if (AudioStream instanceof Buffer) {
-  //       const audioBlob = new Blob([AudioStream], { type: "audio/mp3" });
-  //       const audioURL = URL.createObjectURL(audioBlob);
-  //       const audio = new Audio(audioURL);
-
-  //       audio.onplay = () => {
-  //         setIsAudioPlaying(true);
-  //         setCurrentAudio(audio); // Set current audio
-  //       };
-  //       audio.onended = () => {
-  //         setIsAudioPlaying(false);
-  //         setCurrentAudio(null); // Clear current audio
-  //       };
-
-  //       audio.play();
-  //     }
-  //   } catch (error) {
-  //     console.error("Error synthesizing speech:", error);
-  //   }
-  // };
-
   const handleStopReading = () => {
     if (currentAudio) {
       currentAudio.pause();
@@ -346,16 +277,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                     } else {
                       handleReadAloud(message.content);
                     }
+                    setIsAudioPlaying(!isAudioPlaying); // Ensure the state is toggled
                   }}
                 >
                   {isAudioPlaying ? (
-                    <>
-                      <VolumeX className="mr-2" />
-                    </>
+                    <VolumeX className="mr-2" />
                   ) : (
-                    <>
-                      <Volume2 className="mr-2" />
-                    </>
+                    <Volume2 className="mr-2" />
                   )}
                 </Button>
               </div>

@@ -244,6 +244,7 @@ export default function Dashboard() {
                     {renderCards()}
                   </div>
                 )}
+
                 <div className="mt-4 flex space-x-6 text-sm text-white">
                   <button className="bg-slate-700 text-white p-2 border-0 rounded-full">
                     <Link
@@ -254,6 +255,7 @@ export default function Dashboard() {
                     </Link>
                   </button>
                 </div>
+
                 <ChatInterface
                   messages={messages}
                   inputMessage={inputMessage}
