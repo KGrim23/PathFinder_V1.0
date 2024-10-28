@@ -12,6 +12,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com", // Also cover images served by Unsplash
       },
+      {
+        protocol: "https",
+        hostname: "cdn.minicoursegenerator.com", // Added domain for Mini Course images
+      },
     ],
   },
   // other Next.js config options can go here
