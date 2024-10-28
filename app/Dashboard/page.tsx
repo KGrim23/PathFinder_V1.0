@@ -244,7 +244,16 @@ export default function Dashboard() {
                     {renderCards()}
                   </div>
                 )}
-
+                <div className="mt-4 flex space-x-6 text-sm text-white">
+                  <button className="bg-slate-700 text-white p-2 border-0 rounded-full">
+                    <Link
+                      href="/mini-courses"
+                      className="text-white font-bold text-sm p-4"
+                    >
+                      Mini-courses
+                    </Link>
+                  </button>
+                </div>
                 <ChatInterface
                   messages={messages}
                   inputMessage={inputMessage}
@@ -253,11 +262,6 @@ export default function Dashboard() {
                   handleOptionClick={handleOptionClick}
                   handleFeedback={handleFeedback}
                 />
-                <div className="mt-4 flex space-x-6 text-sm text-white">
-                  <Link href="/mini-courses" className="hover:underline">
-                    Mini-courses
-                  </Link>
-                </div>
               </>
             )}
             {currentPage === "settings" && <SettingsPage />}
