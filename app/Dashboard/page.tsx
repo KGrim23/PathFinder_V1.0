@@ -130,12 +130,18 @@ export default function Dashboard() {
 
   // Example articles data
   const articles = [
-    { title: "Understanding AI", link: "https://example.com/ai" },
-    { title: "Guided Meditation", link: "https://example.com/react" },
-    { title: "Get more focus", link: "https://example.com/next" },
-    { title: "Advanced Leadership", link: "https://example.com/js" },
-    { title: "Leadership", link: "https://example.com/js" },
-    { title: "Personal Development", link: "https://example.com/react" },
+    {
+      title: "Definition of Self-Motivation",
+      link: "https://example.com/ai",
+    },
+    {
+      title: "Importance of Self-Motivation",
+      link: "https://example.com/react",
+    },
+    { title: "Self-Assessment Tools", link: "https://example.com/next" },
+    { title: "Seeking Feedback from Others ", link: "https://example.com/js" },
+    { title: "Setting Realistic Goals  ", link: "https://example.com/js" },
+    { title: "Long-Term Goals  ", link: "https://example.com/react" },
   ];
 
   // Function to render cards

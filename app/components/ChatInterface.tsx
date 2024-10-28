@@ -302,7 +302,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       {messages.length > 0 && (
         <div className="flex justify-center mb-4">
           <Button
-            className="ml-4 bg-primary hover:bg-primary-dark text-white"
+            className="ml-4 bg-primary hover:bg-primary-dark text-black dark:text-white"
             onClick={saveChatHistory}
           >
             <Import className="mr-2" />
