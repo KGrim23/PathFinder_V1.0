@@ -16,6 +16,7 @@ import Card from "../components/Card";
 import { Button } from "@/components/ui/button";
 import VoiceInput from "../components/VoiceInput";
 import Link from "next/link";
+import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 
 type MessageType = {
   type: "user" | "ai";
@@ -133,15 +134,40 @@ export default function Dashboard() {
     {
       title: "Definition of Self-Motivation",
       link: "https://example.com/ai",
+      image:
+        "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1vdGl2YXRpb25hbHxlbnwwfHwwfHx8MA%3D%3D",
     },
     {
       title: "Importance of Self-Motivation",
       link: "https://example.com/react",
+      image:
+        "https://images.unsplash.com/photo-1561327127-3cd091e6258e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTgwfHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
     },
-    { title: "Self-Assessment Tools", link: "https://example.com/next" },
-    { title: "Seeking Feedback from Others ", link: "https://example.com/js" },
-    { title: "Setting Realistic Goals  ", link: "https://example.com/js" },
-    { title: "Long-Term Goals  ", link: "https://example.com/react" },
+    {
+      title: "Self-Assessment Tools",
+      link: "https://example.com/next",
+      image:
+        "https://images.unsplash.com/photo-1528158134711-e89943f34728?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTg5fHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
+    },
+
+    {
+      title: "Seeking Feedback from Others ",
+      link: "https://example.com/js",
+      image:
+        "https://images.unsplash.com/photo-1684693342351-7e2a8ebebd97?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjA2fHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
+    },
+    {
+      title: "Setting Realistic Goals  ",
+      link: "https://example.com/js",
+      image:
+        "https://images.unsplash.com/photo-1618380446441-02ef59c61012?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjA5fHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
+    },
+    {
+      title: "Long-Term Goals  ",
+      link: "https://example.com/react",
+      image:
+        "https://images.unsplash.com/photo-1616442751986-fe0df84ad730?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1vdGl2YXRpb25hbCUyMHNwcGVjaHxlbnwwfHwwfHx8MA%3D%3D",
+    },
   ];
 
   // Function to render cards
@@ -153,7 +179,7 @@ export default function Dashboard() {
             key={index}
             title={article.title}
             link={article.link}
-            imageSrc="https://images.unsplash.com/photo-1729366790976-81844c8dd310?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            imageSrc={article.image}
           />
         ))}
       </div>

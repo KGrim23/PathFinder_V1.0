@@ -25,11 +25,10 @@ const Card: React.FC<CardProps> = ({ title, link, imageSrc }) => {
             height={200}
           />
         ) : null}
-
-        <span className="absolute left-0 right-0 text-white bg-white bg-opacity-0 text-xs text-center px-2 py-1 rounded-tl-lg rounded-tr-lg">
-          {title}
-        </span>
       </div>
+      <span className="block text-center text-gray-800 dark:text-white font-semibold text-xs m-2">
+        {title}
+      </span>
     </a>
   );
 };
