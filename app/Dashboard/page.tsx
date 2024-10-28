@@ -15,6 +15,7 @@ import { CircleX } from "lucide-react";
 import Card from "../components/Card";
 import { Button } from "@/components/ui/button";
 import VoiceInput from "../components/VoiceInput";
+import Link from "next/link";
 
 type MessageType = {
   type: "user" | "ai";
@@ -252,6 +253,11 @@ export default function Dashboard() {
                   handleOptionClick={handleOptionClick}
                   handleFeedback={handleFeedback}
                 />
+                <div className="mt-4 flex space-x-6 text-sm text-white">
+                  <Link href="/mini-courses" className="hover:underline">
+                    Mini-courses
+                  </Link>
+                </div>
               </>
             )}
             {currentPage === "settings" && <SettingsPage />}
