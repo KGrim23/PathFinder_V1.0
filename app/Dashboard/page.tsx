@@ -274,19 +274,16 @@ export default function Dashboard() {
                 {messages.length === 0 && (
                   <div className="flex flex-wrap justify-between mt-4">
                     {renderCards()}
+                    <button className="bg-slate-700 text-white w-full mt-4 p-2 border-0 rounded-full">
+                      <Link
+                        href="/mini-courses"
+                        className="text-white font-bold text-sm p-4"
+                      >
+                        Mini-courses
+                      </Link>
+                    </button>
                   </div>
                 )}
-
-                <div className="mt-4 flex space-x-6 text-sm text-white">
-                  <button className="bg-slate-700 text-white p-2 border-0 rounded-full">
-                    <Link
-                      href="/mini-courses"
-                      className="text-white font-bold text-sm p-4"
-                    >
-                      Mini-courses
-                    </Link>
-                  </button>
-                </div>
 
                 <ChatInterface
                   messages={messages}
