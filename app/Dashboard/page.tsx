@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import ChatInterface from "../components/ChatInterface";
 import SettingsPage from "../SettingPage/page";
 import ProgressPage from "../ProgressPage/page";
@@ -16,7 +15,6 @@ import Card from "../components/Card";
 import { Button } from "@/components/ui/button";
 import VoiceInput from "../components/VoiceInput";
 import Link from "next/link";
-import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 
 type MessageType = {
   type: "user" | "ai";
@@ -60,23 +58,60 @@ export default function Dashboard() {
   const sendMessageToOpenAI = async (message: string) => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/chat", {
-        message,
-        chatHistory: messages.map((msg) => ({
-          role: msg.type === "user" ? "user" : "assistant",
-          content: msg.content,
-        })),
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message,
+          chatHistory: messages.map((msg) => ({
+            role: msg.type === "user" ? "user" : "assistant",
+            content: msg.content,
+          })),
+        }),
       });
 
-      const aiResponseContent = response.data?.response;
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
-      const aiMessage: MessageType = {
+      const reader = response.body?.getReader();
+      let aiResponseContent = "";
+
+      // Check if reader is defined
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break; // Exit the loop when done
+
+          // Convert Uint8Array to string and append to aiResponseContent
+          aiResponseContent += new TextDecoder().decode(value);
+
+          // Immediately render the AI response
+          const aiMessage: MessageType = {
+            type: "ai",
+            content: aiResponseContent,
+            feedback: { liked: false, disliked: false, sound: false },
+          };
+
+          // Set the state with the latest AI response
+          setMessages((prevMessages) => {
+            const lastMessage = prevMessages[prevMessages.length - 1];
+            if (lastMessage?.type === "ai") {
+              return [...prevMessages.slice(0, -1), aiMessage];
+            }
+            return [...prevMessages, aiMessage];
+          });
+        }
+      }
+
+      // Final AI response message after streaming
+      const finalAiMessage: MessageType = {
         type: "ai",
         content: aiResponseContent || "Sorry, I didn't understand that.",
         feedback: { liked: false, disliked: false, sound: false },
       };
-
-      setMessages((prevMessages) => [...prevMessages, aiMessage]);
     } catch (error) {
       console.error("Error sending message to OpenAI API:", error);
 
@@ -123,7 +158,6 @@ export default function Dashboard() {
     router.push("/saved-chats");
   };
 
-  // Function to close the current chat and reset the state
   const closeChat = () => {
     setMessages([]);
     setInputMessage("");
@@ -170,7 +204,6 @@ export default function Dashboard() {
     },
   ];
 
-  // Function to render cards
   const renderCards = () => {
     return (
       <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-2">
@@ -211,25 +244,11 @@ export default function Dashboard() {
                 variant="outline"
                 size="sm"
                 className={`rounded-full p-3 items-center ${
-                  isDarkMode
-                    ? "bg-gray-800 border-0 shadow-xs shadow-slate-100"
-                    : "bg-gray-600 text-white border-0 shadow-xs shadow-slate-100"
+                  isDarkMode ? "bg-gray-800" : "bg-gray-600 text-white"
                 }`}
                 onClick={() => handleOptionClick(option)}
               >
-                <span className="mr-2">
-                  {option === "Emotional Support"
-                    ? "💬"
-                    : option === "Career Advice"
-                    ? "🎯"
-                    : option === "Personal Growth"
-                    ? "🌱"
-                    : option === "Stress Management"
-                    ? "🧘"
-                    : option === "Time Management"
-                    ? "⏳"
-                    : "⚖️"}
-                </span>
+                <span className="mr-2">{/* Emoji based on option */}</span>
                 {option}
               </Button>
             ))}
@@ -257,9 +276,7 @@ export default function Dashboard() {
             {currentPage === "chat" && (
               <>
                 <div className="flex justify-start items-center mb-6 mt-4 ml-4">
-                  {" "}
-                  {/* Added margin-top and margin-left */}
-                  {messages.length > 0 && ( // Conditional rendering of the button
+                  {messages.length > 0 && (
                     <button
                       onClick={closeChat}
                       className="rounded-full p-2 z-10 dark:text-white"
@@ -270,7 +287,6 @@ export default function Dashboard() {
                   )}
                 </div>
 
-                {/* Render Cards Section only when there are no messages */}
                 {messages.length === 0 && (
                   <div className="flex flex-wrap justify-between mt-4">
                     {renderCards()}
