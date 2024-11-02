@@ -248,7 +248,19 @@ export default function Dashboard() {
                 }`}
                 onClick={() => handleOptionClick(option)}
               >
-                <span className="mr-2">{/* Emoji based on option */}</span>
+                <span className="mr-2">
+                  {option === "Emotional Support"
+                    ? "💬"
+                    : option === "Career Advice"
+                    ? "🎯"
+                    : option === "Personal Growth"
+                    ? "🌱"
+                    : option === "Stress Management"
+                    ? "🧘"
+                    : option === "Time Management"
+                    ? "⏳"
+                    : "⚖️"}
+                </span>
                 {option}
               </Button>
             ))}

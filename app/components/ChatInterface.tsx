@@ -89,6 +89,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     existingSessions.push(newSession);
     localStorage.setItem("chatSessions", JSON.stringify(existingSessions));
     setChatSessions(existingSessions);
+    alert("Chat history saved!");
   };
 
   const renderAIMessageContent = (content: any) => {

@@ -180,7 +180,7 @@ const SavedChatsPage: React.FC = () => {
                   <div
                     key={chatIndex}
                     className={`p-4 rounded-xl justify-center items-center ${
-                      isDarkMode ? "bg-zinc-950" : "bg-black text-white"
+                      isDarkMode ? "bg-zinc-950" : ""
                     }`}
                   >
                     <div className="flex justify-between items-center">
@@ -194,7 +194,7 @@ const SavedChatsPage: React.FC = () => {
                       </div>
                       <button
                         className={`ml-4 ${
-                          isDarkMode ? "text-white" : "bg-black text-white"
+                          isDarkMode ? "text-white" : "text-black"
                         }`}
                         onClick={() => deleteChatSession(chatIndex)}
                       >
@@ -208,8 +208,8 @@ const SavedChatsPage: React.FC = () => {
                             key={messageIndex}
                             className={`inline-block p-3 rounded-xl w-full ${
                               message.type === "user"
-                                ? "bg-zinc-950 text-white text-right"
-                                : "bg-zinc-950 text-white text-left"
+                                ? "text-black text-right"
+                                : "text-black text-left"
                             }`}
                           >
                             <div className="text-md leading-relaxed">
