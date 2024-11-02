@@ -1,22 +1,20 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { useTheme } from "../components/ThemeContext";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { useRouter } from "next/navigation";
+import { CircleX } from "lucide-react";
+import Link from "next/link";
 import ChatInterface from "../components/ChatInterface";
+import Sidebar from "../components/Sidebar";
+import Navbar from "../components/Navbar";
 import SettingsPage from "../SettingPage/page";
 import ProgressPage from "../ProgressPage/page";
-import { TooltipProvider } from "@radix-ui/react-tooltip";
-import Navbar from "../components/Navbar";
-import { useTheme } from "../components/ThemeContext";
 import SavedChatsPage from "../saved-chats/page";
-import { useRouter } from "next/navigation";
-import Sidebar from "../components/Sidebar";
-import { CircleX } from "lucide-react";
 import Card from "../components/Card";
-import { Button } from "@/components/ui/button";
 import VoiceInput from "../components/VoiceInput";
-import Link from "next/link";
-import { imageConfigDefault } from "next/dist/shared/lib/image-config";
+import { Button } from "@/components/ui/button";
 
 type MessageType = {
   type: "user" | "ai";
@@ -26,6 +24,12 @@ type MessageType = {
     disliked: boolean;
     sound: boolean;
   };
+};
+
+type Article = {
+  title: string;
+  link: string;
+  image: string;
 };
 
 export default function Dashboard() {
@@ -50,141 +54,132 @@ export default function Dashboard() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Function to save chat history to local storage
   const saveChatHistory = () => {
     localStorage.setItem("savedChats", JSON.stringify(messages));
     alert("Chat history saved!");
   };
 
-  // Function to send message to OpenAI API
   const sendMessageToOpenAI = async (message: string) => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/chat", {
-        message,
-        chatHistory: messages.map((msg) => ({
-          role: msg.type === "user" ? "user" : "assistant",
-          content: msg.content,
-        })),
+
+      // Add user message immediately
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: "user", content: message },
+      ]);
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message,
+          chatHistory: messages.map((msg) => ({
+            role: msg.type === "user" ? "user" : "assistant",
+            content: msg.content,
+          })),
+        }),
       });
 
-      const aiResponseContent = response.data?.response;
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
-      const aiMessage: MessageType = {
-        type: "ai",
-        content: aiResponseContent || "Sorry, I didn't understand that.",
-        feedback: { liked: false, disliked: false, sound: false },
-      };
+      // Add AI message placeholder
+      const newMessageIndex = messages.length + 1;
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          type: "ai",
+          content: "",
+          feedback: { liked: false, disliked: false, sound: false },
+        },
+      ]);
 
-      setMessages((prevMessages) => [...prevMessages, aiMessage]);
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const text = decoder.decode(value, { stream: true });
+
+          // Update AI message content incrementally
+          setMessages((prevMessages) => {
+            const updatedMessages = [...prevMessages];
+            const lastMessage = updatedMessages[updatedMessages.length - 1];
+            if (lastMessage && lastMessage.type === "ai") {
+              lastMessage.content += text;
+            }
+            return updatedMessages;
+          });
+        }
+      }
     } catch (error) {
-      console.error("Error sending message to OpenAI API:", error);
-
-      const errorMessage: MessageType = {
-        type: "ai",
-        content: "Sorry, something went wrong. Please try again.",
-        feedback: { liked: false, disliked: false, sound: false },
-      };
-      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      console.error("Error sending message to OpenAI:", error);
+      alert("An error occurred while sending the message.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleOptionClick = (option: string) => {
+    sendMessageToOpenAI(option);
   };
 
   const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputMessage.trim() === "") return;
 
-    const newUserMessage: MessageType = { type: "user", content: inputMessage };
-    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
-
     await sendMessageToOpenAI(inputMessage);
     setInputMessage("");
-  };
-
-  const handleOptionClick = (option: string) => {
-    const newUserMessage: MessageType = { type: "user", content: option };
-    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
-
-    sendMessageToOpenAI(option);
   };
 
   const handleFeedback = (
     index: number,
     type: "liked" | "disliked" | "sound"
   ) => {
-    const updatedMessages = [...messages];
-    updatedMessages[index].feedback![type] =
-      !updatedMessages[index].feedback![type];
-    setMessages(updatedMessages);
+    setMessages((prevMessages) => {
+      const updatedMessages = [...prevMessages];
+      if (updatedMessages[index].feedback) {
+        updatedMessages[index].feedback![type] =
+          !updatedMessages[index].feedback![type];
+      }
+      return updatedMessages;
+    });
   };
 
-  const navigateToSavedChats = () => {
-    router.push("/saved-chats");
-  };
-
-  // Function to close the current chat and reset the state
   const closeChat = () => {
     setMessages([]);
     setInputMessage("");
   };
 
-  // Example articles data
-  const articles = [
+  const articles: Article[] = [
     {
       title: "Definition of Self-Motivation",
       link: "https://example.com/ai",
       image:
-        "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1vdGl2YXRpb25hbHxlbnwwfHwwfHx8MA%3D%3D",
+        "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     },
-    {
-      title: "Importance of Self-Motivation",
-      link: "https://example.com/react",
-      image:
-        "https://images.unsplash.com/photo-1561327127-3cd091e6258e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTgwfHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      title: "Self-Assessment Tools",
-      link: "https://example.com/next",
-      image:
-        "https://images.unsplash.com/photo-1528158134711-e89943f34728?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTg5fHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
-    },
-
-    {
-      title: "Seeking Feedback from Others ",
-      link: "https://example.com/js",
-      image:
-        "https://images.unsplash.com/photo-1684693342351-7e2a8ebebd97?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjA2fHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      title: "Setting Realistic Goals  ",
-      link: "https://example.com/js",
-      image:
-        "https://images.unsplash.com/photo-1618380446441-02ef59c61012?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjA5fHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      title: "Long-Term Goals  ",
-      link: "https://example.com/react",
-      image:
-        "https://images.unsplash.com/photo-1616442751986-fe0df84ad730?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1vdGl2YXRpb25hbCUyMHNwcGVjaHxlbnwwfHwwfHx8MA%3D%3D",
-    },
+    // ... add other articles
   ];
 
-  // Function to render cards
-  const renderCards = () => {
-    return (
-      <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-2">
-        {articles.map((article, index) => (
-          <Card
-            key={index}
-            title={article.title}
-            link={article.link}
-            imageSrc={article.image}
-          />
-        ))}
-      </div>
-    );
-  };
+  const renderCards = () => (
+    <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-2">
+      {articles.map((article, index) => (
+        <Card
+          key={index}
+          title={article.title}
+          link={article.link}
+          imageSrc={article.image}
+        />
+      ))}
+    </div>
+  );
 
   const renderOptions = () => {
     if (messages.length === 0) {
@@ -257,9 +252,7 @@ export default function Dashboard() {
             {currentPage === "chat" && (
               <>
                 <div className="flex justify-start items-center mb-6 mt-4 ml-4">
-                  {" "}
-                  {/* Added margin-top and margin-left */}
-                  {messages.length > 0 && ( // Conditional rendering of the button
+                  {messages.length > 0 && (
                     <button
                       onClick={closeChat}
                       className="rounded-full p-2 z-10 dark:text-white"
@@ -270,7 +263,6 @@ export default function Dashboard() {
                   )}
                 </div>
 
-                {/* Render Cards Section only when there are no messages */}
                 {messages.length === 0 && (
                   <div className="flex flex-wrap justify-between mt-4">
                     {renderCards()}
@@ -289,16 +281,15 @@ export default function Dashboard() {
                   messages={messages}
                   inputMessage={inputMessage}
                   setInputMessage={setInputMessage}
-                  handleSendMessage={handleSendMessage}
                   handleOptionClick={handleOptionClick}
                   handleFeedback={handleFeedback}
+                  handleSendMessage={handleSendMessage}
                 />
               </>
             )}
             {currentPage === "settings" && <SettingsPage />}
             {currentPage === "progress" && <ProgressPage />}
             {currentPage === "saved-chats" && <SavedChatsPage />}
-            {currentPage === "sidebar" && <Sidebar isMobile={false} />}
 
             <p className="flex m-4 items-center justify-center text-xs text-grey-600">
               <span>Lumny AI</span> &nbsp;can make mistakes. Check important
