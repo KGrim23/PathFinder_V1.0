@@ -316,8 +316,9 @@ export default function Dashboard() {
             {currentPage === "saved-chats" && <SavedChatsPage />}
             {currentPage === "sidebar" && <Sidebar isMobile={false} />}
 
-            <p className="absolute bottom-2 right-2">
-              &copy; {new Date().getFullYear()} Your Coaching App
+            <p className="flex m-4 items-center justify-center text-xs text-grey-600">
+              <span>Lumny AI</span> &nbsp;can make mistakes. Check important
+              info.
             </p>
           </main>
         </div>
