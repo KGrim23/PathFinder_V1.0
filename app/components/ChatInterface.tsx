@@ -94,38 +94,43 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const renderAIMessageContent = (content: any) => {
     if (typeof content === "object" && content !== null) {
-      if (content.dialogue && Array.isArray(content.dialogue)) {
-        return (
-          <div>
-            {content.dialogue.map(
-              (msg: { speaker: string; message: string }, index: number) => (
-                <div key={index} className="mb-2">
-                  {msg.message}
-                </div>
-              )
-            )}
-          </div>
-        );
-      }
-      if (content.steps && Array.isArray(content.steps)) {
-        return (
-          <div className="mt-4">
-            <ul className="ml-6 list-disc">
-              {content.steps.map(
-                (
-                  step: { step_number: number; instruction: string },
-                  index: number
-                ) => (
-                  <li key={step.step_number}>
-                    {step.instruction.replace(/\*/g, "").trim()}
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
-        );
-      }
-      return <p>{content.rawMessage || "No structured content available."}</p>;
+      const { introduction, keyPoints, steps } = content;
+
+      return (
+        <div>
+          {/* Display introductory message if available */}
+          {introduction && <p className="mb-4">{introduction.trim()}</p>}
+
+          {/* Display key terms as bullet points */}
+          {keyPoints && Array.isArray(keyPoints) && (
+            <div className="mb-4">
+              <h4 className="font-semibold text-lg mb-2">Key Terms</h4>
+              <ul className="ml-6 list-disc">
+                {keyPoints.map((point: string, index: number) => (
+                  <li key={index}>{point.replace(/\*/g, "").trim()}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Display instructional steps in an ordered list */}
+          {steps && Array.isArray(steps) && (
+            <div className="mt-4">
+              <h4 className="font-semibold text-lg mb-2">Steps to Follow</h4>
+              <ol className="ml-6 list-decimal">
+                {steps.map((step: string, index: number) => (
+                  <li key={index}>{step.replace(/\*/g, "").trim()}</li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {/* Fallback message */}
+          {!introduction && !keyPoints && !steps && (
+            <p>{content.rawMessage || "No structured content available."}</p>
+          )}
+        </div>
+      );
     }
 
     if (typeof content === "string") {
@@ -133,7 +138,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         const parsedContent = JSON.parse(content);
         return renderAIMessageContent(parsedContent);
       } catch {
-        return <p>{content}</p>;
+        return <p>{content.trim()}</p>;
       }
     }
 
@@ -141,36 +146,17 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   };
 
   const renderUserMessageContent = (content: string) => {
-    const lines = content.split("\n");
+    const lines = content
+      .trim()
+      .split("\n")
+      .map((line) => line.trim());
 
-    return lines.map((line, index) => {
-      if (line.startsWith("**") && line.endsWith("**")) {
-        return (
-          <h3 key={index} className="font-semibold text-lg mb-2">
-            {line.replace(/\*\*/g, "")}
-          </h3>
-        );
-      }
-      if (line.startsWith("- ")) {
-        return (
-          <li key={index} className="ml-6 mb-2 list-disc">
-            {line.replace(/^- /, "")}
-          </li>
-        );
-      }
-      if (line.match(/^\d+\.\s/)) {
-        return (
-          <li key={index} className="ml-6 mb-2 list-decimal">
-            {line.replace(/^\d+\.\s/, "")}
-          </li>
-        );
-      }
-      return (
-        <p key={index} className="mb-2 last:mb-0">
-          {line}
-        </p>
-      );
-    });
+    // Render each line as a separate paragraph
+    return lines.map((line, index) => (
+      <p key={index} className="mb-2 last:mb-0">
+        {line}
+      </p>
+    ));
   };
 
   const handleReadAloud = async (content: any) => {

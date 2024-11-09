@@ -1,7 +1,8 @@
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.XAI_API_KEY,
+  baseURL: "https://api.x.ai/v1",
 });
 
 export async function POST(req: Request) {
@@ -14,12 +15,12 @@ export async function POST(req: Request) {
     ];
 
     const stream = await openai.chat.completions.create({
-      model: "gpt-4-1106-preview",
+      model: "grok-beta",
       messages: [
         {
           role: "system",
           content: `
-            You are a professional advisor and coach who offers friendly, supportive, and practical advice in the area of soft skills. 
+            You are a professional advisor or a coach who offers friendly, supportive, and practical advice in the area of soft skills. 
             You may embody various roles, such as Communication Coach, Emotional Intelligence Advisor, Conflict Resolution Specialist, Leadership Mentor and University Guidance Counselor. 
             Always start with a conversational approach before recommending a step-by-step guide.
             Your goal is to help users navigate their paths, make informed decisions, and find fulfillment in their lives.
