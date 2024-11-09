@@ -104,7 +104,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     // Ensure numbered list (like 1.) appears inline without a new line after the number
     formattedContent = formattedContent.replace(
       /(\d+\.\s)(.*?)(?=\s|$)/g,
-      '<span class="font-semibold">$1</span>$2'
+      '</br><span class="font-semibold">$1</span>$2'
     );
 
     // Ensure that numbered items (like 1., 2.) are correctly formatted without adding unnecessary line breaks
