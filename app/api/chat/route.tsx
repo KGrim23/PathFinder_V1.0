@@ -1,7 +1,8 @@
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.XAI_API_KEY,
+  baseURL: "https://api.x.ai/v1",
 });
 
 export async function POST(req: Request) {
@@ -14,24 +15,26 @@ export async function POST(req: Request) {
     ];
 
     const stream = await openai.chat.completions.create({
-      model: "gpt-4-1106-preview",
+      model: "grok-beta",
       messages: [
         {
           role: "system",
           content: `
-            You are a professional advisor and coach who offers friendly, supportive, and practical advice in the area of soft skills. 
+            You are a professional advisor or a coach who offers friendly, supportive, and practical advice in the area of soft skills. 
             You may embody various roles, such as Communication Coach, Emotional Intelligence Advisor, Conflict Resolution Specialist, Leadership Mentor and University Guidance Counselor. 
             Always start with a conversational approach before recommending a step-by-step guide.
             Your goal is to help users navigate their paths, make informed decisions, and find fulfillment in their lives.
             Ensure that every response relates directly to the last user message, using the full conversation history to create a personal and consistent flow. If the user gives a short or simple response (e.g., "yes", "no", "new to me"), respond in a way that acknowledges their previous answers and continues the conversation smoothly. Make sure to stay on the topic and avoid digressing into unrelated topics.
             Use memory of the chat history to keep track of previous questions and responses, so that the conversation remains personal and relevant to the user's needs.
+
+           
           `,
         },
         ...updatedChatHistory,
       ],
       stream: true,
       temperature: 1,
-      max_tokens: 2048,
+      max_tokens: 1000,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,

@@ -92,85 +92,48 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     alert("Chat history saved!");
   };
 
-  const renderAIMessageContent = (content: any) => {
-    if (typeof content === "object" && content !== null) {
-      if (content.dialogue && Array.isArray(content.dialogue)) {
-        return (
-          <div>
-            {content.dialogue.map(
-              (msg: { speaker: string; message: string }, index: number) => (
-                <div key={index} className="mb-2">
-                  {msg.message}
-                </div>
-              )
-            )}
-          </div>
-        );
-      }
-      if (content.steps && Array.isArray(content.steps)) {
-        return (
-          <div className="mt-4">
-            <ul className="ml-6 list-disc">
-              {content.steps.map(
-                (
-                  step: { step_number: number; instruction: string },
-                  index: number
-                ) => (
-                  <li key={step.step_number}>
-                    {step.instruction.replace(/\*/g, "").trim()}
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
-        );
-      }
-      return <p>{content.rawMessage || "No structured content available."}</p>;
-    }
+  const formatAIMessageContent = (content: string) => {
+    let formattedContent = content;
 
+    // Replace "*" with heading (h4)
+    formattedContent = formattedContent.replace(
+      /\*(.*?)\*/g,
+      '<h4 class="font-semibold text-xl my-2">$1</h4>'
+    );
+
+    // Ensure numbered list (like 1.) appears inline without a new line after the number
+    formattedContent = formattedContent.replace(
+      /(\d+\.\s)(.*?)(?=\s|$)/g,
+      '<span class="font-semibold">$1</span>$2'
+    );
+
+    // Ensure that numbered items (like 1., 2.) are correctly formatted without adding unnecessary line breaks
+    formattedContent = formattedContent.replace(/(\d+\.\s)/g, "$1");
+
+    return formattedContent;
+  };
+
+  const renderAIMessageContent = (content: any) => {
     if (typeof content === "string") {
-      try {
-        const parsedContent = JSON.parse(content);
-        return renderAIMessageContent(parsedContent);
-      } catch {
-        return <p>{content}</p>;
-      }
+      const formattedContent = formatAIMessageContent(content);
+      return <div dangerouslySetInnerHTML={{ __html: formattedContent }} />;
     }
 
     return <p>No valid content available.</p>;
   };
 
   const renderUserMessageContent = (content: string) => {
-    const lines = content.split("\n");
+    const lines = content
+      .trim()
+      .split("\n")
+      .map((line) => line.trim());
 
-    return lines.map((line, index) => {
-      if (line.startsWith("**") && line.endsWith("**")) {
-        return (
-          <h3 key={index} className="font-semibold text-lg mb-2">
-            {line.replace(/\*\*/g, "")}
-          </h3>
-        );
-      }
-      if (line.startsWith("- ")) {
-        return (
-          <li key={index} className="ml-6 mb-2 list-disc">
-            {line.replace(/^- /, "")}
-          </li>
-        );
-      }
-      if (line.match(/^\d+\.\s/)) {
-        return (
-          <li key={index} className="ml-6 mb-2 list-decimal">
-            {line.replace(/^\d+\.\s/, "")}
-          </li>
-        );
-      }
-      return (
-        <p key={index} className="mb-2 last:mb-0">
-          {line}
-        </p>
-      );
-    });
+    // Render each line as a separate paragraph
+    return lines.map((line, index) => (
+      <p key={index} className="mb-2 last:mb-0">
+        {line}
+      </p>
+    ));
   };
 
   const handleReadAloud = async (content: any) => {
