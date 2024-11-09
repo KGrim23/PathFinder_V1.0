@@ -93,20 +93,22 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   };
 
   const formatAIMessageContent = (content: string) => {
-    // Replace "*" with heading (h4) and add a new line before numbered steps like "1."
     let formattedContent = content;
 
-    // Replace "*" with an <h4> heading
+    // Replace "*" with heading (h4)
     formattedContent = formattedContent.replace(
       /\*(.*?)\*/g,
       '<h4 class="font-semibold text-xl my-2">$1</h4>'
     );
 
-    // Add a new line before numbered steps (e.g., "1. Task")
+    // Ensure numbered list (like 1.) appears inline without a new line after the number
     formattedContent = formattedContent.replace(
-      /(\d+\.)/g,
-      '<br/><span class="font-semibold">$1</span>'
+      /(\d+\.\s)(.*?)(?=\s|$)/g,
+      '<span class="font-semibold">$1</span>$2'
     );
+
+    // Ensure that numbered items (like 1., 2.) are correctly formatted without adding unnecessary line breaks
+    formattedContent = formattedContent.replace(/(\d+\.\s)/g, "$1");
 
     return formattedContent;
   };
