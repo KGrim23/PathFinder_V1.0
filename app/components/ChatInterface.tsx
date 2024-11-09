@@ -92,54 +92,29 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     alert("Chat history saved!");
   };
 
+  const formatAIMessageContent = (content: string) => {
+    // Replace "*" with heading (h4) and add a new line before numbered steps like "1."
+    let formattedContent = content;
+
+    // Replace "*" with an <h4> heading
+    formattedContent = formattedContent.replace(
+      /\*(.*?)\*/g,
+      '<h4 class="font-semibold text-xl my-2">$1</h4>'
+    );
+
+    // Add a new line before numbered steps (e.g., "1. Task")
+    formattedContent = formattedContent.replace(
+      /(\d+\.)/g,
+      '<br/><span class="font-semibold">$1</span>'
+    );
+
+    return formattedContent;
+  };
+
   const renderAIMessageContent = (content: any) => {
-    if (typeof content === "object" && content !== null) {
-      const { introduction, keyPoints, steps } = content;
-
-      return (
-        <div>
-          {/* Display introductory message if available */}
-          {introduction && <p className="mb-4">{introduction.trim()}</p>}
-
-          {/* Display key terms as bullet points */}
-          {keyPoints && Array.isArray(keyPoints) && (
-            <div className="mb-4">
-              <h4 className="font-semibold text-lg mb-2">Key Terms</h4>
-              <ul className="ml-6 list-disc">
-                {keyPoints.map((point: string, index: number) => (
-                  <li key={index}>{point.replace(/\*/g, "").trim()}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Display instructional steps in an ordered list */}
-          {steps && Array.isArray(steps) && (
-            <div className="mt-4">
-              <h4 className="font-semibold text-lg mb-2">Steps to Follow</h4>
-              <ol className="ml-6 list-decimal">
-                {steps.map((step: string, index: number) => (
-                  <li key={index}>{step.replace(/\*/g, "").trim()}</li>
-                ))}
-              </ol>
-            </div>
-          )}
-
-          {/* Fallback message */}
-          {!introduction && !keyPoints && !steps && (
-            <p>{content.rawMessage || "No structured content available."}</p>
-          )}
-        </div>
-      );
-    }
-
     if (typeof content === "string") {
-      try {
-        const parsedContent = JSON.parse(content);
-        return renderAIMessageContent(parsedContent);
-      } catch {
-        return <p>{content.trim()}</p>;
-      }
+      const formattedContent = formatAIMessageContent(content);
+      return <div dangerouslySetInnerHTML={{ __html: formattedContent }} />;
     }
 
     return <p>No valid content available.</p>;
