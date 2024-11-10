@@ -58,7 +58,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   handleFeedback,
 }) => {
   const { isDarkMode } = useTheme();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Track audio playing state
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
     null
@@ -75,10 +75,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
     setInputMessage("");
     await handleSendMessage(e);
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   const saveChatHistory = () => {
@@ -95,20 +95,29 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const formatAIMessageContent = (content: string) => {
     let formattedContent = content;
 
-    // Replace "*" with heading (h4)
+    // Replace "*" at the start of a line with heading (h4)
     formattedContent = formattedContent.replace(
-      /\*(.*?)\*/g,
+      /^\*(.*?)\*/gm,
       '<h4 class="font-semibold text-xl my-2">$1</h4>'
     );
 
-    // Ensure numbered list (like 1.) appears inline without a new line after the number
+    // Format numbered lists (1., 2., etc.) with additional line breaks between each step
     formattedContent = formattedContent.replace(
-      /(\d+\.\s)(.*?)(?=\s|$)/g,
-      '</br><span class="font-semibold">$1</span>$2'
+      /(\d+\.\s)([^\n]*)/g,
+      '<br><br><span class="font-semibold">$1</span>$2<br><br>'
     );
 
-    // Ensure that numbered items (like 1., 2.) are correctly formatted without adding unnecessary line breaks
-    formattedContent = formattedContent.replace(/(\d+\.\s)/g, "$1");
+    // Format bullet points (-) with indentation and line breaks for clarity
+    formattedContent = formattedContent.replace(
+      /^-\s(.*?)(?=\n|$)/gm,
+      '<br>&nbsp;&nbsp;&nbsp;&nbsp;<li class="list-disc ml-4">$1</li>'
+    );
+
+    // Handle inline bold text by wrapping in <strong>
+    formattedContent = formattedContent.replace(
+      /\*\*(.*?)\*\*/g,
+      "<strong>$1</strong>"
+    );
 
     return formattedContent;
   };
@@ -256,11 +265,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </div>
         ))}
 
-        {isLoading && (
+        {/* {isLoading && (
           <div className="flex justify-center mt-4">
             <p className="text-lg">Loading...</p>
           </div>
-        )}
+        )} */}
       </div>
 
       {messages.length > 0 && (
