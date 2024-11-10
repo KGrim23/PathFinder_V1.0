@@ -5,7 +5,7 @@ import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
 import { Import, Volume2, VolumeX } from "lucide-react";
 import AWS from "aws-sdk";
-
+import { marked } from "marked"; // Import marked library
 // Configure Polly - go to AWS console
 AWS.config.update({
   accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
@@ -58,7 +58,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   handleFeedback,
 }) => {
   const { isDarkMode } = useTheme();
-  // const [isLoading, setIsLoading] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Track audio playing state
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
     null
@@ -75,10 +74,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // setIsLoading(true);
     setInputMessage("");
     await handleSendMessage(e);
-    // setIsLoading(false);
   };
 
   const saveChatHistory = () => {
@@ -92,8 +89,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     alert("Chat history saved!");
   };
 
-  const formatAIMessageContent = (content: string) => {
-    let formattedContent = content;
+  const formatAIMessageContent = (content: string): string => {
+    let formattedContent = marked(content) as string; // Parse markdown to HTML using marked
 
     // Replace "*" at the start of a line with heading (h4)
     formattedContent = formattedContent.replace(
@@ -110,7 +107,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     // Format bullet points (-) with indentation and line breaks for clarity
     formattedContent = formattedContent.replace(
       /^-\s(.*?)(?=\n|$)/gm,
-      '<br>&nbsp;&nbsp;&nbsp;&nbsp;<li class="list-disc ml-4">$1</li>'
+      '<br>    <li class="list-disc ml-4">$1</li>'
     );
 
     // Handle inline bold text by wrapping in <strong>
@@ -122,13 +119,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     return formattedContent;
   };
 
-  const renderAIMessageContent = (content: any) => {
-    if (typeof content === "string") {
-      const formattedContent = formatAIMessageContent(content);
-      return <div dangerouslySetInnerHTML={{ __html: formattedContent }} />;
-    }
-
-    return <p>No valid content available.</p>;
+  const renderAIMessageContent = (content: string) => {
+    const formattedContent = formatAIMessageContent(content);
+    return <div dangerouslySetInnerHTML={{ __html: formattedContent }} />;
   };
 
   const renderUserMessageContent = (content: string) => {
@@ -186,7 +179,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     const params = {
       OutputFormat: "mp3",
       Text: ssmlText,
-      TextType: "ssml", //this is to make sure non robotic voice and use natural voice
+      TextType: "ssml", //this is to make sure non-robotic voice and use natural voice
       VoiceId: "Matthew",
     };
 
@@ -237,9 +230,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             }`}
           >
             {message.type === "ai" ? (
-              <div>{renderAIMessageContent(message.content)}</div>
+              <div>{renderAIMessageContent(message.content as string)}</div>
             ) : (
-              <div>{renderUserMessageContent(message.content)}</div>
+              <div>{renderUserMessageContent(message.content as string)}</div>
             )}
             {message.type === "ai" && (
               <div className="flex justify-end">
@@ -264,12 +257,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             )}
           </div>
         ))}
-
-        {/* {isLoading && (
-          <div className="flex justify-center mt-4">
-            <p className="text-lg">Loading...</p>
-          </div>
-        )} */}
       </div>
 
       {messages.length > 0 && (
@@ -278,8 +265,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             className="ml-4 bg-primary hover:bg-primary-dark text-black dark:text-white"
             onClick={saveChatHistory}
           >
-            <Import className="mr-2" />
-            Save Chat
+            Save Chat History
           </Button>
         </div>
       )}
@@ -295,5 +281,4 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     </div>
   );
 };
-
 export default ChatInterface;

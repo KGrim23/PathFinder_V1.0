@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { useTheme } from "../components/ThemeContext";
+import { marked } from "marked"; // Import marked library
 
 export type UserMessage = {
   type: "user";
@@ -77,83 +78,53 @@ const SavedChatsPage: React.FC = () => {
     alert(`Chat Session ${chatIndex + 1} has been deleted!`);
   };
 
-  const renderUserMessageContent = (content: string) => {
-    const lines = content.split("\n");
-    return lines.map((line, index) => {
-      if (line.startsWith("**") && line.endsWith("**")) {
-        return (
-          <h3 key={index} className="font-semibold text-lg mb-2">
-            {line.replace(/\*\*/g, "")}
-          </h3>
-        );
-      }
-      if (line.startsWith("- ")) {
-        return (
-          <li key={index} className="ml-6 mb-2 list-disc">
-            {line.replace(/^- /, "")}
-          </li>
-        );
-      }
-      if (line.match(/^\d+\.\s/)) {
-        return (
-          <li key={index} className="ml-6 mb-2 list-decimal">
-            {line.replace(/^\d+\.\s/, "")}
-          </li>
-        );
-      }
-      return (
-        <p key={index} className="mb-2 last:mb-0">
-          {line}
-        </p>
-      );
-    });
+  const formatAIMessageContent = (content: string): string => {
+    let formattedContent = marked(content) as string; // Parse markdown to HTML using marked
+
+    // Replace "*" at the start of a line with heading (h4)
+    formattedContent = formattedContent.replace(
+      /^\*(.*?)\*/gm,
+      '<h4 class="font-semibold text-xl my-2">$1</h4>'
+    );
+
+    // Format numbered lists (1., 2., etc.) with additional line breaks between each step
+    formattedContent = formattedContent.replace(
+      /(\d+\.\s)([^\n]*)/g,
+      '<br><br><span class="font-semibold">$1</span>$2<br><br>'
+    );
+
+    // Format bullet points (-) with indentation and line breaks for clarity
+    formattedContent = formattedContent.replace(
+      /^-\s(.*?)(?=\n|$)/gm,
+      '<br>    <li class="list-disc ml-4">$1</li>'
+    );
+
+    // Handle inline bold text by wrapping in <strong>
+    formattedContent = formattedContent.replace(
+      /\*\*(.*?)\*\*/g,
+      "<strong>$1</strong>"
+    );
+
+    return formattedContent;
   };
 
-  const renderAIMessageContent = (content: any) => {
-    if (typeof content === "string") {
-      try {
-        const parsedContent = JSON.parse(content);
-        content = parsedContent;
-      } catch {
-        return <p>{content}</p>;
-      }
-    }
+  const renderAIMessageContent = (content: string) => {
+    const formattedContent = formatAIMessageContent(content);
+    return <div dangerouslySetInnerHTML={{ __html: formattedContent }} />;
+  };
 
-    if (typeof content === "object" && content !== null) {
-      if (content.dialogue && Array.isArray(content.dialogue)) {
-        return (
-          <div>
-            {content.dialogue.map(
-              (msg: { speaker: string; message: string }, index: number) => (
-                <div key={index} className="mb-2">
-                  {msg.message}
-                </div>
-              )
-            )}
-          </div>
-        );
-      }
-      if (content.steps && Array.isArray(content.steps)) {
-        return (
-          <div className="mt-4">
-            <ul className="ml-6 list-disc">
-              {content.steps.map(
-                (step: { step_number: number; instruction: string }) => (
-                  <li key={step.step_number}>
-                    {step.instruction.replace(/\*/g, "").trim()}
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
-        );
-      }
-      if (content.rawMessage) {
-        return <p>{content.rawMessage}</p>;
-      }
-    }
+  const renderUserMessageContent = (content: string) => {
+    const lines = content
+      .trim()
+      .split("\n")
+      .map((line) => line.trim());
 
-    return <p>No valid content available.</p>;
+    // Render each line as a separate paragraph
+    return lines.map((line, index) => (
+      <p key={index} className="mb-2 last:mb-0">
+        {line}
+      </p>
+    ));
   };
 
   const handleChatClick = (index: number) => {
@@ -218,8 +189,16 @@ const SavedChatsPage: React.FC = () => {
                           >
                             <div className="text-md leading-relaxed">
                               {message.type === "user"
-                                ? renderUserMessageContent(message.content)
-                                : renderAIMessageContent(message.content)}
+                                ? renderUserMessageContent(
+                                    typeof message.content === "string"
+                                      ? message.content
+                                      : JSON.stringify(message.content)
+                                  )
+                                : renderAIMessageContent(
+                                    typeof message.content === "string"
+                                      ? message.content
+                                      : JSON.stringify(message.content)
+                                  )}
                             </div>
                           </div>
                         ))}
