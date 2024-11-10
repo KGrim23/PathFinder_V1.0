@@ -51,6 +51,12 @@ const config: Config = {
           "5": "hsl(var(--chart-5))",
         },
       },
+
+      fontFamily: {
+        sans: ['"Inter"', "Arial", "sans-serif"],
+        mono: ['"GeistMono"', "monospace"],
+      },
+
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

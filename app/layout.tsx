@@ -1,19 +1,10 @@
 // app/layout.tsx
 import "./globals.css";
-import localFont from "next/font/local";
 import { ReactNode } from "react";
 import { ThemeProvider } from "./components/ThemeContext";
 
-const geistSans = localFont({
-  src: "../fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "../fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+// No need for the localFont imports for GeistSans and GeistMono anymore
+// Instead, you can add the Inter font in the head
 
 export const metadata = {
   title: "Lumny App",
@@ -28,11 +19,14 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         <meta name="theme-color" content="#000000" />
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+          rel="stylesheet"
+        />
       </head>
 
-      <body
-        className={`overscroll-x-none ${geistSans.variable} ${geistMono.variable}`}
-      >
+      <body className="overscroll-x-none font-sans font-light">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
