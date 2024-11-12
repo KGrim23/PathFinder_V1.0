@@ -72,7 +72,7 @@ export async function POST(req: Request): Promise<Response> {
       ],
       stream: true,
       temperature: 1,
-      max_tokens: 500,
+      max_tokens: 2500,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
@@ -88,7 +88,7 @@ export async function POST(req: Request): Promise<Response> {
           const text = chunk.choices?.[0]?.delta?.content || "";
           if (text) {
             controller.enqueue(new TextEncoder().encode(text));
-            await new Promise((resolve) => setTimeout(resolve, 100));
+            await new Promise((resolve) => setTimeout(resolve, 150));
           }
         }
         controller.close();
