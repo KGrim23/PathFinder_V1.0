@@ -27,17 +27,15 @@ type UserMessage = {
 };
 
 // AI Message Type
-type AIContent =
-  | string
-  | {
-      dialogue?: Array<{ speaker: string; message: string }>;
-      steps?: Array<{ step_number: number; instruction: string }>;
-      rawMessage?: string;
-    };
-
 type AIMessage = {
   type: "ai";
-  content: AIContent;
+  content:
+    | {
+        dialogue?: Array<{ speaker: string; message: string }>;
+        steps?: Array<{ step_number: number; instruction: string }>;
+        rawMessage?: string;
+      }
+    | string;
 };
 
 type MessageType = UserMessage | AIMessage;
@@ -121,11 +119,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     return formattedContent;
   };
 
-  const renderAIMessageContent = (content: AIContent) => {
-    const textContent =
-      typeof content === "string" ? content : content.rawMessage || "";
-
-    const formattedContent = formatAIMessageContent(textContent);
+  const renderAIMessageContent = (content: string) => {
+    const formattedContent = formatAIMessageContent(content);
     return <div dangerouslySetInnerHTML={{ __html: formattedContent }} />;
   };
 
