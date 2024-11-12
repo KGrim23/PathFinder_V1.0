@@ -25,7 +25,7 @@ const openai = new OpenAI({
 });
 
 // Configure as Edge Function for Vercel
-export const config = { runtime: "edge" };
+export const runtime = "edge";
 
 export async function POST(req: Request) {
   const { message, chatHistory } = await req.json();
