@@ -5,7 +5,7 @@ import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
 import { Import, Volume2, VolumeX } from "lucide-react";
 import AWS from "aws-sdk";
-import { marked } from "marked"; // Import marked library
+import { marked } from "marked"; //for markdown parsing
 // Configure Polly - go to AWS console
 AWS.config.update({
   accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID,
@@ -90,12 +90,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   };
 
   const formatAIMessageContent = (content: string): string => {
-    let formattedContent = marked(content) as string; // Parse markdown to HTML using marked
+    let formattedContent = marked(content) as string;
 
     // Replace "*" at the start of a line with heading (h4)
     formattedContent = formattedContent.replace(
       /^\*(.*?)\*/gm,
-      '<h4 class="font-bold text-blue-600 text-xl my-2">$1</h4>'
+      '<h4 class="font-bold text-xl my-2">$1</h4>'
     );
 
     // Format numbered lists (1., 2., etc.) with additional line breaks between each step
@@ -113,7 +113,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     // Handle inline bold text by wrapping in <strong>
     formattedContent = formattedContent.replace(
       /\*\*(.*?)\*\*/g,
-      "<strong>$1</strong>"
+      "<span class='text-blue-600'>$1</span>"
     );
 
     return formattedContent;

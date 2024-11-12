@@ -50,18 +50,19 @@ export async function POST(req: Request) {
     "${contextSample}" and pair it with the capabilities of the grok model to provide rich, structured advice. Use these combined resources to deliver responses that are empathetic, personalized, and grounded in practical, real-world coaching.
 
     Your primary aim is to help users navigate their personal development paths, offering insights and actionable advice relevant to their immediate needs and context.`;
+
     const stream = await openai.chat.completions.create({
       model: "grok-beta",
       messages: [
         {
           role: "system",
-          content: { systemMessage },
+          content: systemMessage,
         },
         ...updatedChatHistory,
       ],
       stream: true,
       temperature: 1,
-      max_tokens: 800,
+      max_tokens: 500,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
