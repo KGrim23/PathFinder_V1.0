@@ -1,31 +1,39 @@
 import OpenAI from "openai";
 import fetch from "node-fetch";
 
-async function loadCoachingData() {
+interface CoachingDataItem {
+  content: string;
+}
+
+interface RequestBody {
+  message: string;
+  chatHistory: { role: string; content: string }[];
+}
+
+// Define a function to load data from Hugging Face dataset
+async function loadCoachingData(): Promise<CoachingDataItem[]> {
   const response = await fetch(
     "https://huggingface.co/api/datasets/fabiancelik/coachingllm",
     {
       headers: {
-        Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+        Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY ?? ""}`,
       },
     }
   );
   if (!response.ok) {
     throw new Error("Failed to load dataset from Hugging Face");
   }
-  const data = await response.json();
+  const data: CoachingDataItem[] = await response.json();
   return data;
 }
 
-// Initialize xAI client
+// Initialize OpenAI client with types
 const openai = new OpenAI({
-  // apiKey: process.env.XAI_API_KEY,
-  // baseURL: "https://api.x.ai/v1",
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY ?? "",
 });
 
-export async function POST(req: Request) {
-  const { message, chatHistory } = await req.json();
+export async function POST(req: Request): Promise<Response> {
+  const { message, chatHistory }: RequestBody = await req.json();
 
   try {
     const updatedChatHistory = [
@@ -57,7 +65,10 @@ export async function POST(req: Request) {
             ${contextSample}
           `,
         },
-        ...updatedChatHistory,
+        ...updatedChatHistory.map((msg) => ({
+          role: msg.role as "user" | "assistant" | "system",
+          content: msg.content,
+        })),
       ],
       stream: true,
       temperature: 1,
@@ -74,7 +85,7 @@ export async function POST(req: Request) {
     const readableStream = new ReadableStream({
       async start(controller) {
         for await (const chunk of stream) {
-          const text = chunk.choices[0]?.delta?.content || "";
+          const text = chunk.choices?.[0]?.delta?.content || "";
           if (text) {
             controller.enqueue(new TextEncoder().encode(text));
             await new Promise((resolve) => setTimeout(resolve, 100));
