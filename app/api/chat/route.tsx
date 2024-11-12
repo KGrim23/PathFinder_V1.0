@@ -59,7 +59,7 @@ export async function POST(req: Request): Promise<Response> {
             Your goal is to help users navigate their paths, make informed decisions, and find fulfillment in their lives.
             Ensure that every response relates directly to the last user message, using the full conversation history to create a personal and consistent flow. If the user gives a short or simple response (e.g., "yes", "no", "new to me"), respond in a way that acknowledges their previous answers and continues the conversation smoothly. Make sure to stay on the topic and avoid digressing into unrelated topics.
             Use memory of the chat history to keep track of previous questions and responses, so that the conversation remains personal and relevant to the user's needs.
-            Response should be in a conversational tone, and should not be too long.
+            Response should be in a conversational tone, and should not be more than 800 tokens.
 
             You can also use the following context to provide additional information:
             ${contextSample}
@@ -72,7 +72,7 @@ export async function POST(req: Request): Promise<Response> {
       ],
       stream: true,
       temperature: 1,
-      max_tokens: 2500,
+      max_tokens: 1000,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
