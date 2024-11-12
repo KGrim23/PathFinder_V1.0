@@ -95,7 +95,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     // Replace "*" at the start of a line with heading (h4)
     formattedContent = formattedContent.replace(
       /^\*(.*?)\*/gm,
-      '<h4 class="font-semibold text-xl my-2">$1</h4>'
+      '<h4 class="font-bold text-blue-600 text-xl my-2">$1</h4>'
     );
 
     // Format numbered lists (1., 2., etc.) with additional line breaks between each step
