@@ -178,15 +178,16 @@ export default function Dashboard() {
           </h2>
           <div className="flex flex-wrap gap-2 items-center justify-space-between text-xs">
             {[
-              "Career Guidence and Coaching",
+              "Career Guidence & Coaching",
               "T Level",
               "GCSE Options",
-              "Unisiversity Application",
               "Job Markets",
-              "Exam Worries",
+              "Unisiversity Application",
               "BTech",
+              "Exam Worries",
               "Time Management",
               "Alternative to 'A' Level",
+              "Career Options",
             ].map((option) => (
               <Button
                 key={option}
@@ -214,8 +215,10 @@ export default function Dashboard() {
                     ? "🛠️"
                     : option === "Time Management"
                     ? "⏳"
-                    : option === "Alternative to 'A' Level"
+                    : option === "Alternative to A-Level"
                     ? "⚖️"
+                    : option === "Career Options"
+                    ? "🌟"
                     : ""}
                 </span>
                 {option}

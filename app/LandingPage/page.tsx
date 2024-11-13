@@ -15,7 +15,7 @@ const LandingPage: React.FC = () => {
           <div className="flex flex-col items-center space-x-4 gap-4 mt-16">
             {/* Logo */}
             <Image
-              src="/logo_green.png"
+              src="/PathFinder_Green_bg.png"
               alt="Logo"
               width={55}
               height={55}
