@@ -42,7 +42,7 @@ const SettingsPage = () => {
           isDarkMode ? "dark" : ""
         }`}
       >
-        {!isMobile && <Sidebar isMobile={false} />} {/* Render sidebar */}
+        {!isMobile && <Sidebar />} {/* Render sidebar */}
         <div className="flex flex-col h-full">
           {/* Render Navbar */}
           <Navbar isMobile={isMobile} />
@@ -126,11 +126,11 @@ const SettingsPage = () => {
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
                       {[
-                        "Improve Communication",
-                        "Manage Stress",
+                        "GCSE options",
+                        "Exam Stress",
                         "Boost Confidence",
                         "Career Development",
-                        "Work-Life Balance",
+                        "University Applications",
                       ].map((goal) => (
                         <Button
                           key={goal}
@@ -204,13 +204,13 @@ const SettingsPage = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="flex items-center space-x-2">
+                    {/* <div className="flex items-center space-x-2">
                       <Switch id="save-chat-history" />
                       <Label htmlFor="save-chat-history">
                         Save chat history
                       </Label>
-                    </div>
-                    <Button variant="outline">Clear Chat History</Button>
+                    </div> */}
+                    {/* download chat history as a pdf */}
                     <Button variant="outline">Download Chat History</Button>
                   </CardContent>
                 </Card>

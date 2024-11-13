@@ -48,19 +48,19 @@ const Terms: React.FC = () => {
                 </p>
 
                 <p className="mb-6 text-sm">
-                  Welcome to the Lumny App! By using our services, you agree to
-                  the following terms. If you do not agree with these terms,
-                  please do not use our services.
+                  Welcome to the Path Finder App! By using our services, you
+                  agree to the following terms. If you do not agree with these
+                  terms, please do not use our services.
                 </p>
 
                 <h2 className="text-lg font-semibold mt-4 mb-4">
                   1. Acceptance of Terms
                 </h2>
                 <p className="mb-6 text-sm">
-                  By using the Lumny App, you affirm that you are at least 18
-                  years old or have the consent of a parent or guardian to use
-                  the app. If you are using the app on behalf of a company or
-                  organization, you represent that you have the authority to
+                  By using the Path Finder App, you affirm that you are at least
+                  18 years old or have the consent of a parent or guardian to
+                  use the app. If you are using the app on behalf of a company
+                  or organization, you represent that you have the authority to
                   bind that entity to these terms.
                 </p>
 
@@ -78,8 +78,9 @@ const Terms: React.FC = () => {
                   3. Use of the Service
                 </h2>
                 <p className="mb-6 text-sm">
-                  You agree to use the Lumny App only for lawful purposes and in
-                  accordance with these terms. You agree not to use the app:
+                  You agree to use the Path Finder App only for lawful purposes
+                  and in accordance with these terms. You agree not to use the
+                  app:
                 </p>
                 <ul className="list-disc ml-8 mb-6">
                   <li>
@@ -96,13 +97,13 @@ const Terms: React.FC = () => {
                   4. Limitation of Liability
                 </h2>
                 <p className="mb-6 text-sm">
-                  To the fullest extent permitted by law, in no event shall
-                  Lumny, its affiliates, or their licensors, service providers,
+                  To the fullest extent permitted by law, in no event shall Path
+                  Finder, its affiliates, or their licensors, service providers,
                   employees, agents, or contractors be liable for damages of any
                   kind, including without limitation any direct, indirect,
                   special, incidental, consequential, or punitive damages,
                   arising out of or in connection with your use of or inability
-                  to use the Lumny App.
+                  to use the Path Finder App.
                 </p>
 
                 <h2 className="text-lg font-semibold mt-4 mb-4">
@@ -119,7 +120,7 @@ const Terms: React.FC = () => {
                 </h2>
                 <p className="mb-6 text-sm">
                   If you have any questions about these terms, please contact us
-                  at Lumny.com
+                  at Path Finder.com
                 </p>
               </div>
             </div>

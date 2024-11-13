@@ -40,18 +40,19 @@ const PrivacyPolicy: React.FC = () => {
             <div className="max-w-3xl mx-auto p-6 text-gray-800 dark:text-gray-200">
               <div className="flex flex-col justify-center p-4 text-md">
                 <h1 className="text-xl font-bold mb-6">
-                  Privacy Policy for Lumny App
+                  Privacy Policy for Path Finder App
                 </h1>
                 <p className="mb-6 text-sm">
                   Last updated: {new Date().toLocaleDateString()}
                 </p>
 
                 <p className="mb-6 text-sm">
-                  This Privacy Policy describes how Lumny ("we," "us," or "our")
-                  collects, uses, discloses, and protects your information when
-                  you use the Lumny App (the “App”). By accessing or using our
-                  App, you agree to the terms of this Privacy Policy. If you do
-                  not agree with these terms, please do not use our App.
+                  This Privacy Policy describes how Path Finder ("we," "us," or
+                  "our") collects, uses, discloses, and protects your
+                  information when you use the Path Finder App (the “App”). By
+                  accessing or using our App, you agree to the terms of this
+                  Privacy Policy. If you do not agree with these terms, please
+                  do not use our App.
                 </p>
 
                 <h2 className="text-lg font-semibold mt-4 mb-4">
@@ -113,7 +114,7 @@ const PrivacyPolicy: React.FC = () => {
                   6. Contact Us
                 </h2>
                 <p className="mb-6">
-                  If you have questions, contact us at Lumny.com
+                  If you have questions, contact us at Path Finder.com
                 </p>
               </div>
             </div>

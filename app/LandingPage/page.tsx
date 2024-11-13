@@ -8,32 +8,23 @@ const LandingPage: React.FC = () => {
     <div className="relative flex flex-col items-center justify-center min-h-screen">
       {/* Background Image Section */}
       <div className="relative w-full min-h-screen">
-        <Image
-          src="/landing.jpg"
-          alt="Background Image"
-          layout="fill"
-          priority
-          objectFit="cover"
-          quality={100}
-          className="absolute z-0"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="absolute inset-0 bg-blue-950"></div>
 
         {/* Content Over the Image */}
         <div className="absolute inset-0 flex flex-col justify-between items-center z-10">
           <div className="flex flex-col items-center space-x-4 gap-4 mt-16">
             {/* Logo */}
             <Image
-              src="/lumny-new.png"
-              alt="Lumny Logo"
+              src="/logo_green.png"
+              alt="Logo"
               width={55}
               height={55}
               priority
             />
 
             {/* Centered Heading */}
-            <h1 className="text-3xl md:text-6xl text-gray-950 font-semibold">
-              Lumny App
+            <h1 className="text-3xl md:text-6xl text-white font-semibold">
+              PathFinder
             </h1>
           </div>
 

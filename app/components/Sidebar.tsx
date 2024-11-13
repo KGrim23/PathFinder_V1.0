@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useTheme } from "./ThemeContext";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+
 import {
   Tooltip,
   TooltipTrigger,
@@ -21,8 +22,6 @@ import {
 import {
   MessageSquarePlus,
   History,
-  Flag,
-  BarChart3,
   Settings2,
   LifeBuoy,
   User,
@@ -30,15 +29,10 @@ import {
   LogOut,
 } from "lucide-react";
 
-export default function Sidebar({ isMobile }: { isMobile: boolean }) {
+export default function Sidebar() {
   const { isDarkMode } = useTheme();
   const [currentPage, setCurrentPage] = useState<string>("");
-  const [isOpen, setIsOpen] = useState<boolean>(true);
   const router = useRouter();
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
 
   const navigateToSavedChats = () => {
     router.push("/saved-chats");
@@ -46,56 +40,51 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
 
   return (
     <aside
-      className={`flex flex-col h-full ${
+      className={`flex flex-col h-full w-64 transition-all duration-300 ease-in-out ${
         isDarkMode ? "bg-black text-white" : "bg-white text-black"
-      } ${
-        isOpen ? (isMobile ? "w-64" : "w-36") : "w-0"
-      } transition-all duration-300 ease-in-out`}
-      style={{ overflow: isOpen ? "visible" : "hidden" }} // Prevent overflow when closed
+      }`}
     >
       {/* Logo Section */}
-      <div className="p-4 flex items-start justify-center">
+      <div className="flex items-center justify-center p-2 mt-4">
         <Button
           variant="ghost"
           size="icon"
           aria-label="Home"
           onClick={() => {
             setCurrentPage("chat");
-            router.push("/"); //Landing Page
+            router.push("/"); // Landing Page
           }}
-          className="w-full flex items-center justify-start"
+          className="w-full flex items-center justify-start "
         >
-          <Image src="/New_logo.png" alt="Lumny Logo" width={45} height={45} />
-          {isMobile && <h1 className="text-lg ml-2 font-semibold">Lumny</h1>}
+          {/* <Image src="/PathFinder_bg.png" alt="Logo" width={50} height={50} /> */}
+          <span className="ml-2 font-semibold text-xl">PathFinder</span>
         </Button>
       </div>
 
       {/* Top Navigation with Buttons */}
-      <nav className="flex-grow flex flex-col gap-1 p-2">
+      <nav className="flex-grow flex flex-col gap-10 p-2 mt-8">
         {/* New Chat */}
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
-              size={isMobile ? "default" : "icon"}
-              className={`rounded-lg transition-colors duration-200 ${
+              size="icon"
+              className={`flex items-center gap-2 rounded-lg transition-colors duration-200 ${
                 currentPage === "chat"
                   ? "bg-muted text-primary"
                   : "text-gray-700"
-              } ${isMobile ? "justify-start" : "justify-center"} w-full p-2`}
+              } w-full p-2 justify-start`}
               aria-label="New Chat"
               onClick={() => {
                 setCurrentPage("chat");
-                router.push("/Dashboard"); // Navigate to the homepage
+                router.push("/Dashboard");
               }}
             >
-              <MessageSquarePlus
-                className={`size-5 ${isMobile ? "mr-2" : ""}`}
-              />
-              {isMobile && <span>New Chat</span>}
+              <MessageSquarePlus className="w-5 h-5 text-blue-700" />
+              <span className="text-blue-700">New Chat</span>
             </Button>
           </TooltipTrigger>
-          {!isMobile && <TooltipContent side="right">New Chat</TooltipContent>}
+          <TooltipContent side="right">New Chat</TooltipContent>
         </Tooltip>
 
         {/* History */}
@@ -103,68 +92,20 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
-              size={isMobile ? "default" : "icon"}
-              className={`rounded-lg transition-colors duration-200 ${
+              size="icon"
+              className={`flex items-center gap-2 rounded-lg transition-colors duration-200 ${
                 currentPage === "history"
                   ? "bg-muted text-primary"
                   : "text-gray-700"
-              } ${isMobile ? "justify-start" : "justify-center"} w-full p-2`}
+              } w-full p-2 justify-start`}
               aria-label="History"
               onClick={navigateToSavedChats}
             >
-              <History className={`size-5 ${isMobile ? "mr-2" : ""}`} />
-              {isMobile && <span>History</span>}
+              <History className="w-5 h-5 text-blue-700" />
+              <span className="text-blue-700">History</span>
             </Button>
           </TooltipTrigger>
-          {!isMobile && <TooltipContent side="right">History</TooltipContent>}
-        </Tooltip>
-
-        {/* Feedback */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size={isMobile ? "default" : "icon"}
-              className={`rounded-lg transition-colors duration-200 ${
-                currentPage === "feedback"
-                  ? "bg-muted text-primary"
-                  : "text-gray-700"
-              } ${isMobile ? "justify-start" : "justify-center"} w-full p-2`}
-              aria-label="Feedback"
-              onClick={() => {
-                setCurrentPage("feedback");
-                router.push("/FeedbackPage");
-              }}
-            >
-              <Flag className={`size-5 ${isMobile ? "mr-2" : ""}`} />
-              {isMobile && <span>Feedback</span>}
-            </Button>
-          </TooltipTrigger>
-          {!isMobile && <TooltipContent side="right">Feedback</TooltipContent>}
-        </Tooltip>
-
-        {/* Progress */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size={isMobile ? "default" : "icon"}
-              className={`rounded-lg transition-colors duration-200 ${
-                currentPage === "progress"
-                  ? "bg-muted text-primary"
-                  : "text-gray-700"
-              } ${isMobile ? "justify-start" : "justify-center"} w-full p-2`}
-              aria-label="Progress"
-              onClick={() => {
-                setCurrentPage("progress");
-                router.push("/ProgressPage");
-              }}
-            >
-              <BarChart3 className={`size-5 ${isMobile ? "mr-2" : ""}`} />
-              {isMobile && <span>Progress</span>}
-            </Button>
-          </TooltipTrigger>
-          {!isMobile && <TooltipContent side="right">Progress</TooltipContent>}
+          <TooltipContent side="right">History</TooltipContent>
         </Tooltip>
 
         {/* Settings */}
@@ -172,23 +113,23 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
-              size={isMobile ? "default" : "icon"}
-              className={`rounded-lg transition-colors duration-200 ${
+              size="icon"
+              className={`flex items-center gap-2 rounded-lg transition-colors duration-200 ${
                 currentPage === "settings"
                   ? "bg-muted text-primary"
                   : "text-gray-700"
-              } ${isMobile ? "justify-start" : "justify-center"} w-full p-2`}
+              } w-full p-2 justify-start`}
               aria-label="Settings"
               onClick={() => {
                 setCurrentPage("settings");
                 router.push("/SettingPage");
               }}
             >
-              <Settings2 className={`size-5 ${isMobile ? "mr-2" : ""}`} />
-              {isMobile && <span>Settings</span>}
+              <Settings2 className="w-5 h-5 text-blue-700" />
+              <span className="text-blue-700">Settings</span>
             </Button>
           </TooltipTrigger>
-          {!isMobile && <TooltipContent side="right">Settings</TooltipContent>}
+          <TooltipContent side="right">Settings</TooltipContent>
         </Tooltip>
 
         {/* Help */}
@@ -196,29 +137,28 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
-              size={isMobile ? "default" : "icon"}
-              className={`rounded-lg transition-colors duration-200 ${
-                currentPage === "settings"
+              size="icon"
+              className={`flex items-center gap-2 rounded-lg transition-colors duration-200 ${
+                currentPage === "help"
                   ? "bg-muted text-primary"
                   : "text-gray-700"
-              } ${isMobile ? "justify-start" : "justify-center"} w-full p-2`}
+              } w-full p-2 justify-start`}
               aria-label="Help Page"
               onClick={() => {
                 setCurrentPage("help");
                 router.push("/HelpPage");
               }}
             >
-              <LifeBuoy className={`size-5 ${isMobile ? "mr-2" : ""}`} />
-              {isMobile && <span>Help</span>}
+              <LifeBuoy className="w-5 h-5 text-blue-700" />
+              <span className="text-blue-700">Help</span>
             </Button>
           </TooltipTrigger>
-          {!isMobile && <TooltipContent side="right">Help</TooltipContent>}
+          <TooltipContent side="right">Help</TooltipContent>
         </Tooltip>
       </nav>
 
-      {/* Help and Profile Section */}
+      {/* Profile Section */}
       <nav className="p-2 mb-4">
-        {/* Profile Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -229,30 +169,28 @@ export default function Sidebar({ isMobile }: { isMobile: boolean }) {
               }`}
             >
               <Avatar>
-                <AvatarImage src="/profile-1.png" alt="Profile" />
-              </Avatar>
-              {isMobile && <span className="ml-4">Sarah Parker</span>}
+                <AvatarImage src="/profile1.png" alt="Profile" />
+              </Avatar>{" "}
+              <span className="ml-2 text-md font-semibold">Calab</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>User Menu</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <User className="mr-2" /> Profile
+              <User className="w-5 h-5 mr-2" /> Profile
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <CreditCard className="mr-2" /> Payments
+              <CreditCard className="w-5 h-5 mr-2" /> Payments
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <LogOut
-                onClick={() => {
-                  setCurrentPage("chat");
-                  console.log("Navigating to homepage");
-                  router.push("/"); //landing page
-                }}
-                className="mr-2"
-              />{" "}
-              Logout
+            <DropdownMenuItem
+              onClick={() => {
+                setCurrentPage("chat");
+                console.log("Navigating to homepage");
+                router.push("/");
+              }}
+            >
+              <LogOut className="w-5 h-5 mr-2" /> Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

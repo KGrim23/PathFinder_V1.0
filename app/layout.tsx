@@ -7,8 +7,8 @@ import { ThemeProvider } from "./components/ThemeContext";
 // Instead, you can add the Inter font in the head
 
 export const metadata = {
-  title: "Lumny App",
-  description: "AI Coach",
+  title: "Path Finder",
+  description: "Your AI Career Advisor and counsellor",
 };
 
 const RootLayout = ({ children }: { children: ReactNode }) => {

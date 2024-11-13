@@ -81,25 +81,21 @@ const SavedChatsPage: React.FC = () => {
   const formatAIMessageContent = (content: string): string => {
     let formattedContent = marked(content) as string; // Parse markdown to HTML using marked
 
-    // Replace "*" at the start of a line with heading (h4)
     formattedContent = formattedContent.replace(
       /^\*(.*?)\*/gm,
       '<h4 class="font-semibold text-xl my-2">$1</h4>'
     );
 
-    // Format numbered lists (1., 2., etc.) with additional line breaks between each step
     formattedContent = formattedContent.replace(
       /(\d+\.\s)([^\n]*)/g,
       '<br><br><span class="font-semibold">$1</span>$2<br><br>'
     );
 
-    // Format bullet points (-) with indentation and line breaks for clarity
     formattedContent = formattedContent.replace(
       /^-\s(.*?)(?=\n|$)/gm,
       '<br>    <li class="list-disc ml-4">$1</li>'
     );
 
-    // Handle inline bold text by wrapping in <strong>
     formattedContent = formattedContent.replace(
       /\*\*(.*?)\*\*/g,
       "<strong>$1</strong>"
@@ -119,7 +115,6 @@ const SavedChatsPage: React.FC = () => {
       .split("\n")
       .map((line) => line.trim());
 
-    // Render each line as a separate paragraph
     return lines.map((line, index) => (
       <p key={index} className="mb-2 last:mb-0">
         {line}
@@ -138,7 +133,7 @@ const SavedChatsPage: React.FC = () => {
           isDarkMode ? "dark" : ""
         }`}
       >
-        {!isMobile && <Sidebar isMobile={false} />}
+        {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
           <main className="flex-1 overflow-auto p-4 flex flex-col">
@@ -150,8 +145,8 @@ const SavedChatsPage: React.FC = () => {
                 {savedChats.map((chat, chatIndex) => (
                   <div
                     key={chatIndex}
-                    className={`p-4 rounded-xl justify-center items-center ${
-                      isDarkMode ? "bg-zinc-950 text-white" : ""
+                    className={`p-4 rounded-xl ${
+                      isDarkMode ? "bg-zinc-600 text-white" : "bg-gray-300"
                     }`}
                   >
                     <div className="flex justify-between items-center">
@@ -165,9 +160,7 @@ const SavedChatsPage: React.FC = () => {
                       </div>
                       <button
                         className={`ml-4 p-2 rounded-xl ${
-                          isDarkMode
-                            ? "bg-white text-black"
-                            : "text-white bg-black"
+                          isDarkMode ? " text-black" : "text-black"
                         }`}
                         onClick={() => deleteChatSession(chatIndex)}
                       >
@@ -179,12 +172,10 @@ const SavedChatsPage: React.FC = () => {
                         {chat.map((message, messageIndex) => (
                           <div
                             key={messageIndex}
-                            className={`inline-block p-3 rounded-xl w-full ${
+                            className={`p-3 rounded-xl ${
                               message.type === "user"
-                                ? "text-white text-right" // User message style
-                                : message.type === "ai"
-                                ? "text-black text-left dark:text-white" // AI message style with light and dark modes
-                                : ""
+                                ? "bg-gray-200 text-left dark:bg-gray-700 dark:text-white"
+                                : "bg-gray-300 text-left dark:bg-gray-800 dark:text-white"
                             }`}
                           >
                             <div className="text-md leading-relaxed">
@@ -208,10 +199,10 @@ const SavedChatsPage: React.FC = () => {
                 ))}
                 <div className="flex justify-end mt-24">
                   <button
-                    className={`ml-auto gap-1.5 text-white ${
+                    className={`ml-auto gap-1.5 ${
                       isDarkMode
                         ? "bg-black text-white border-2 border-white"
-                        : "bg-black"
+                        : "bg-black text-white"
                     } rounded-full px-3.5 py-2`}
                     onClick={deleteAllChats}
                   >

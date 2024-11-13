@@ -26,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-64">
-            <Sidebar isMobile={true} />
+            <Sidebar />
           </SheetContent>
         </Sheet>
       )}
@@ -37,7 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           }}
           className="text-xl font-semibold cursor-pointer bg-transparent border-none"
         >
-          Lumny
+          PathFinder
         </Button>
       </Link>
       <div className="flex items-center gap-2 ml-auto">

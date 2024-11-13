@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import ChatInterface from "../components/ChatInterface";
 import SettingsPage from "../SettingPage/page";
-import ProgressPage from "../ProgressPage/page";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import Navbar from "../components/Navbar";
 import { useTheme } from "../components/ThemeContext";
@@ -15,6 +14,7 @@ import Card from "../components/Card";
 import { Button } from "@/components/ui/button";
 import VoiceInput from "../components/VoiceInput";
 import Link from "next/link";
+import RSSParser from "rss-parser";
 
 type MessageType = {
   type: "user" | "ai";
@@ -31,8 +31,10 @@ export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState<string>("chat");
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
+  const [rssItems, setRssItems] = useState<any[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -163,62 +165,6 @@ export default function Dashboard() {
     setInputMessage("");
   };
 
-  // Example articles data
-  const articles = [
-    {
-      title: "Definition of Self-Motivation",
-      link: "https://example.com/ai",
-      image:
-        "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1vdGl2YXRpb25hbHxlbnwwfHwwfHx8MA%3D%3D",
-    },
-    {
-      title: "Importance of Self-Motivation",
-      link: "https://example.com/react",
-      image:
-        "https://images.unsplash.com/photo-1561327127-3cd091e6258e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTgwfHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      title: "Self-Assessment Tools",
-      link: "https://example.com/next",
-      image:
-        "https://images.unsplash.com/photo-1528158134711-e89943f34728?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTg5fHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
-    },
-
-    {
-      title: "Seeking Feedback from Others ",
-      link: "https://example.com/js",
-      image:
-        "https://images.unsplash.com/photo-1684693342351-7e2a8ebebd97?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjA2fHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      title: "Setting Realistic Goals  ",
-      link: "https://example.com/js",
-      image:
-        "https://images.unsplash.com/photo-1618380446441-02ef59c61012?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjA5fHxtb3RpdmF0aW9uYWwlMjBzcHBlY2h8ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      title: "Long-Term Goals  ",
-      link: "https://example.com/react",
-      image:
-        "https://images.unsplash.com/photo-1616442751986-fe0df84ad730?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1vdGl2YXRpb25hbCUyMHNwcGVjaHxlbnwwfHwwfHx8MA%3D%3D",
-    },
-  ];
-
-  const renderCards = () => {
-    return (
-      <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-2">
-        {articles.map((article, index) => (
-          <Card
-            key={index}
-            title={article.title}
-            link={article.link}
-            imageSrc={article.image}
-          />
-        ))}
-      </div>
-    );
-  };
-
   const renderOptions = () => {
     if (messages.length === 0) {
       return (
@@ -227,17 +173,20 @@ export default function Dashboard() {
             isDarkMode ? "bg-black" : "bg-muted"
           }`}
         >
-          <h2 className="mb-6 text-lg font-semibold">
-            How can I assist you today?
+          <h2 className="mb-12 mt-12 text-xl text-center font-semibold">
+            Empowering your potential through insightful AI guidance.
           </h2>
-          <div className="flex flex-wrap gap-2 items-center justify-self-auto text-xs">
+          <div className="flex flex-wrap gap-2 items-center justify-space-between text-xs">
             {[
-              "Emotional Support",
-              "Career Advice",
-              "Personal Growth",
-              "Stress Management",
+              "Career Guidence and Coaching",
+              "T Level",
+              "GCSE Options",
+              "Unisiversity Application",
+              "Job Markets",
+              "Exam Worries",
+              "BTech",
               "Time Management",
-              "Work-Life Balance",
+              "Alternative to 'A' Level",
             ].map((option) => (
               <Button
                 key={option}
@@ -249,17 +198,25 @@ export default function Dashboard() {
                 onClick={() => handleOptionClick(option)}
               >
                 <span className="mr-2">
-                  {option === "Emotional Support"
+                  {option === "Career Guidence and Coaching"
                     ? "💬"
-                    : option === "Career Advice"
-                    ? "🎯"
-                    : option === "Personal Growth"
-                    ? "🌱"
-                    : option === "Stress Management"
+                    : option === "T Level"
+                    ? "🚀"
+                    : option === "GCSE Options"
+                    ? "📚"
+                    : option === "Job Markets"
+                    ? "💼"
+                    : option === "Unisiversity Application"
+                    ? "🎓"
+                    : option === "Exam Worries"
                     ? "🧘"
+                    : option === "BTech"
+                    ? "🛠️"
                     : option === "Time Management"
                     ? "⏳"
-                    : "⚖️"}
+                    : option === "Alternative to 'A' Level"
+                    ? "⚖️"
+                    : ""}
                 </span>
                 {option}
               </Button>
@@ -278,7 +235,7 @@ export default function Dashboard() {
           isDarkMode ? "dark" : ""
         }`}
       >
-        {!isMobile && <Sidebar isMobile={false} />}
+        {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
           <VoiceInput onReceiveText={sendMessageToOpenAI} />
@@ -299,20 +256,6 @@ export default function Dashboard() {
                   )}
                 </div>
 
-                {messages.length === 0 && (
-                  <div className="flex flex-wrap justify-between mt-4">
-                    {renderCards()}
-                    <button className="bg-slate-700 text-white w-full mt-4 p-2 border-0 rounded-full">
-                      <Link
-                        href="/mini-courses"
-                        className="text-white font-bold text-sm p-4"
-                      >
-                        Mini-courses
-                      </Link>
-                    </button>
-                  </div>
-                )}
-
                 <ChatInterface
                   messages={messages}
                   inputMessage={inputMessage}
@@ -324,13 +267,12 @@ export default function Dashboard() {
               </>
             )}
             {currentPage === "settings" && <SettingsPage />}
-            {currentPage === "progress" && <ProgressPage />}
             {currentPage === "saved-chats" && <SavedChatsPage />}
-            {currentPage === "sidebar" && <Sidebar isMobile={false} />}
+            {currentPage === "sidebar" && <Sidebar />}
 
             <p className="flex m-4 items-center justify-center text-xs text-grey-600">
-              <span>Lumny AI</span> &nbsp;can make mistakes. Check important
-              info.
+              <span>PathFinder AI</span> &nbsp;can make mistakes. Check
+              important info.
             </p>
           </main>
         </div>

@@ -1,15 +1,15 @@
 {
-  "name": "Lumny App",
-  "short_name": "Lumny App",
-  "description": "AI Coaching App",
+  "name": "PathFinder",
+  "short_name": "PathFinder",
+  "description": "AI powered Career Advisor",
   "icons": [
     {
-      "src": "/New_logo.png",
+      "src": "/PathFinder_bg.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/New_logo.png",
+      "src": "/PathFinder_bg.png",
       "sizes": "512x512",
       "type": "image/png"
     }
