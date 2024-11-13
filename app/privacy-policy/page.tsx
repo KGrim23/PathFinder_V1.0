@@ -33,7 +33,7 @@ const PrivacyPolicy: React.FC = () => {
         }`}
       >
         {/* Mobile Sidebar */}
-        {isMobile && isSidebarOpen && <Sidebar isMobile={true} />}
+        {isMobile && isSidebarOpen && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
           <main className="flex-1 overflow-auto p-4 flex flex-col">
