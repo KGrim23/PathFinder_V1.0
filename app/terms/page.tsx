@@ -33,7 +33,7 @@ const Terms: React.FC = () => {
         }`}
       >
         {/* Mobile Sidebar */}
-        {isMobile && isSidebarOpen && <Sidebar isMobile={true} />}
+        {isMobile && isSidebarOpen && <Sidebar />}
 
         <div className="flex flex-col h-full">
           {/* Render Navbar */}
