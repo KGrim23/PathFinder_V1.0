@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { useTheme } from "./ThemeContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
@@ -25,7 +24,6 @@ import {
   Settings2,
   LifeBuoy,
   User,
-  CreditCard,
   LogOut,
 } from "lucide-react";
 
@@ -57,7 +55,16 @@ export default function Sidebar() {
           className="w-full flex items-center justify-start "
         >
           {/* <Image src="/PathFinder_bg.png" alt="Logo" width={50} height={50} /> */}
-          <span className="ml-2 font-semibold text-lg text-blue-700">
+          <span
+            className="ml-2 font-semibold text-xl"
+            style={{
+              background:
+                "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+            }}
+          >
             PathFinder
           </span>
         </Button>

@@ -35,7 +35,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           onClick={() => {
             setCurrentPage("chat");
           }}
-          className="text-xl font-semibold cursor-pointer bg-transparent border-none"
+          className="text-2xl font-semibold cursor-pointer bg-transparent border-none"
           style={{
             background:
               "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
