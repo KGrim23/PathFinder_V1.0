@@ -8,7 +8,7 @@ const LandingPage: React.FC = () => {
     <div className="relative flex flex-col space-y-4 items-center justify-center min-h-screen">
       {/* Background Image Section */}
       <div className="relative w-full min-h-screen">
-        <div className="absolute inset-0 bg-blue-800"></div>
+        <div className="absolute inset-0 bg-black"></div>
 
         {/* Content Over the Image */}
         <div className="absolute inset-0 flex flex-col justify-between items-center z-10">
