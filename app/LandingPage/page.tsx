@@ -17,8 +17,8 @@ const LandingPage: React.FC = () => {
             <Image
               src="/PathFinder_Green_bg.png"
               alt="Logo"
-              width={55}
-              height={55}
+              width={80}
+              height={80}
               priority
             />
 
@@ -26,9 +26,9 @@ const LandingPage: React.FC = () => {
             <h1 className="text-3xl md:text-6xl text-white font-semibold">
               PathFinder
             </h1>
-            <strong className="text-white text-lg md:text-2xl text-center">
+            <strong className="text-white text-lg md:text-2xl text-center p-2">
               {" "}
-              Your AI powered Career Advisor for a Brighter Future ✨
+              AI powered Career Advisor for your Brighter Future ✨
             </strong>
           </div>
 
@@ -36,7 +36,7 @@ const LandingPage: React.FC = () => {
           <div className="mb-16 flex flex-col items-center">
             <Link
               href="/Dashboard"
-              className="px-6 py-1 text-md bg-black text-white border-2 border-white rounded-xl hover:bg-blue-700 transition"
+              className="px-6 py-1 text-md bg-grey-600 text-white border-2 border-white rounded-xl hover:bg-blue-700 transition"
             >
               Log In
             </Link>

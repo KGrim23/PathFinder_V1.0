@@ -36,7 +36,7 @@ const PrivacyPolicy: React.FC = () => {
         {isMobile && isSidebarOpen && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
-          <main className="flex-1 overflow-auto p-4 flex flex-col">
+          <main className="flex-1 overflow-auto p-2 flex flex-col">
             <div className="max-w-3xl mx-auto p-6 text-gray-800 dark:text-gray-200">
               <div className="flex flex-col justify-center p-4 text-md">
                 <h1 className="text-xl font-bold mb-6">
