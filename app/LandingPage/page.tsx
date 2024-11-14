@@ -26,7 +26,7 @@ const LandingPage: React.FC = () => {
             <h1 className="text-3xl mt-4 md:text-6xl text-white font-semibold">
               PathFinder
             </h1>
-            <strong className="text-white text-lg md:text-2xl text-center p-4">
+            <strong className="text-white text-xl md:text-2xl text-center p-6">
               {" "}
               AI powered Career Advisor for your Brighter Future ✨
             </strong>
