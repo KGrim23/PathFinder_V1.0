@@ -114,7 +114,7 @@ const PrivacyPolicy: React.FC = () => {
                   6. Contact Us
                 </h2>
                 <p className="mb-6">
-                  If you have questions, contact us at Path Finder.com
+                  If you have questions, contact us at PathFinder.com
                 </p>
               </div>
             </div>

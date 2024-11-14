@@ -120,7 +120,7 @@ const Terms: React.FC = () => {
                 </h2>
                 <p className="mb-6 text-sm">
                   If you have any questions about these terms, please contact us
-                  at Path Finder.com
+                  at PathFinder.com
                 </p>
               </div>
             </div>

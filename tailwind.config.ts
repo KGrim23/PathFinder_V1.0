@@ -57,6 +57,10 @@ const config: Config = {
         mono: ['"GeistMono"', "monospace"],
       },
 
+      fontSize: {
+        xxs: "0.625rem", // 10px
+      },
+
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

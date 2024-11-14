@@ -10,11 +10,9 @@ import SavedChatsPage from "../saved-chats/page";
 import { useRouter } from "next/navigation";
 import Sidebar from "../components/Sidebar";
 import { CircleX } from "lucide-react";
-import Card from "../components/Card";
 import { Button } from "@/components/ui/button";
 import VoiceInput from "../components/VoiceInput";
-import Link from "next/link";
-import RSSParser from "rss-parser";
+import "../globals.css";
 
 type MessageType = {
   type: "user" | "ai";
@@ -24,6 +22,19 @@ type MessageType = {
     disliked: boolean;
     sound: boolean;
   };
+};
+
+const optionIcons: { [key: string]: string } = {
+  "Career Guidence & Coaching": "💬",
+  "T Level": "🚀",
+  "GCSE Options": "📚",
+  "Job Markets": "💼",
+  "Unisiversity Application": "🎓",
+  "Exam Worries": "🧘",
+  BTech: "🛠️",
+  "Time Management": "⏳",
+  "Alternative to 'A' Level": "⚖️",
+  "Career Options": "🌟",
 };
 
 export default function Dashboard() {
@@ -176,51 +187,17 @@ export default function Dashboard() {
           <h2 className="mb-12 mt-12 text-xl text-center font-semibold">
             Empowering your potential through insightful AI guidance.
           </h2>
-          <div className="flex flex-wrap gap-2 items-center justify-space-between text-xs">
-            {[
-              "Career Guidence & Coaching",
-              "T Level",
-              "GCSE Options",
-              "Job Markets",
-              "Unisiversity Application",
-              "BTech",
-              "Exam Worries",
-              "Time Management",
-              "Alternative to 'A' Level",
-              "Career Options",
-            ].map((option) => (
+          <div className="flex flex-wrap gap-2 items-center justify-self-auto text-xs">
+            {Object.keys(optionIcons).map((option) => (
               <Button
                 key={option}
-                variant="outline"
+                variant="rainbow" // Use rainbow variant
                 size="sm"
-                className={`rounded-full p-3 items-center ${
-                  isDarkMode ? "bg-gray-800" : "bg-gray-600 text-white"
-                }`}
+                className={`text-[12px] rounded-full p-3 items-center relative overflow-hidden
+               ${isDarkMode ? "bg-black" : "bg-gray-600 text-white"}`}
                 onClick={() => handleOptionClick(option)}
               >
-                <span className="mr-2">
-                  {option === "Career Guidence and Coaching"
-                    ? "💬"
-                    : option === "T Level"
-                    ? "🚀"
-                    : option === "GCSE Options"
-                    ? "📚"
-                    : option === "Job Markets"
-                    ? "💼"
-                    : option === "Unisiversity Application"
-                    ? "🎓"
-                    : option === "Exam Worries"
-                    ? "🧘"
-                    : option === "BTech"
-                    ? "🛠️"
-                    : option === "Time Management"
-                    ? "⏳"
-                    : option === "Alternative to A-Level"
-                    ? "⚖️"
-                    : option === "Career Options"
-                    ? "🌟"
-                    : ""}
-                </span>
+                <span className="mr-2">{optionIcons[option]}</span>
                 {option}
               </Button>
             ))}

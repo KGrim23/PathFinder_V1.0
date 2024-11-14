@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Lumny App",
-  description: "AI Coach",
+  title: "PathFinder",
+  description: "AI advisor",
 };
 
 export default function RootLayout({
