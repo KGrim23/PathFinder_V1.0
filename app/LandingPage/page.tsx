@@ -14,18 +14,28 @@ const LandingPage: React.FC = () => {
         <div className="absolute inset-0 flex flex-col justify-between items-center z-10">
           <div className="flex flex-col items-center space-x-4 gap-4 m-auto">
             {/* Logo */}
-            <Image
+            {/* <Image
               src="/PathFinder_Green_bg.png"
               alt="Logo"
               width={80}
               height={80}
               priority
-            />
+            /> */}
 
             {/* Centered Heading */}
-            <h1 className="text-3xl mt-4 md:text-6xl text-white font-semibold">
+            <h1
+              className="text-5xl mt-4 md:text-6xl font-semibold"
+              style={{
+                background:
+                  "linear-gradient(to right, red, yellow, green, blue)",
+                WebkitBackgroundClip: "text", // Use camelCase for vendor-prefixed properties
+                backgroundClip: "text", // Standard version of the property
+                color: "transparent", // Make the text transparent so the gradient is visible
+              }}
+            >
               PathFinder
             </h1>
+
             <strong className="text-white text-xl md:text-2xl text-center p-6">
               {" "}
               AI powered Career Advisor for your Brighter Future ✨
