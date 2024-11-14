@@ -187,7 +187,7 @@ export default function Dashboard() {
           <h2 className="mb-12 mt-12 text-xl text-center font-semibold">
             Empowering your potential through insightful AI guidance.
           </h2>
-          <div className="flex flex-wrap gap-2 items-center justify-self-auto text-xs">
+          <div className="flex flex-wrap gap-4 justify-evenly text-xs">
             {Object.keys(optionIcons).map((option) => (
               <Button
                 key={option}

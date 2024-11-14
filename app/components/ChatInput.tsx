@@ -122,10 +122,10 @@ const ChatInput: React.FC<{
           <Button
             type="submit"
             size="sm"
-            className={`ml-auto gap-1.5 text-white ${
+            className={`ml-auto mt-4 gap-1.5 text-white ${
               isDarkMode
                 ? "bg-black text-white border-2 border-white"
-                : "bg-black"
+                : "text-black border-2 border-black"
             } rounded-full px-3.5 py-2`}
           >
             Send Message

@@ -57,7 +57,9 @@ export default function Sidebar() {
           className="w-full flex items-center justify-start "
         >
           {/* <Image src="/PathFinder_bg.png" alt="Logo" width={50} height={50} /> */}
-          <span className="ml-2 font-semibold text-xl">PathFinder</span>
+          <span className="ml-2 font-semibold text-lg text-blue-700">
+            PathFinder
+          </span>
         </Button>
       </div>
 
@@ -171,7 +173,9 @@ export default function Sidebar() {
               <Avatar>
                 <AvatarImage src="/profile1.png" alt="Profile" />
               </Avatar>{" "}
-              <span className="ml-2 text-md font-semibold">Calab</span>
+              <span className="ml-2 text-lg text-blue-700 font-semibold">
+                Calab
+              </span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
@@ -180,9 +184,7 @@ export default function Sidebar() {
             <DropdownMenuItem>
               <User className="w-5 h-5 mr-2" /> Profile
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <CreditCard className="w-5 h-5 mr-2" /> Payments
-            </DropdownMenuItem>
+
             <DropdownMenuItem
               onClick={() => {
                 setCurrentPage("chat");
