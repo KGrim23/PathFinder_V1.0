@@ -35,7 +35,14 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           onClick={() => {
             setCurrentPage("chat");
           }}
-          className="text-xl text-blue-700 font-semibold cursor-pointer bg-transparent border-none"
+          className="text-xl font-semibold cursor-pointer bg-transparent border-none"
+          style={{
+            background:
+              "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+          }}
         >
           PathFinder
         </Button>

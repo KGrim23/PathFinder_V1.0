@@ -92,33 +92,32 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const formatAIMessageContent = (content: string): string => {
     let formattedContent = marked(content) as string;
 
-    // Replace "*" at the start of a line with heading (h4)
-    // formattedContent = formattedContent.replace(
-    //   /^\*(.*?)\*/gm,
-    //   '<h4 class="font-bold text-xl my-2">$1</h4>'
-    // );
+    // Format headings indicated by "*"
     formattedContent = formattedContent.replace(
       /^\*(.*?)\*/gm,
-      '\n<h4 class="font-bold text-xl my-2">$1</h4>\n'
+      '<h4 class="font-bold text-xl my-2">$1</h4>'
     );
 
-    // Format numbered lists (1., 2., etc.) with additional line breaks between each step
+    // Format numbered lists (e.g., 1., 2.) with structured <ol> elements
     formattedContent = formattedContent.replace(
       /(\d+\.\s)([^\n]*)/g,
-      '<br><br><span class="font-semibold">$1</span>$2<br><br>'
+      '<ol class="my-2 list-decimal ml-6"><li>$2</li></ol>'
     );
 
-    // Format bullet points (-) with indentation and line breaks for clarity
+    // Format bullet points (-) by wrapping them in a <ul> tag
     formattedContent = formattedContent.replace(
       /^-\s(.*?)(?=\n|$)/gm,
-      '<br><br><li class="list-disc ml-4">$1</li>'
+      '<ul class="list-disc ml-6"><li>$1</li></ul>'
     );
 
-    // Handle inline bold text by wrapping in <strong>
+    // Wrap inline bold text in a styled <span> for emphasis
     formattedContent = formattedContent.replace(
       /\*\*(.*?)\*\*/g,
-      "<span class='text-blue-600'>$1</span>"
+      '<span class="font-bold text-blue-600">$1</span>'
     );
+
+    // Ensure line breaks between paragraphs for better display
+    formattedContent = formattedContent.replace(/\n/g, "<br />");
 
     return formattedContent;
   };
@@ -221,7 +220,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   return (
     <div
-      className={`flex flex-col h-full ${
+      className={`flex flex-col h-full text-sm md:text-lg ${
         isDarkMode ? "bg-black text-white" : "bg-white text-black"
       }`}
     >

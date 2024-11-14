@@ -27,10 +27,10 @@ const LandingPage: React.FC = () => {
               className="text-5xl mt-4 md:text-6xl font-semibold"
               style={{
                 background:
-                  "linear-gradient(to right, red, yellow, green, blue)",
-                WebkitBackgroundClip: "text", // Use camelCase for vendor-prefixed properties
-                backgroundClip: "text", // Standard version of the property
-                color: "transparent", // Make the text transparent so the gradient is visible
+                  "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
               }}
             >
               PathFinder

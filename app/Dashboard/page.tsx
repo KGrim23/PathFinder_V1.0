@@ -42,7 +42,6 @@ export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState<string>("chat");
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
-  const [rssItems, setRssItems] = useState<any[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -187,7 +186,7 @@ export default function Dashboard() {
           <h2 className="mb-12 mt-12 text-xl text-center font-semibold">
             Empowering your potential through insightful AI guidance.
           </h2>
-          <div className="flex flex-wrap gap-4 justify-evenly text-xs">
+          <div className="flex flex-wrap gap-2 justify-self-auto text-xs">
             {Object.keys(optionIcons).map((option) => (
               <Button
                 key={option}
