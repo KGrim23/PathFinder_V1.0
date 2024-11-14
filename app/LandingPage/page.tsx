@@ -5,7 +5,7 @@ import React from "react";
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen">
+    <div className="relative flex flex-col space-y-4 items-center justify-center min-h-screen">
       {/* Background Image Section */}
       <div className="relative w-full min-h-screen">
         <div className="absolute inset-0 bg-blue-800"></div>
@@ -23,10 +23,10 @@ const LandingPage: React.FC = () => {
             />
 
             {/* Centered Heading */}
-            <h1 className="text-3xl md:text-6xl text-white font-semibold">
+            <h1 className="text-3xl mt-4 md:text-6xl text-white font-semibold">
               PathFinder
             </h1>
-            <strong className="text-white text-lg md:text-2xl text-center p-2">
+            <strong className="text-white text-lg md:text-2xl text-center p-4">
               {" "}
               AI powered Career Advisor for your Brighter Future ✨
             </strong>

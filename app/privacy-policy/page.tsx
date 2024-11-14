@@ -36,18 +36,16 @@ const PrivacyPolicy: React.FC = () => {
         {isMobile && isSidebarOpen && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
-          <main className="flex-1 overflow-auto p-2 flex flex-col">
-            <div className="max-w-3xl mx-auto p-6 text-gray-800 dark:text-gray-200">
+          <main className="flex-1 overflow-auto flex flex-col">
+            <div className="max-w-3xl mx-auto p-2 text-gray-800 dark:text-gray-200">
               <div className="flex flex-col justify-center p-4 text-md">
-                <h1 className="text-xl font-bold mb-6">
-                  Privacy Policy for Path Finder App
-                </h1>
+                <h1 className="text-xl font-bold mb-6">Privacy Policy</h1>
                 <p className="mb-6 text-sm">
                   Last updated: {new Date().toLocaleDateString()}
                 </p>
 
                 <p className="mb-6 text-sm">
-                  This Privacy Policy describes how Path Finder ("we," "us," or
+                  This Privacy Policy describes how PathFinder ("we," "us," or
                   "our") collects, uses, discloses, and protects your
                   information when you use the Path Finder App (the “App”). By
                   accessing or using our App, you agree to the terms of this

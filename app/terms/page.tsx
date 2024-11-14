@@ -38,8 +38,8 @@ const Terms: React.FC = () => {
         <div className="flex flex-col h-full">
           {/* Render Navbar */}
           <Navbar isMobile={isMobile} />
-          <main className="flex-1 overflow-auto p-2 flex flex-col">
-            <div className="max-w-3xl mx-auto p-6 text-gray-800 dark:text-gray-200">
+          <main className="flex-1 overflow-auto flex flex-col">
+            <div className="max-w-3xl mx-auto p-2 text-gray-800 dark:text-gray-200">
               <div className="flex flex-col justify-center p-4 text-md">
                 <h1 className="text-xl font-bold mb-6">Terms of Service</h1>
 
@@ -48,7 +48,7 @@ const Terms: React.FC = () => {
                 </p>
 
                 <p className="mb-6 text-sm">
-                  Welcome to the Path Finder App! By using our services, you
+                  Welcome to the PathFinder App! By using our services, you
                   agree to the following terms. If you do not agree with these
                   terms, please do not use our services.
                 </p>
@@ -57,7 +57,7 @@ const Terms: React.FC = () => {
                   1. Acceptance of Terms
                 </h2>
                 <p className="mb-6 text-sm">
-                  By using the Path Finder App, you affirm that you are at least
+                  By using the PathFinder App, you affirm that you are at least
                   18 years old or have the consent of a parent or guardian to
                   use the app. If you are using the app on behalf of a company
                   or organization, you represent that you have the authority to
@@ -78,7 +78,7 @@ const Terms: React.FC = () => {
                   3. Use of the Service
                 </h2>
                 <p className="mb-6 text-sm">
-                  You agree to use the Path Finder App only for lawful purposes
+                  You agree to use the PathFinder App only for lawful purposes
                   and in accordance with these terms. You agree not to use the
                   app:
                 </p>
@@ -103,7 +103,7 @@ const Terms: React.FC = () => {
                   kind, including without limitation any direct, indirect,
                   special, incidental, consequential, or punitive damages,
                   arising out of or in connection with your use of or inability
-                  to use the Path Finder App.
+                  to use the PathFinder App.
                 </p>
 
                 <h2 className="text-lg font-semibold mt-4 mb-4">
