@@ -93,9 +93,13 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     let formattedContent = marked(content) as string;
 
     // Replace "*" at the start of a line with heading (h4)
+    // formattedContent = formattedContent.replace(
+    //   /^\*(.*?)\*/gm,
+    //   '<h4 class="font-bold text-xl my-2">$1</h4>'
+    // );
     formattedContent = formattedContent.replace(
       /^\*(.*?)\*/gm,
-      '<h4 class="font-bold text-xl my-2">$1</h4>'
+      '\n<h4 class="font-bold text-xl my-2">$1</h4>\n'
     );
 
     // Format numbered lists (1., 2., etc.) with additional line breaks between each step
@@ -107,7 +111,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     // Format bullet points (-) with indentation and line breaks for clarity
     formattedContent = formattedContent.replace(
       /^-\s(.*?)(?=\n|$)/gm,
-      '<br>    <li class="list-disc ml-4">$1</li>'
+      '<br><br><li class="list-disc ml-4">$1</li>'
     );
 
     // Handle inline bold text by wrapping in <strong>
