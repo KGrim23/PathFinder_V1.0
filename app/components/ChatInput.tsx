@@ -69,7 +69,7 @@ const ChatInput: React.FC<{
   return (
     <form
       onSubmit={handleSendMessage}
-      className="sticky bottom-0 bg-background p-2"
+      className="sticky bottom-0 bg-background"
     >
       <div className="relative overflow-hidden rounded-lg bg-background focus-within:ring-1 focus-within:ring-ring">
         <Label htmlFor="message" className="sr-only">

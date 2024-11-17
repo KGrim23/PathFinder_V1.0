@@ -17,7 +17,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
   const [currentPage, setCurrentPage] = useState<string>("");
 
   return (
-    <header className="sticky top-0 z-10 flex h-[57px] items-center justify-between bg-white dark:bg-black px-4 shadow">
+    <header className="sticky top-0 z-10 flex h-[57px] items-center justify-between bg-white dark:bg-black px-4 shadow w-full sm:w-[100%] md:w-[80%] lg:w-[80%] mx-auto">
       {isMobile && (
         <Sheet>
           <SheetTrigger asChild>
@@ -30,23 +30,26 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           </SheetContent>
         </Sheet>
       )}
-      <Link href="/" passHref>
-        <Button
-          onClick={() => {
-            setCurrentPage("chat");
-          }}
-          className="text-2xl font-semibold cursor-pointer bg-transparent border-none"
-          style={{
-            background:
-              "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            color: "transparent",
-          }}
-        >
-          PathFinder
-        </Button>
-      </Link>
+      {isMobile && (
+        <Link href="/" passHref>
+          <Button
+            onClick={() => {
+              setCurrentPage("chat");
+            }}
+            className="text-2xl font-semibold cursor-pointer bg-transparent border-none"
+            style={{
+              background:
+                "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+            }}
+          >
+            PathFinder
+          </Button>
+        </Link>
+      )}
+
       <div className="flex items-center gap-2 ml-auto">
         <Button
           variant="ghost"

@@ -56,7 +56,7 @@ export default function Sidebar() {
         >
           {/* <Image src="/PathFinder_bg.png" alt="Logo" width={50} height={50} /> */}
           <span
-            className="ml-2 font-semibold text-xl"
+            className="ml-2 font-semibold text-2xl"
             style={{
               background:
                 "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",

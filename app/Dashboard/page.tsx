@@ -13,6 +13,7 @@ import { CircleX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import VoiceInput from "../components/VoiceInput";
 import "../globals.css";
+import Image from "next/image";
 
 type MessageType = {
   type: "user" | "ai";
@@ -28,12 +29,8 @@ const optionIcons: { [key: string]: string } = {
   "Career Guidence & Coaching": "💬",
   "T Level": "🚀",
   "GCSE Options": "📚",
-  "Job Markets": "💼",
-  "Unisiversity Application": "🎓",
   "Exam Worries": "🧘",
-  BTech: "🛠️",
-  "Time Management": "⏳",
-  "Alternative to 'A' Level": "⚖️",
+  "'A' Level": "⚖️",
   "Career Options": "🌟",
 };
 
@@ -183,17 +180,14 @@ export default function Dashboard() {
             isDarkMode ? "bg-black" : "bg-muted"
           }`}
         >
-          <h2 className="mb-12 mt-12 text-xl text-center font-semibold">
-            Empowering your potential through insightful AI guidance.
-          </h2>
-          <div className="flex flex-wrap gap-2 justify-self-auto text-xs">
+          <div className="flex flex-wrap gap-4 lg:gap-6 justify-space-evenly text-xs">
             {Object.keys(optionIcons).map((option) => (
               <Button
                 key={option}
-                variant="rainbow" // Use rainbow variant
+                variant="outline" // Use rainbow variant
                 size="sm"
                 className={`text-[12px] rounded-full p-3 items-center relative overflow-hidden
-               ${isDarkMode ? "bg-black" : "bg-gray-600 text-white"}`}
+               ${isDarkMode ? "bg-black" : "bg-black text-white"}`}
                 onClick={() => handleOptionClick(option)}
               >
                 <span className="mr-2">{optionIcons[option]}</span>
@@ -219,21 +213,86 @@ export default function Dashboard() {
           <Navbar isMobile={isMobile} />
           <VoiceInput onReceiveText={sendMessageToOpenAI} />
 
-          <main className="flex-1 overflow-auto p-3 flex flex-col relative">
+          <main className="flex-1 overflow-auto xs:w-full sm:w-full h-full md:w-[90%] lg:w-[90%] mx-auto mt-4 lg:mt-10 p-3 flex flex-col relative">
+            <div className="flex flex-col lg:flex-row gap-4 p-2 lg:mb-10">
+              {/* Left Section */}
+              <div className="flex flex-col lg:w-3/5 items-center justify-center text-center lg:text-left">
+                <h2 className="mt-6">
+                  <strong
+                    className="text-black mb-4 dark:text-white text-2xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-5xl font-semibold"
+                    style={{
+                      background:
+                        "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                      color: "transparent",
+                    }}
+                  >
+                    PathFinder AI Career Advisor
+                  </strong>
+                  <p
+                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-semibold"
+                    style={{
+                      // background:
+                      //   "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
+                      // WebkitBackgroundClip: "text",
+                      // backgroundClip: "text",
+                      // color: "transparent",
+                      lineHeight: "1.8",
+                    }}
+                  >
+                    is an intelligent career advisor designed to guide students
+                    in making informed academic and career choices with
+                    personalized AI-powered insights.
+                  </p>
+                </h2>
+              </div>
+              {/* Right Section */}
+              <div className="flex lg:w-2/5 items-center justify-center p-4">
+                <Image
+                  src="/rb1.png"
+                  priority
+                  alt="Logo"
+                  width={600}
+                  height={600}
+                  className="w-full max-w-[500px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] xl:max-w-[700px]"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col h-full mt-10 lg:mt-20 lg:mb-20 items-center justify-center leading-loose">
+              <h3 className="text-black dark:text-white text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-normal mb-4">
+                What is PathFinder AI?
+              </h3>
+              <p
+                className="p-2 mb-10 text-md lg:text-2xl xl:text-2xl dark:text-gray-400"
+                style={{ lineHeight: "1.9" }}
+              >
+                Get personalized career guidance with our AI powered advisor.
+                Based on your skills and interests, it suggests tailored career
+                paths, university courses, and skill development tips. Receive
+                instant answers to your questions and visualize your career
+                journey with interactive roadmaps. Stay up-to-date with the
+                latest industry trends and make informed decisions about your
+                future.
+              </p>
+            </div>
+            <p className="text-center p-4 text-2xl md:text-3xl dark:text-white">
+              Ready to have a chat? 💬
+            </p>
             {renderOptions()}
+
             {currentPage === "chat" && (
               <>
-                <div className="flex justify-start items-center mb-6 mt-4 ml-4">
-                  {messages.length > 0 && (
-                    <button
-                      onClick={closeChat}
-                      className="rounded-full p-2 z-10 dark:text-white"
-                      aria-label="Close chat"
-                    >
-                      <CircleX />
-                    </button>
-                  )}
-                </div>
+                {messages.length > 0 && (
+                  <button
+                    onClick={closeChat}
+                    className="rounded-full p-2 z-10 dark:text-white"
+                    aria-label="Close chat"
+                  >
+                    <CircleX />
+                  </button>
+                )}
 
                 <ChatInterface
                   messages={messages}
