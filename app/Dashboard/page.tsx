@@ -233,11 +233,6 @@ export default function Dashboard() {
                   <p
                     className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-4xl font-semibold"
                     style={{
-                      // background:
-                      //   "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
-                      // WebkitBackgroundClip: "text",
-                      // backgroundClip: "text",
-                      // color: "transparent",
                       lineHeight: "1.8",
                     }}
                   >
@@ -246,6 +241,14 @@ export default function Dashboard() {
                     personalized AI-powered insights.
                   </p>
                 </h2>
+                <Button
+                  // onClick={}
+                  className={`mt-10 gap-1.5 text-white ${
+                    isDarkMode ? "bg-black text-white" : "text-black"
+                  } rounded-full px-3.5 py-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:bg-gradient-to-r hover:from-purple-500 hover:to-blue-500`}
+                >
+                  Ready for a chat?
+                </Button>
               </div>
               {/* Right Section */}
               <div className="flex lg:w-2/5 items-center justify-center p-4">
@@ -277,9 +280,7 @@ export default function Dashboard() {
                 future.
               </p>
             </div>
-            <p className="text-center p-4 text-2xl md:text-3xl dark:text-white">
-              Ready to have a chat? 💬
-            </p>
+
             {renderOptions()}
 
             {currentPage === "chat" && (
