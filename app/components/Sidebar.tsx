@@ -54,7 +54,6 @@ export default function Sidebar() {
           }}
           className="w-full flex items-center justify-start "
         >
-          {/* <Image src="/PathFinder_bg.png" alt="Logo" width={50} height={50} /> */}
           <span
             className="ml-2 font-semibold text-2xl"
             style={{
