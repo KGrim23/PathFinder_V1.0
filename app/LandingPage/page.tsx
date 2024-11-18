@@ -35,7 +35,7 @@ const LandingPage: React.FC = () => {
           {/* Sign-up Button and Footer Links at the Bottom */}
           <div className="mb-16 flex flex-col items-center">
             <Link
-              href="/dashboard"
+              href="/Dashboard"
               className="px-6 py-1 text-md bg-grey-600 text-white border-2 border-white rounded-xl hover:bg-blue-700 transition"
             >
               Log In
