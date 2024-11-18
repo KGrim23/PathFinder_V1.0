@@ -86,7 +86,7 @@ export default function Sidebar() {
               aria-label="New Chat"
               onClick={() => {
                 setCurrentPage("chat");
-                router.push("/Dashboard");
+                router.push("/dashboard");
               }}
             >
               <MessageSquarePlus className="w-5 h-5 text-blue-700" />

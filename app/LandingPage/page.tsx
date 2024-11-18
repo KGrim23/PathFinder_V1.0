@@ -13,16 +13,6 @@ const LandingPage: React.FC = () => {
         {/* Content Over the Image */}
         <div className="absolute inset-0 flex flex-col justify-between items-center z-10">
           <div className="flex flex-col items-center space-x-4 gap-4 m-auto">
-            {/* Logo */}
-            {/* <Image
-              src="/PathFinder_Green_bg.png"
-              alt="Logo"
-              width={80}
-              height={80}
-              priority
-            /> */}
-
-            {/* Centered Heading */}
             <h1
               className="text-5xl mt-4 md:text-6xl font-semibold"
               style={{
@@ -45,7 +35,7 @@ const LandingPage: React.FC = () => {
           {/* Sign-up Button and Footer Links at the Bottom */}
           <div className="mb-16 flex flex-col items-center">
             <Link
-              href="/Dashboard"
+              href="/dashboard"
               className="px-6 py-1 text-md bg-grey-600 text-white border-2 border-white rounded-xl hover:bg-blue-700 transition"
             >
               Log In

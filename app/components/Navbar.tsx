@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Bell, Menu, Sun, Moon } from "lucide-react"; // Import icons
+import { useRouter } from "next/navigation";
+import { Bell, Menu, Sun, Moon, Home } from "lucide-react"; // Import icons
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
@@ -15,6 +16,13 @@ export type NavbarProps = {
 const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
   const { isDarkMode, toggleDarkMode } = useTheme();
   const [currentPage, setCurrentPage] = useState<string>("");
+  const router = useRouter();
+
+  const goToHomePage = () => {
+    setCurrentPage("chat");
+    router.push("/dashboard");
+    console.log("Navbar: Home button clicked");
+  };
 
   return (
     <header className="sticky top-0 z-10 flex h-[57px] items-center justify-between bg-white dark:bg-black px-4 shadow w-full sm:w-[100%] md:w-[80%] lg:w-[80%] mx-auto">
@@ -35,6 +43,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           <Button
             onClick={() => {
               setCurrentPage("chat");
+              router.push("/dashboard");
             }}
             className="text-2xl font-semibold cursor-pointer bg-transparent border-none"
             style={{
@@ -51,6 +60,15 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
       )}
 
       <div className="flex items-center gap-2 ml-auto">
+        <Link href="/dashboard" passHref>
+          <Button variant="ghost" size="icon" aria-label="Go to Dashboard">
+            {isDarkMode ? (
+              <Home className="h-5 w-5" />
+            ) : (
+              <Home className="h-5 w-5" />
+            )}
+          </Button>
+        </Link>
         <Button
           variant="ghost"
           size="icon"
