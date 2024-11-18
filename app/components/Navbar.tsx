@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
 import { useTheme } from "./ThemeContext";
 import Link from "next/link";
-import { Hero } from "./Hero"; // Ensure Hero component is imported correctly
+import { Hero } from "./Hero";
 
 export type NavbarProps = {
   isMobile: boolean;
@@ -21,7 +21,8 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
 
   // Function to handle the Home button click
   const goToHomePage = () => {
-    setShowHero(true); // Show Hero component
+    setShowHero(true);
+    router.push("/Dashboard");
   };
 
   return (
@@ -45,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           <Link href="/" passHref>
             <Button
               onClick={() => {
-                router.push("/dashboard");
+                router.push("/");
               }}
               className="text-2xl font-semibold cursor-pointer bg-transparent border-none"
               style={{
@@ -67,7 +68,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
             onClick={goToHomePage}
             variant="ghost"
             size="icon"
-            aria-label="Go to Hero"
+            aria-label="Go to Home"
           >
             <Home className="h-5 w-5" />
           </Button>
