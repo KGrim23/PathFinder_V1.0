@@ -236,9 +236,8 @@ export default function Dashboard() {
                       lineHeight: "1.8",
                     }}
                   >
-                    is an intelligent career advisor designed to guide students
-                    in making informed academic and career choices with
-                    personalized AI-powered insights.
+                    is designed to guide students in making informed academic
+                    and career choices with personalized AI-powered insights.
                   </p>
                 </h2>
                 <Button
