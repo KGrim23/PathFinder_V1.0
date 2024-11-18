@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Bell, Menu, Sun, Moon, Home } from "lucide-react"; // Import icons
+import { usePathname, useRouter } from "next/navigation";
+import { Bell, Menu, Sun, Moon, Home } from "lucide-react"; // Icons
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
@@ -16,18 +16,22 @@ export type NavbarProps = {
 
 const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
   const { isDarkMode, toggleDarkMode } = useTheme();
-  const [showHero, setShowHero] = useState(false); // State for controlling Hero component
+  const [showHero, setShowHero] = useState(false);
   const router = useRouter();
+  const pathname = usePathname(); // Get the current route
 
-  // Function to handle the Home button click
+  // Navigate to Home only if not already on Dashboard
   const goToHomePage = () => {
-    setShowHero(true);
-    router.push("/Dashboard");
+    if (pathname !== "/Dashboard") {
+      setShowHero(true); // Only show Hero if applicable
+      router.push("/Dashboard");
+    }
   };
 
   return (
     <>
       <header className="sticky top-0 z-10 flex h-[57px] items-center justify-between bg-white dark:bg-black px-4 shadow w-full sm:w-[100%] md:w-[80%] lg:w-[80%] mx-auto">
+        {/* Mobile Sidebar Toggle */}
         {isMobile && (
           <Sheet>
             <SheetTrigger asChild>
@@ -42,26 +46,23 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
         )}
 
         {/* Logo */}
-        {isMobile && (
-          <Link href="/" passHref>
-            <Button
-              onClick={() => {
-                router.push("/");
-              }}
-              className="text-2xl font-semibold cursor-pointer bg-transparent border-none"
-              style={{
-                background:
-                  "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                color: "transparent",
-              }}
-            >
-              PathFinder
-            </Button>
-          </Link>
-        )}
+        <Link href="/" passHref>
+          <Button
+            onClick={() => router.push("/")}
+            className="text-2xl font-semibold cursor-pointer bg-transparent border-none"
+            style={{
+              background:
+                "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              color: "transparent",
+            }}
+          >
+            PathFinder
+          </Button>
+        </Link>
 
+        {/* Navbar Actions */}
         <div className="flex items-center gap-2 ml-auto">
           {/* Home Button */}
           <Button
@@ -69,11 +70,12 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
             variant="ghost"
             size="icon"
             aria-label="Go to Home"
+            disabled={pathname === "/Dashboard"} // Disable button if already on Dashboard
           >
             <Home className="h-5 w-5" />
           </Button>
 
-          {/* Dark Mode Toggle Button */}
+          {/* Dark Mode Toggle */}
           <Button
             variant="ghost"
             size="icon"
@@ -87,7 +89,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
             )}
           </Button>
 
-          {/* Notifications Button */}
+          {/* Notifications */}
           <Button
             variant="ghost"
             size="icon"
@@ -99,11 +101,9 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
         </div>
       </header>
 
-      {/* Conditionally render the Hero component */}
+      {/* Conditionally Render Hero */}
       {showHero && (
         <div className="hero-container mt-[60px]">
-          {" "}
-          {/* Ensure Hero is below the Navbar */}
           <Hero />
         </div>
       )}

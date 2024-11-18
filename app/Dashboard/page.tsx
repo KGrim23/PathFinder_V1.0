@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Sidebar from "../components/Sidebar";
 import "../globals.css";
 import { Hero } from "../components/Hero";
+import Footer from "../components/Footer";
 
 type MessageType = {
   type: "user" | "ai";
@@ -51,14 +52,10 @@ export default function Dashboard() {
           <Navbar isMobile={isMobile} />
           {/* <VoiceInput onReceiveText={sendMessageToOpenAI} /> */}
 
-          <main className="flex-1 overflow-auto w-full sm:w-full h-full md:w-[90%] lg:w-[90%] mx-auto mt-4 lg:mt-10 p-4 flex flex-col relative">
+          <main className="flex-1 overflow-auto w-full sm:w-full h-full md:w-[90%] lg:w-[90%] mx-auto mt-4 mb-8 lg:mt-10 p-4 flex flex-col relative">
             <Hero />
-
-            <p className="flex m-4 items-center justify-center text-xs text-grey-600">
-              <span>PathFinder AI</span> &nbsp;can make mistakes. Check
-              important info.
-            </p>
           </main>
+          <Footer />
         </div>
       </div>
     </TooltipProvider>

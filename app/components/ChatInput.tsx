@@ -10,7 +10,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Camera, Mic, CornerDownLeft } from "lucide-react";
+import { Camera, Mic, CornerDownLeft, Paperclip } from "lucide-react";
 
 const ChatInput: React.FC<{
   inputMessage: string;
@@ -92,7 +92,7 @@ const ChatInput: React.FC<{
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon">
-                <Camera className="size-4" />
+                <Paperclip className="size-4" />
                 <span className="sr-only">Attach file</span>
               </Button>
             </TooltipTrigger>

@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 ß
     If students ask you questions that was not in scope of career advice or career guidance or use inappropriate language, kindly respond with "I am sorry, I am not able to provide advice on that topic. Please feel free to ask me about career guidance or related topics."
 
-    REMEMBER: You are talking to a student age 18-24.
+    REMEMBER: You are talking to a student age 18-24 and ONLY answer the question that are relevant to United Kingdom eduction system.
 
     `;
 
