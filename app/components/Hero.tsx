@@ -66,7 +66,7 @@ export const Hero = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center mt-10 lg:mt-20">
+      <div className="flex flex-col items-center justify-center mt-6 lg:mt-20">
         {" "}
         <Button
           onClick={handleStartChat}
@@ -81,7 +81,7 @@ export const Hero = () => {
         </Button>
       </div>
       {/* Information Section */}
-      <div className="flex flex-col h-full mt-8 lg:mt-10 lg:mb-10 items-center justify-center leading-loose">
+      <div className="flex flex-col h-full mt-12 lg:mt-10 lg:mb-10 items-center justify-center leading-loose">
         <h3 className="text-black dark:text-white text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-normal mb-4">
           What is PathFinder AI?
         </h3>
