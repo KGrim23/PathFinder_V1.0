@@ -88,7 +88,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setChatSessions(existingSessions);
     alert("Chat history saved!");
   };
-
   const formatAIMessageContent = (content: string): string => {
     let formattedContent = marked(content) as string;
 
@@ -98,24 +97,25 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       '<h4 class="font-bold text-xl my-2">$1</h4>'
     );
 
+    // Convert ordered list items into <li> elements first
     formattedContent = formattedContent.replace(
       /(?:^|\n)(\d+\.\s)([^\n]*)/g,
       "<li>$2</li>"
     );
 
-    // Wrap all <li> elements into a single <ol>
+    // Wrap <li> elements into a single <ol> element
     formattedContent = formattedContent.replace(
       /(<li>.*?<\/li>)+/g,
-      '<ol class="my-2 list-decimal ml-6">$&</ol>'
+      '<ol class="space-y-6 list-decimal ml-6">$&</ol>'
     );
 
-    // Replace consecutive `-` lines with a single `<ul>` block
+    // Convert unordered list items into <li> elements
     formattedContent = formattedContent.replace(
-      /(?:^|\n)-\s(.*?)(?=(?:\n-|$))/g,
+      /^-\s(.*?)(?=\n|$)/gm,
       "<li>$1</li>"
     );
 
-    // Wrap the list items with a single `<ul>`
+    // Wrap <li> elements into a single <ul> element
     formattedContent = formattedContent.replace(
       /(<li>.*?<\/li>)+/g,
       '<ul class="list-disc ml-6">$&</ul>'
@@ -127,8 +127,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       '<span class="font-bold text-blue-600">$1</span>'
     );
 
-    // Ensure line breaks between paragraphs for better display
-    formattedContent = formattedContent.replace(/\n/g, "<br />");
+    // Ensure smaller line breaks only between paragraphs
+    formattedContent = formattedContent.replace(
+      /(^|\n)(?!<li>)(.*?)(?=\n|$)/g,
+      "$1<span class='inline-block my-1'></span>$2"
+    );
 
     return formattedContent;
   };

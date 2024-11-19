@@ -66,11 +66,13 @@ export const Hero = () => {
           />
         </div>
       </div>
+
+      {/* Button Section */}
       <div className="flex flex-col items-center justify-center mt-6 lg:mt-20">
         {" "}
         <Button
           onClick={handleStartChat}
-          className={`mt-10 gap-1.5 text-lg lg:text-xl lg:mt-4 lg:p-6 ${
+          className={`mt-10 gap-1.5 text-md lg:text-xl lg:mt-4 lg:p-6 ${
             isDarkMode ? "bg-black text-white" : "text-black"
           } rounded-full px-3.5 py-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:bg-gradient-to-r hover:from-purple-500 hover:to-blue-500`}
           style={{
@@ -80,6 +82,7 @@ export const Hero = () => {
           Ready for a chat?
         </Button>
       </div>
+
       {/* Information Section */}
       <div className="flex flex-col h-full p-2 mt-12 lg:mt-10 lg:mb-10 justify-center leading-loose">
         <h3 className="text-black dark:text-white text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-normal mb-4">
@@ -100,9 +103,10 @@ export const Hero = () => {
 
       {/* Features Section */}
       <div className="h-full text-black dark:text-gray-400 p-2 lg:p-10">
-        <h1 className="text-black dark:text-white text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-normal mb-8">
+        <h1 className="text-black dark:text-white text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-normal mb-6">
           Career Guidance for High School Students
         </h1>
+
         <div className="space-y-8 dark:text-gray-400 mb-10">
           {/* Main Information */}
           <section>
@@ -167,7 +171,7 @@ export const Hero = () => {
           </section>
 
           {/* Additional Resources */}
-          <section>
+          <section className="mb-10">
             <h2 className="text-xl lg:text-3xl font-semibold mb-4">
               Additional Career Resources
             </h2>

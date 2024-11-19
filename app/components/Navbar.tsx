@@ -18,12 +18,11 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
   const { isDarkMode, toggleDarkMode } = useTheme();
   const [showHero, setShowHero] = useState(false);
   const router = useRouter();
-  const pathname = usePathname(); // Get the current route
+  const pathname = usePathname();
 
-  // Navigate to Home only if not already on Dashboard
   const goToHomePage = () => {
     if (pathname !== "/Dashboard") {
-      setShowHero(true); // Only show Hero if applicable
+      setShowHero(true); // Only show home button if it is not already on the home page
       router.push("/Dashboard");
     }
   };
@@ -46,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
         )}
 
         {/* Logo */}
-        <Link href="/" passHref>
+        {/* <Link href="/" passHref>
           <Button
             onClick={() => router.push("/")}
             className="text-2xl font-semibold cursor-pointer bg-transparent border-none"
@@ -60,7 +59,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           >
             PathFinder
           </Button>
-        </Link>
+        </Link> */}
 
         {/* Navbar Actions */}
         <div className="flex items-center gap-2 ml-auto">

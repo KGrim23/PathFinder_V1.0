@@ -52,9 +52,11 @@ export default function Dashboard() {
           <Navbar isMobile={isMobile} />
           {/* <VoiceInput onReceiveText={sendMessageToOpenAI} /> */}
 
-          <main className="flex-1 overflow-auto w-full sm:w-full h-full md:w-[90%] lg:w-[90%] mx-auto mt-4 mb-8 lg:mt-10 p-4 flex flex-col relative">
+          <main className="flex-1 overflow-auto w-full sm:w-full h-full md:w-[90%] lg:w-[90%] mx-auto mt-4 mb-20 lg:mt-10 p-4 flex flex-col relative">
             <Hero />
           </main>
+
+          {/* Footer */}
           <Footer />
         </div>
       </div>
