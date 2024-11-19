@@ -38,7 +38,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`flex flex-col h-full w-64 transition-all duration-300 ease-in-out ${
+      className={`flex flex-col min-h-screen w-64 transition-all duration-300 ease-in-out ${
         isDarkMode ? "bg-black text-white" : "bg-white text-black"
       }`}
     >
@@ -166,7 +166,7 @@ export default function Sidebar() {
       </nav>
 
       {/* Profile Section */}
-      <nav className="p-2 mb-4">
+      <nav className="p-2 mb-14">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -179,7 +179,7 @@ export default function Sidebar() {
               <Avatar>
                 <AvatarImage src="/profile1.png" alt="Profile" />
               </Avatar>{" "}
-              <span className="ml-2 text-lg text-blue-700 font-semibold">
+              <span className="ml-4 text-lg text-blue-700 font-semibold">
                 Calab
               </span>
             </Button>

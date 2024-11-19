@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
 import ChatInput from "./ChatInput";
-import { Import, Volume2, VolumeX } from "lucide-react";
+import { Save, Volume2, VolumeX } from "lucide-react";
 import AWS from "aws-sdk";
 import { marked } from "marked"; //for markdown parsing
 // Configure Polly - go to AWS console
@@ -98,16 +98,27 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       '<h4 class="font-bold text-xl my-2">$1</h4>'
     );
 
-    // Format numbered lists (e.g., 1., 2.) with structured <ol> elements
     formattedContent = formattedContent.replace(
-      /(\d+\.\s)([^\n]*)/g,
-      '<ol class="my-2 list-decimal ml-6"><li>$2</li></ol>'
+      /(?:^|\n)(\d+\.\s)([^\n]*)/g,
+      "<li>$2</li>"
     );
 
-    // Format bullet points (-) by wrapping them in a <ul> tag
+    // Wrap all <li> elements into a single <ol>
     formattedContent = formattedContent.replace(
-      /^-\s(.*?)(?=\n|$)/gm,
-      '<ul class="list-disc ml-6"><li>$1</li></ul>'
+      /(<li>.*?<\/li>)+/g,
+      '<ol class="my-2 list-decimal ml-6">$&</ol>'
+    );
+
+    // Replace consecutive `-` lines with a single `<ul>` block
+    formattedContent = formattedContent.replace(
+      /(?:^|\n)-\s(.*?)(?=(?:\n-|$))/g,
+      "<li>$1</li>"
+    );
+
+    // Wrap the list items with a single `<ul>`
+    formattedContent = formattedContent.replace(
+      /(<li>.*?<\/li>)+/g,
+      '<ul class="list-disc ml-6">$&</ul>'
     );
 
     // Wrap inline bold text in a styled <span> for emphasis
@@ -221,7 +232,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   return (
     <div
       className={`flex flex-col h-full text-md ${
-        isDarkMode ? "bg-black text-white" : "bg-white text-black"
+        isDarkMode ? "bg-black text-gray-400" : "bg-white text-black"
       }`}
     >
       <div className="flex-1 overflow-y-auto mb-4 p-2">
@@ -246,9 +257,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                     } else {
                       handleReadAloud(message.content);
                     }
-                    setIsAudioPlaying(!isAudioPlaying); // Toggle state
+                    setIsAudioPlaying(!isAudioPlaying);
                   }}
-                  style={{ zIndex: 10 }} // Set a high z-index value
+                  style={{ zIndex: 10 }}
                 >
                   {isAudioPlaying ? (
                     <VolumeX className="mr-2" />
@@ -263,12 +274,12 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       </div>
 
       {messages.length > 0 && (
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-start mb-4">
           <Button
-            className="ml-4 bg-primary hover:bg-primary-dark text-black dark:text-white"
+            className="bg-primary hover:bg-primary-dark text-gray-700 "
             onClick={saveChatHistory}
           >
-            Save Chat History
+            <Save />
           </Button>
         </div>
       )}

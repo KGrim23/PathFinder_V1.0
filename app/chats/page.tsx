@@ -223,7 +223,7 @@ const Chats = () => {
             {messages.length > 0 && (
               <button
                 onClick={closeChat}
-                className="absolute top-2 left-2 rounded-full p-2 z-10 dark:text-white"
+                className="absolute top-1 left-2 rounded-full p-2 z-10 dark:text-gray-400"
                 aria-label="Close chat"
               >
                 <CircleX />
