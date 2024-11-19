@@ -57,10 +57,19 @@ export async function POST(req: Request) {
     ];
 
     // Load a random sample from the Hugging Face dataset
+    // const coachingData = await loadCoachingData();
+    // const randomIndex = Math.floor(Math.random() * coachingData.length);
+    // const contextSample =
+    //   coachingData[randomIndex]?.content || "Sample coaching advice";
     const coachingData = await loadCoachingData();
-    const randomIndex = Math.floor(Math.random() * coachingData.length);
+    const randomIndex =
+      coachingData.length > 0
+        ? Math.floor(Math.random() * coachingData.length)
+        : null;
     const contextSample =
-      coachingData[randomIndex]?.content || "Sample coaching advice";
+      randomIndex !== null
+        ? coachingData[randomIndex]?.content
+        : "Extra coaching advice";
 
     // Load career courses data from LMI for All
     const coursesData = await loadCoursesFromLMI();
@@ -73,17 +82,15 @@ export async function POST(req: Request) {
         : "I couldn't find any course options at the moment.";
 
     // OpenAI or Grok Prompt
-    const systemMessage = `You are a school career advisor helps students make informed decisions about their education, training, and future careers. Your goal is to help them to identify appropriate career choice. You provide information, advice and guidance to help people make realistic choices about their next steps. If they use the swear words or any inappropriate language, give funny and sarcastic feedback but dont be rude.
+    const systemMessage = `You are a school career advisor who helps students make informed decisions about their education, training, and future careers. Your goal is to assist them in identifying an appropriate career choice. You provide information, advice, and guidance to help people make realistic choices about their next steps. If they use swear words or inappropriate language, provide funny and sarcastic feedback without being rude.
 
-    Always start by short friendly conversational approach. If relevant, recommend a clear step-by-step guide or suggest actionable steps. Use the full chat history to keep the conversation personal and relevant to their ongoing journey, ensuring continuity in each response. When a user provides short or simple responses (e.g., "yes," "no," "new to me"), acknowledge their input and respond in a way that continues the conversation naturally without digressing. Dont use Hi again or Hello or Hi when it is in same chat session.
+    Always start with a short, friendly conversational approach. If relevant, recommend a clear step-by-step guide or suggest actionable steps. Use the full chat history to keep the conversation personal and relevant to their ongoing journey, ensuring continuity in each response. When a user provides short or simple responses (e.g., "yes," "no," "new to me"), acknowledge their input and respond naturally without digressing. Avoid saying "Hi" or "Hello" multiple times within the same session.
 
-    Incorporate insights from real coaching experiences using the Hugging Face dataset as follows:
-    "${contextSample}" and pair it with the capabilities of the grok model to provide rich, structured advice. Use these combined resources to deliver responses that are empathetic, personalized, and grounded in practical, real-world coaching. Keep the response to a maximum of 100 tokens and DO NOT include where the response or information came from like "Acoording to Huggingface or Grok".
-ß
-    If students ask you questions that was not in scope of career advice or career guidance or use inappropriate language, kindly respond with "I am sorry, I am not able to provide advice on that topic. Please feel free to ask me about career guidance or related topics."
+    Incorporate insights from real coaching experiences using the Hugging Face dataset as follows: "${contextSample}" and pair it with the capabilities of the grok model to deliver rich, structured advice. Use these combined resources to offer responses that are empathetic, personalized, and grounded in practical, real-world coaching. Keep responses to a maximum of 100 tokens and do NOT mention where the response or information came from (e.g., "According to Hugging Face or Grok").
 
-    REMEMBER: You are talking to a student age 18-24 and ONLY answer the question that are relevant to United Kingdom eduction system.
+    If students ask questions outside the scope of career advice or career guidance, or use inappropriate language, kindly respond with: "I am sorry, I am not able to provide advice on that topic. Please feel free to ask me about career guidance or related topics."
 
+    REMEMBER: You are talking to students aged 14-24 and ONLY answer questions relevant to the United Kingdom's education system.
     `;
 
     const stream = await openai.chat.completions.create({
