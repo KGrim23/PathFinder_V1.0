@@ -81,12 +81,12 @@ export const Hero = () => {
         </Button>
       </div>
       {/* Information Section */}
-      <div className="flex flex-col h-full mt-12 lg:mt-10 lg:mb-10 items-center justify-center leading-loose">
+      <div className="flex flex-col h-full p-2 mt-12 lg:mt-10 lg:mb-10 justify-center leading-loose">
         <h3 className="text-black dark:text-white text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-normal mb-4">
           What is PathFinder AI?
         </h3>
         <p
-          className="p-2 mb-10 text-md lg:text-2xl xl:text-2xl dark:text-gray-400"
+          className="mb-10 text-md lg:text-2xl xl:text-2xl dark:text-gray-400"
           style={{ lineHeight: "1.9" }}
         >
           Get personalized career guidance with our AI-powered advisor. Based on
@@ -99,8 +99,8 @@ export const Hero = () => {
       </div>
 
       {/* Features Section */}
-      <div className="h-full text-black dark:text-gray-400 p-6 lg:p-10">
-        <h1 className="text-black dark:text-white text-center text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-normal mb-8">
+      <div className="h-full text-black dark:text-gray-400 p-2 lg:p-10">
+        <h1 className="text-black dark:text-white text-3xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-normal mb-8">
           Career Guidance for High School Students
         </h1>
         <div className="space-y-8 dark:text-gray-400 mb-10">
