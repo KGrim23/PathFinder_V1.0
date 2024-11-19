@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
 import { useTheme } from "./ThemeContext";
-import Link from "next/link";
-import { Hero } from "./Hero";
+import LandingPage from "../LandingPage/page";
 
 export type NavbarProps = {
   isMobile: boolean;
@@ -23,13 +22,13 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
   const goToHomePage = () => {
     if (pathname !== "/Dashboard") {
       setShowHero(true); // Only show home button if it is not already on the home page
-      router.push("/Dashboard");
+      router.push("/LandingPage");
     }
   };
 
   return (
     <>
-      <header className="sticky top-0 z-10 flex h-[57px] items-center justify-between bg-white dark:bg-black px-4 shadow w-full sm:w-[100%] md:w-[80%] lg:w-[80%] mx-auto">
+      <header className="sticky top-0 z-10 flex h-[57px] items-center justify-between text-white bg-zinc-900 px-4 shadow w-full sm:w-[100%] md:w-[80%] lg:w-[80%] mx-auto">
         {/* Mobile Sidebar Toggle */}
         {isMobile && (
           <Sheet>
@@ -44,23 +43,6 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           </Sheet>
         )}
 
-        {/* Logo */}
-        {/* <Link href="/" passHref>
-          <Button
-            onClick={() => router.push("/")}
-            className="text-2xl font-semibold cursor-pointer bg-transparent border-none"
-            style={{
-              background:
-                "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              color: "transparent",
-            }}
-          >
-            PathFinder
-          </Button>
-        </Link> */}
-
         {/* Navbar Actions */}
         <div className="flex items-center gap-2 ml-auto">
           {/* Home Button */}
@@ -69,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
             variant="ghost"
             size="icon"
             aria-label="Go to Home"
-            disabled={pathname === "/Dashboard"} // Disable button if already on Dashboard
+            disabled={pathname === "/LandingPage"} // Disable button if already on Dashboard
           >
             <Home className="h-5 w-5" />
           </Button>
@@ -103,7 +85,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
       {/* Conditionally Render Hero */}
       {showHero && (
         <div className="hero-container mt-[60px]">
-          <Hero />
+          <LandingPage />
         </div>
       )}
     </>

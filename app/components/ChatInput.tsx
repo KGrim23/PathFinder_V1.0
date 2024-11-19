@@ -80,7 +80,7 @@ const ChatInput: React.FC<{
           placeholder="Type your question here ..."
           className={`min-h-1 border-0 p-2 mb-2 shadow-none focus-visible:ring-0 text-base rounded-xl ${
             isDarkMode
-              ? "bg-black text-white border-2 border-white"
+              ? "text-white border-0 bg-gray-800"
               : "bg-gray-300 text-black"
           }`}
           value={inputMessage}

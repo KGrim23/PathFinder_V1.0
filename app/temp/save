@@ -64,3 +64,43 @@
                 </p>
               </div>
             </div>
+
+             <nav className="ml-auto flex gap-4 sm:gap-6">
+          <a
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="#about"
+          >
+            About
+          </a>
+          <a
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="#features"
+          >
+            New Chat
+          </a>
+          <a
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="#benefits"
+          >
+            Save Chats
+          </a>
+          <a
+            className="text-sm font-medium hover:underline underline-offset-4"
+            href="#resources"
+          >
+            Settings
+          </a>
+          {/* Dark Mode Toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Toggle Dark Mode"
+            onClick={toggleDarkMode}
+          >
+            {isDarkMode ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
+          </Button>
+        </nav>

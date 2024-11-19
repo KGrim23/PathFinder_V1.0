@@ -2,12 +2,22 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="mt-8 pt-6 pb-6 bg-gray-100 dark:bg-black text-white text-center fixed bottom-0 left-0 w-full">
-      <p className="text-sm text-gray-500">
-        <span>PathFinder AI</span> &nbsp;can make mistakes.
+    <footer className="flex flex-col gap-2 sm:flex-row py-4 w-full shrink-0 items-center px-4 md:px-6 text-white bg-zinc-900">
+      <p className="text-xs text-gray-500 dark:text-gray-400">
+        © 2024 PathFinder AI. All rights reserved.
       </p>
-      <p className="text-sm text-gray-500">Check important info.</p>
-    </div>
+      <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+        <a className="text-xs hover:underline underline-offset-4" href="/terms">
+          Terms of Service
+        </a>
+        <a
+          className="text-xs hover:underline underline-offset-4"
+          href="/privacy-policy"
+        >
+          Privacy Policy
+        </a>
+      </nav>
+    </footer>
   );
 };
 
