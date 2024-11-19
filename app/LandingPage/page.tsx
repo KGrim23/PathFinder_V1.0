@@ -1,5 +1,8 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useTheme } from "../components/ThemeContext";
+
 import {
   ArrowRight,
   BookOpen,
@@ -8,10 +11,20 @@ import {
   Compass,
   GraduationCap,
   LineChart,
+  Moon,
+  Sun,
   Users,
 } from "lucide-react";
+import { useEffect } from "react";
+import Link from "next/link";
 
 export default function LandingPage() {
+  const { isDarkMode, toggleDarkMode } = useTheme();
+
+  useEffect(() => {
+    document.body.classList.toggle("dark", isDarkMode);
+  }, [isDarkMode]);
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center">
@@ -43,9 +56,23 @@ export default function LandingPage() {
           >
             Settings
           </a>
+          {/* Dark Mode Toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Toggle Dark Mode"
+            onClick={toggleDarkMode}
+          >
+            {isDarkMode ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
+          </Button>
         </nav>
       </header>
-      <main className="flex-1">
+
+      <main className={`flex-1 ${isDarkMode ? "dark" : ""}`}>
         <section id="about" className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
@@ -73,7 +100,7 @@ export default function LandingPage() {
         </section>
         <section
           id="features"
-          className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800"
+          className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-black"
         >
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">
@@ -141,7 +168,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-black">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12">
               How a Career Advisor Can Help
@@ -238,7 +265,7 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-black">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
@@ -252,8 +279,7 @@ export default function LandingPage() {
               </div>
               <div className="space-x-4">
                 <Button size="lg">
-                  Start a chat 💬
-                  {/* <ArrowRight className="ml-2 h-4 w-4" /> */}
+                  <Link href="/signup">Get Started</Link>
                 </Button>
               </div>
             </div>
@@ -265,10 +291,16 @@ export default function LandingPage() {
           © 2024 PathFinder AI. All rights reserved.
         </p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-          <a className="text-xs hover:underline underline-offset-4" href="#">
+          <a
+            className="text-xs hover:underline underline-offset-4"
+            href="/terms"
+          >
             Terms of Service
           </a>
-          <a className="text-xs hover:underline underline-offset-4" href="#">
+          <a
+            className="text-xs hover:underline underline-offset-4"
+            href="/privacy-policy"
+          >
             Privacy Policy
           </a>
         </nav>

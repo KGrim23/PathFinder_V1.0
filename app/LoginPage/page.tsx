@@ -1,11 +1,10 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import React from "react";
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="relative flex flex-col space-y-4 items-center justify-center min-h-screen">
+    <div className="relative flex flex-col space-y-4 items-center justify-center min-h-screen $">
       {/* Background Image Section */}
       <div className="relative w-full min-h-screen">
         <div className="absolute inset-0 bg-black"></div>
