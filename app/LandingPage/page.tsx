@@ -287,8 +287,8 @@ export default function LandingPage() {
               </div>
             </section>
           </main>
+          <Footer />
         </div>
-        <Footer />
       </div>
     </TooltipProvider>
   );

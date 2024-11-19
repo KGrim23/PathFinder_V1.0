@@ -28,7 +28,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
 
   return (
     <>
-      <header className="sticky top-0 z-10 flex h-[57px] items-center justify-between text-white bg-zinc-900 px-4 shadow w-full sm:w-[100%] md:w-[80%] lg:w-[80%] mx-auto">
+      <header className="sticky top-0 z-10 flex h-[57px] items-center justify-between dark:text-white dark:bg-zinc-900 px-4 shadow w-full sm:w-[100%] md:w-[80%] lg:w-[80%] mx-auto">
         {/* Mobile Sidebar Toggle */}
         {isMobile && (
           <Sheet>
