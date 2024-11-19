@@ -88,8 +88,8 @@ export default function Sidebar() {
                 router.push("/chats");
               }}
             >
-              <MessageSquarePlus className="w-5 h-5 text-blue-700" />
-              <span className="text-blue-700">New Chat</span>
+              <MessageSquarePlus className="w-5 h-5 text-black dark:text-white" />
+              <span className="text-black dark:text-white">New Chat</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">New Chat</TooltipContent>
@@ -109,8 +109,8 @@ export default function Sidebar() {
               aria-label="History"
               onClick={navigateToSavedChats}
             >
-              <History className="w-5 h-5 text-blue-700" />
-              <span className="text-blue-700">History</span>
+              <History className="w-5 h-5 text-black dark:text-white" />
+              <span className="text-black dark:text-white">History</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">History</TooltipContent>
@@ -133,8 +133,8 @@ export default function Sidebar() {
                 router.push("/SettingPage");
               }}
             >
-              <Settings2 className="w-5 h-5 text-blue-700" />
-              <span className="text-blue-700">Settings</span>
+              <Settings2 className="w-5 h-5 text-black dark:text-white" />
+              <span className="text-black dark:text-white">Settings</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">Settings</TooltipContent>
@@ -157,8 +157,8 @@ export default function Sidebar() {
                 router.push("/HelpPage");
               }}
             >
-              <LifeBuoy className="w-5 h-5 text-blue-700" />
-              <span className="text-blue-700">Help</span>
+              <LifeBuoy className="w-5 h-5 text-black dark:text-white" />
+              <span className="text-black dark:text-white">Help</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">Help</TooltipContent>
@@ -166,7 +166,7 @@ export default function Sidebar() {
       </nav>
 
       {/* Profile Section */}
-      <nav className="p-2 mb-14">
+      <nav className="p-2 mb-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -179,7 +179,7 @@ export default function Sidebar() {
               <Avatar>
                 <AvatarImage src="/profile1.png" alt="Profile" />
               </Avatar>{" "}
-              <span className="ml-4 text-lg text-blue-700 font-semibold">
+              <span className="ml-2 text-lg text-black dark:text-white font-semibold">
                 Calab
               </span>
             </Button>
