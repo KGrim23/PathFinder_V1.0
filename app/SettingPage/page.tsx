@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Archive, Bell, Moon, Sun, Trash2, User } from "lucide-react";
-import { useTheme } from "next-themes";
+// import { useTheme } from "next-themes";
+import { useTheme } from "../components/ThemeContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,7 +32,8 @@ export default function Component() {
     updates: false,
   });
   const [autoDeleteMessages, setAutoDeleteMessages] = useState(false);
-  const { theme, setTheme } = useTheme();
+  // const { theme, setTheme } = useTheme();
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMobile, setIsMobile] = useState(false);
 
   // Handle responsive behavior for Sidebar
@@ -50,7 +52,7 @@ export default function Component() {
       username,
       email,
       notifications,
-      theme,
+      isDarkMode,
       autoDeleteMessages,
     });
     // Add backend API call here
@@ -58,16 +60,12 @@ export default function Component() {
 
   return (
     <TooltipProvider>
-      <div
-        className={`grid min-h-screen w-full ${
-          isMobile ? "" : "md:grid-cols-[auto_1fr]"
-        }`}
-      >
+      <div className={`grid min-h-screen w-full ${isDarkMode ? "dark" : ""}`}>
         {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 
-          <Card className="w-full max-w-5xl mx-auto">
+          <Card className="w-full max-w-5xl mx-auto border-0 dark:bg-black">
             <CardHeader>
               <CardTitle className="text-2xl md:text-3xl">Settings</CardTitle>
               <CardDescription>
