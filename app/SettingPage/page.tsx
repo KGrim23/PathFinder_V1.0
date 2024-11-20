@@ -1,226 +1,224 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
+import { Archive, Bell, Moon, Sun, Trash2, User } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useTheme } from "../components/ThemeContext";
-import Sidebar from "../components/Sidebar";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "../components/Navbar";
-import { TooltipProvider } from "@radix-ui/react-tooltip";
+import Sidebar from "../components/Sidebar";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import Footer from "../components/Footer";
 
-const SettingsPage = () => {
-  const [activeTab, setActiveTab] = useState("general");
-  const { isDarkMode, toggleDarkMode } = useTheme();
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+export default function Component() {
+  const [username, setUsername] = useState("johndoe");
+  const [email, setEmail] = useState("john@example.com");
+  const [notifications, setNotifications] = useState({
+    messages: true,
+    mentions: true,
+    updates: false,
+  });
+  const [autoDeleteMessages, setAutoDeleteMessages] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Effect to toggle dark mode class
-  useEffect(() => {
-    document.body.classList.toggle("dark", isDarkMode);
-  }, [isDarkMode]);
-
-  // Track if it's mobile view
+  // Handle responsive behavior for Sidebar
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth <= 768);
     };
-    handleResize();
+
+    handleResize(); // Set initial value
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const handleSave = () => {
+    console.log("Saving settings:", {
+      username,
+      email,
+      notifications,
+      theme,
+      autoDeleteMessages,
+    });
+    // Add backend API call here
+  };
+
   return (
     <TooltipProvider>
       <div
-        className={`grid h-screen w-full md:grid-cols-[auto_1fr] ${
-          isDarkMode ? "dark" : ""
+        className={`grid min-h-screen w-full ${
+          isMobile ? "" : "md:grid-cols-[auto_1fr]"
         }`}
       >
-        {!isMobile && <Sidebar />} {/* Render sidebar */}
+        {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
-          {/* Render Navbar */}
           <Navbar isMobile={isMobile} />
-          <main className="flex-1 overflow-auto p-4 flex flex-col">
-            <div className="flex space-x-6 p-4 items-center justify-center">
-              <Button
-                variant={activeTab === "general" ? "default" : "ghost"}
-                onClick={() => setActiveTab("general")}
-                className="flex-1"
-              >
-                General
-              </Button>
-              <Button
-                variant={activeTab === "goals-focus" ? "default" : "ghost"}
-                onClick={() => setActiveTab("goals-focus")}
-                className="flex-1"
-              >
-                Goals & Focus
-              </Button>
-              <Button
-                variant={activeTab === "privacy" ? "default" : "ghost"}
-                onClick={() => setActiveTab("privacy")}
-                className="flex-1"
-              >
-                Privacy
-              </Button>
-            </div>
 
-            {activeTab === "general" && (
-              <div className="space-y-6 p-4">
-                <h2 className="text-3xl font-semibold">General Settings</h2>
-                <Card className="border-none">
-                  <CardHeader>
-                    <CardTitle>Notifications</CardTitle>
-                    <CardDescription>
-                      Manage how you receive notifications
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
+          <Card className="w-full max-w-5xl mx-auto">
+            <CardHeader>
+              <CardTitle className="text-2xl md:text-3xl">Settings</CardTitle>
+              <CardDescription>
+                Manage your account preferences and application settings.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="profile">
+                <TabsList className="flex justify-start gap-1 mb-20">
+                  <TabsTrigger
+                    value="profile"
+                    className="flex-grow sm:flex-grow-0"
+                  >
+                    Profile
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="notifications"
+                    className="flex-grow sm:flex-grow-0"
+                  >
+                    Notifications
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="personalization"
+                    className="flex-grow sm:flex-grow-0"
+                  >
+                    Personalization
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="profile">
+                  <div className="flex flex-col mb-10 md:flex-row md:items-center md:space-x-4">
+                    <Avatar className="w-24 h-24 mx-auto md:mx-0">
+                      <AvatarImage src="/profile1.png" alt="Profile picture" />
+                      <AvatarFallback>
+                        <User className="w-12 h-12" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <Button className="mt-6 mb-10 md:mt-0">
+                      Change Avatar
+                    </Button>
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="username">Username</Label>
+                      <Input
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="notifications">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {["messages", "mentions", "updates"].map((key) => (
+                      <div
+                        key={key}
+                        className="flex items-center justify-between space-x-4"
+                      >
+                        <div className="space-y-1">
+                          <Label htmlFor={key}>
+                            {key.charAt(0).toUpperCase() + key.slice(1)}{" "}
+                            Notifications
+                          </Label>
+                          <p className="text-sm text-muted-foreground">
+                            {key === "messages"
+                              ? "Receive notifications for new messages."
+                              : key === "mentions"
+                              ? "Receive notifications when you're mentioned."
+                              : "Receive notifications about app updates."}
+                          </p>
+                        </div>
+                        <Switch
+                          id={key}
+                          checked={
+                            notifications[key as keyof typeof notifications]
+                          }
+                          onCheckedChange={(checked) =>
+                            setNotifications((prev) => ({
+                              ...prev,
+                              [key]: checked,
+                            }))
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="personalization">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="flex items-center justify-between space-x-2">
                       <div className="space-y-0.5">
-                        <Label htmlFor="email-notifications">
-                          Email Notifications
-                        </Label>
-                        <p className="text-sm text-gray-400">
-                          Receive notifications about new messages and updates
-                          via email
+                        <Label>Archive Chat History</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Download and save your chat history.
                         </p>
                       </div>
-                      <Switch id="email-notifications" />
+                      <Button>
+                        <Archive className="w-4 h-4 mr-2" />
+                        Archive
+                      </Button>
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between space-x-2">
                       <div className="space-y-0.5">
-                        <Label htmlFor="push-notifications">
-                          Push Notifications
-                        </Label>
-                        <p className="text-sm text-gray-400">
-                          Receive push notifications on your device for
-                          important updates
+                        <Label>Clear Cache</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Clear local chat cache and temporary data.
                         </p>
                       </div>
-                      <Switch id="push-notifications" />
+                      <Button variant="destructive">
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Clear
+                      </Button>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
-            {activeTab === "goals-focus" && (
-              <div className="space-y-6 p-4">
-                <h2 className="text-3xl font-semibold">
-                  Goals & Focus Settings
-                </h2>
-                <Card className="border-none">
-                  <CardHeader>
-                    <CardTitle>Personal Goals</CardTitle>
-                    <CardDescription>
-                      Select the goals you want to focus on
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        "GCSE options",
-                        "Exam Stress",
-                        "Boost Confidence",
-                        "Career Development",
-                        "University Applications",
-                      ].map((goal) => (
-                        <Button
-                          key={goal}
-                          variant="outline"
-                          size="sm"
-                          className="flex-1"
-                        >
-                          {goal}
-                        </Button>
-                      ))}
+                    <div className="flex items-center justify-between space-x-2">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="autoDeleteMessages">
+                          Auto-delete Messages
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically delete messages after 30 days.
+                        </p>
+                      </div>
+                      <Switch
+                        id="autoDeleteMessages"
+                        checked={autoDeleteMessages}
+                        onCheckedChange={setAutoDeleteMessages}
+                      />
                     </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-none">
-                  <CardHeader>
-                    <CardTitle>Soft Skills Focus</CardTitle>
-                    <CardDescription>
-                      Choose the soft skills you want to improve
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        "Active Listening",
-                        "Empathy",
-                        "Conflict Resolution",
-                        "Time Management",
-                        "Leadership",
-                      ].map((skill) => (
-                        <Button
-                          key={skill}
-                          variant="outline"
-                          size="sm"
-                          className="flex-1"
-                        >
-                          {skill}
-                        </Button>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
-            {activeTab === "privacy" && (
-              <div className="space-y-6 p-4">
-                <h2 className="text-3xl font-semibold">Privacy Settings</h2>
-                <Card className="border-none">
-                  <CardHeader>
-                    <CardTitle>Data Collection</CardTitle>
-                    <CardDescription>
-                      Information about our data collection practices
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-400">
-                      By using this app, you accept our terms that we will
-                      collect and use your interactions with the AI for training
-                      purposes. This helps us improve our services and provide
-                      better assistance.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-none">
-                  <CardHeader>
-                    <CardTitle>Chat History</CardTitle>
-                    <CardDescription>
-                      Manage your chat history settings
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {/* <div className="flex items-center space-x-2">
-                      <Switch id="save-chat-history" />
-                      <Label htmlFor="save-chat-history">
-                        Save chat history
-                      </Label>
-                    </div> */}
-                    {/* download chat history as a pdf */}
-                    <Button variant="outline">Download Chat History</Button>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </main>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+            <CardFooter className="flex justify-end">
+              <Button onClick={handleSave}>Save Changes</Button>
+            </CardFooter>
+          </Card>
         </div>
       </div>
+      <Footer />
     </TooltipProvider>
   );
-};
-
-export default SettingsPage;
+}
