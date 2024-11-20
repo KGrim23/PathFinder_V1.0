@@ -114,7 +114,7 @@ export default function Component() {
                         id="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="text-base"
+                        className="focus:outline-none focus:ring-0 sm:focus:outline-auto"
                       />
                     </div>
                     <div className="space-y-2">
@@ -124,7 +124,7 @@ export default function Component() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="text-base"
+                        className="focus:outline-none focus:ring-0 sm:focus:outline-auto"
                       />
                     </div>
                   </div>
