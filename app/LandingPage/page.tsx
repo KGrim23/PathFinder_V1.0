@@ -104,7 +104,7 @@ export default function LandingPage() {
                     </CardHeader>
                     <CardContent>
                       <p>
-                        Receive tailored career paths based on your unique
+                        Receive an advice on career paths based on your unique
                         skills and interests.
                       </p>
                     </CardContent>
@@ -173,8 +173,6 @@ export default function LandingPage() {
                     "Getting advice on specific jobs",
                     "Developing a CV",
                     "Understanding the job market",
-                    "Searching and applying for jobs",
-                    "Applying for training schemes",
                     "Identifying skills",
                   ].map((help, index) => (
                     <Card
