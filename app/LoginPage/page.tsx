@@ -16,18 +16,12 @@ export default function LoginPage() {
       }}
     >
       {/* <div className="absolute inset-0 z-0">
-        <Image
-          src="/placeholder.svg?height=1080&width=1920"
-          alt="Background Illustration"
-          layout="fill"
-          objectFit="cover"
-          className="opacity-30"
-        />
+        <Image src="/pathfinder.png" alt="logo" width={400} height={400} />
       </div> */}
+
       <div className="z-10 w-full max-w-md px-4 space-y-8">
         <div className="flex items-center justify-center">
-          <Compass className="h-12 w-12 mr-2" />
-          <h1 className="text-4xl font-bold">PathFinder</h1>
+          <Image src="/pathfinder2.png" alt="logo" width={250} height={250} />
         </div>
         <form className="space-y-6">
           <div className="space-y-2">

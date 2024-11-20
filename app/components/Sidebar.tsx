@@ -26,6 +26,7 @@ import {
   User,
   LogOut,
 } from "lucide-react";
+import Image from "next/image";
 
 export default function Sidebar() {
   const { isDarkMode } = useTheme();
@@ -56,15 +57,15 @@ export default function Sidebar() {
         >
           <span
             className="ml-2 font-semibold text-2xl"
-            style={{
-              background:
-                "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
-              WebkitBackgroundClip: "text",
-              backgroundClip: "text",
-              color: "transparent",
-            }}
+            // style={{
+            //   background:
+            //     "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
+            //   WebkitBackgroundClip: "text",
+            //   backgroundClip: "text",
+            //   color: "transparent",
+            // }}
           >
-            PathFinder
+            <Image src="/pathfinder.png" alt="Logo" width={200} height={200} />
           </span>
         </Button>
       </div>
