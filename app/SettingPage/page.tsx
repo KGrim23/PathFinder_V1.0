@@ -144,7 +144,7 @@ export default function Component() {
                             {key === "messages"
                               ? "Receive notifications for new messages."
                               : key === "mentions"
-                              ? "Receive notifications when you're mentioned."
+                              ? "Receive notifications when you're sent emails."
                               : "Receive notifications about app updates."}
                           </p>
                         </div>
