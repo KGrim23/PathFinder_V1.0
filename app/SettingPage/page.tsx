@@ -130,7 +130,7 @@ export default function Component() {
 
                 <TabsContent value="notifications">
                   <div className="grid gap-4 md:grid-cols-2">
-                    {["messages", "mentions", "updates"].map((key) => (
+                    {["messages", "emails", "updates"].map((key) => (
                       <div
                         key={key}
                         className="flex items-center justify-between space-x-4"
