@@ -72,7 +72,7 @@ export default function Component() {
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 
-          <Card className="w-full max-w-5xl mx-auto border-0 dark:bg-black">
+          <Card className="w-full max-w-5xl mx-auto border-0">
             <CardHeader>
               <CardTitle className="text-2xl md:text-3xl">Settings</CardTitle>
               <CardDescription>
