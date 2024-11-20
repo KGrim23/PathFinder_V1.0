@@ -35,7 +35,7 @@ export default function LoginPage() {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 rounded-xl"
+              className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 rounded-xl text-base"
             />
           </div>
           <div className="space-y-2">
@@ -48,7 +48,7 @@ export default function LoginPage() {
               type="password"
               autoCapitalize="none"
               autoComplete="current-password"
-              className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 rounded-xl"
+              className="bg-gray-900 border-gray-700 text-white placeholder-gray-400 rounded-xl text-base"
             />
           </div>
 
