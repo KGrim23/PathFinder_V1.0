@@ -22,18 +22,20 @@ import Sidebar from "../components/Sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Footer from "../components/Footer";
 
-export default function SettingsPage() {
-  const [username, setUsername] = useState("Caleb");
-  const [email, setEmail] = useState("caleb@pathfinder.io");
+export default function Component() {
+  const [username, setUsername] = useState("johndoe");
+  const [email, setEmail] = useState("john@example.com");
   const [notifications, setNotifications] = useState({
     messages: true,
     mentions: true,
     updates: false,
   });
   const [autoDeleteMessages, setAutoDeleteMessages] = useState(false);
+  // const { theme, setTheme } = useTheme();
   const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMobile, setIsMobile] = useState(false);
 
+  // Effect to track if it's mobile view
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -43,6 +45,7 @@ export default function SettingsPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Effect to apply dark mode class to body
   useEffect(() => {
     document.body.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
@@ -55,6 +58,7 @@ export default function SettingsPage() {
       isDarkMode,
       autoDeleteMessages,
     });
+    // Add backend API call here
   };
 
   return (
@@ -67,165 +71,161 @@ export default function SettingsPage() {
         {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
-          <main className={`flex-1 ${isDarkMode ? "dark" : ""}`}>
-            <Card className="w-full max-w-5xl mx-auto border-0 dark:bg-black">
-              <CardHeader>
-                <CardTitle className="text-2xl md:text-3xl">Settings</CardTitle>
-                <CardDescription>
-                  Manage your account preferences and application settings.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Tabs defaultValue="profile">
-                  <TabsList className="flex justify-start gap-1 mb-20">
-                    <TabsTrigger
-                      value="profile"
-                      className="flex-grow sm:flex-grow-0"
-                    >
-                      Profile
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="notifications"
-                      className="flex-grow sm:flex-grow-0"
-                    >
-                      Notifications
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="personalization"
-                      className="flex-grow sm:flex-grow-0"
-                    >
-                      Personalization
-                    </TabsTrigger>
-                  </TabsList>
 
-                  <TabsContent value="profile">
-                    <div className="flex flex-col mb-10 md:flex-row md:items-center md:space-x-4">
-                      <Avatar className="w-24 h-24 mx-auto md:mx-0">
-                        <AvatarImage
-                          src="/profile1.png"
-                          alt="Profile picture"
-                        />
-                        <AvatarFallback>
-                          <User className="w-12 h-12" />
-                        </AvatarFallback>
-                      </Avatar>
-                      <Button className="mt-6 mb-10 md:mt-0">
-                        Change Avatar
-                      </Button>
-                    </div>
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="space-y-2">
-                        <Label htmlFor="username">Username</Label>
-                        <Input
-                          id="username"
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                          className="text-base"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="text-base"
-                        />
-                      </div>
-                    </div>
-                  </TabsContent>
+          <Card className="w-full max-w-5xl mx-auto border-0 dark:bg-black">
+            <CardHeader>
+              <CardTitle className="text-2xl md:text-3xl">Settings</CardTitle>
+              <CardDescription>
+                Manage your account preferences and application settings.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="profile">
+                <TabsList className="flex justify-start gap-1 mb-20">
+                  <TabsTrigger
+                    value="profile"
+                    className="flex-grow sm:flex-grow-0"
+                  >
+                    Profile
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="notifications"
+                    className="flex-grow sm:flex-grow-0"
+                  >
+                    Notifications
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="personalization"
+                    className="flex-grow sm:flex-grow-0"
+                  >
+                    Personalization
+                  </TabsTrigger>
+                </TabsList>
 
-                  <TabsContent value="notifications">
-                    <div className="grid gap-4 md:grid-cols-2">
-                      {["messages", "emails", "updates"].map((key) => (
-                        <div
-                          key={key}
-                          className="flex items-center justify-between space-x-4"
-                        >
-                          <div className="space-y-1">
-                            <Label htmlFor={key}>
-                              {key.charAt(0).toUpperCase() + key.slice(1)}{" "}
-                              Notifications
-                            </Label>
-                            <p className="text-sm text-muted-foreground">
-                              {key === "messages"
-                                ? "Receive notifications for new messages."
-                                : key === "mentions"
-                                ? "Receive notifications when you're sent emails."
-                                : "Receive notifications about app updates."}
-                            </p>
-                          </div>
-                          <Switch
-                            id={key}
-                            checked={
-                              notifications[key as keyof typeof notifications]
-                            }
-                            onCheckedChange={(checked) =>
-                              setNotifications((prev) => ({
-                                ...prev,
-                                [key]: checked,
-                              }))
-                            }
-                          />
-                        </div>
-                      ))}
+                <TabsContent value="profile">
+                  <div className="flex flex-col mb-10 md:flex-row md:items-center md:space-x-4 md:space-y-0 space-y-4">
+                    <Avatar className="w-24 h-24 mx-auto md:mx-0">
+                      <AvatarImage src="/profile1.png" alt="Profile picture" />
+                      <AvatarFallback>
+                        <User className="w-12 h-12" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <Button className="mt-6 mb-10 md:mt-0 md:ml-6">
+                      Change Avatar
+                    </Button>
+                  </div>
+                  <div className="grid gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="username">Username</Label>
+                      <Input
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="text-base bg-slate-200"
+                      />
                     </div>
-                  </TabsContent>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="text-base bg-slate-200"
+                      />
+                    </div>
+                  </div>
+                </TabsContent>
 
-                  <TabsContent value="personalization">
-                    <div className="grid gap-4 md:grid-cols-2">
-                      <div className="flex items-center justify-between space-x-2">
-                        <div className="space-y-0.5">
-                          <Label>Archive Chat History</Label>
-                          <p className="text-sm text-muted-foreground">
-                            Download and save your chat history.
-                          </p>
-                        </div>
-                        <Button>
-                          <Archive className="w-4 h-4 mr-2" />
-                          Archive
-                        </Button>
-                      </div>
-                      <div className="flex items-center justify-between space-x-2">
-                        <div className="space-y-0.5">
-                          <Label>Clear Cache</Label>
-                          <p className="text-sm text-muted-foreground">
-                            Clear local chat cache and temporary data.
-                          </p>
-                        </div>
-                        <Button variant="destructive">
-                          <Trash2 className="w-4 h-4 mr-2" />
-                          Clear
-                        </Button>
-                      </div>
-                      <div className="flex items-center justify-between space-x-2">
-                        <div className="space-y-0.5">
-                          <Label htmlFor="autoDeleteMessages">
-                            Auto-delete Messages
+                <TabsContent value="notifications">
+                  <div className="grid gap-10 mb-10">
+                    {["messages", "emails", "updates"].map((key) => (
+                      <div
+                        key={key}
+                        className="flex items-center justify-between space-x-4"
+                      >
+                        <div className="space-y-1">
+                          <Label htmlFor={key}>
+                            {key.charAt(0).toUpperCase() + key.slice(1)}{" "}
+                            Notifications
                           </Label>
                           <p className="text-sm text-muted-foreground">
-                            Automatically delete messages after 30 days.
+                            {key === "messages"
+                              ? "Receive notifications for new messages."
+                              : key === "mentions"
+                              ? "Receive notifications when you're sent emails."
+                              : "Receive notifications about app updates."}
                           </p>
                         </div>
                         <Switch
-                          id="autoDeleteMessages"
-                          checked={autoDeleteMessages}
-                          onCheckedChange={setAutoDeleteMessages}
+                          id={key}
+                          checked={
+                            notifications[key as keyof typeof notifications]
+                          }
+                          onCheckedChange={(checked) =>
+                            setNotifications((prev) => ({
+                              ...prev,
+                              [key]: checked,
+                            }))
+                          }
                         />
                       </div>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="personalization">
+                  <div className="grid gap-10 mb-10">
+                    <div className="flex items-center justify-between space-x-2">
+                      <div className="space-y-0.5">
+                        <Label>Archive Chat History</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Download and save your chat history.
+                        </p>
+                      </div>
+                      <Button>
+                        <Archive className="w-4 h-4 mr-2" />
+                        Archive
+                      </Button>
                     </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-              <CardFooter className="flex justify-end">
-                <Button onClick={handleSave}>Save Changes</Button>
-              </CardFooter>
-            </Card>
-          </main>
+                    <div className="flex items-center justify-between space-x-2">
+                      <div className="space-y-0.5">
+                        <Label>Clear Cache</Label>
+                        <p className="text-sm text-muted-foreground">
+                          Clear local chat cache and temporary data.
+                        </p>
+                      </div>
+                      <Button variant="destructive">
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Clear
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-between space-x-2">
+                      <div className="space-y-0.5">
+                        <Label htmlFor="autoDeleteMessages">
+                          Auto-delete Messages
+                        </Label>
+                        <p className="text-sm text-muted-foreground">
+                          Automatically delete messages after 30 days.
+                        </p>
+                      </div>
+                      <Switch
+                        id="autoDeleteMessages"
+                        checked={autoDeleteMessages}
+                        onCheckedChange={setAutoDeleteMessages}
+                      />
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+            <CardFooter className="flex justify-end">
+              <Button onClick={handleSave}>Save Changes</Button>
+            </CardFooter>
+          </Card>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </TooltipProvider>
   );
 }
