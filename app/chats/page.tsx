@@ -205,7 +205,8 @@ const Chats = () => {
 
   // Close the chat and reset state
   const closeChat = () => {
-    router.push("/chats");
+    console.log("Closing chat...");
+    router.push("/LandingPage");
   };
 
   return (

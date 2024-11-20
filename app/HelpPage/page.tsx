@@ -1,22 +1,100 @@
 "use client";
-import React, { useState, useEffect } from "react";
+
+import { useEffect, useState } from "react";
+import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useTheme } from "../components/ThemeContext";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import { TooltipProvider } from "@radix-ui/react-tooltip";
 
-const HelpPage = () => {
+const helpItems = [
+  {
+    category: "Getting Started",
+    questions: [
+      {
+        question: "How do I create an account?",
+        answer:
+          'To create an account, click on the "Sign Up" button on the top right corner of the homepage. Fill in your details and follow the prompts to complete the registration process.',
+      },
+      {
+        question: "What are the system requirements?",
+        answer:
+          "Our chat app works on most modern web browsers. For the best experience, we recommend using the latest version of Chrome, Firefox, Safari, or Edge.",
+      },
+      {
+        question: "How do I start a new chat?",
+        answer:
+          'After logging in, click on the "New Chat" button on the left sidebar. You can then select a contact or enter a new email address to start a conversation.',
+      },
+    ],
+  },
+  {
+    category: "Managing Your Account",
+    questions: [
+      {
+        question: "How do I change my password?",
+        answer:
+          "Go to Settings > Security > Change Password. Enter your current password, then enter and confirm your new password.",
+      },
+      {
+        question: "Can I change my username?",
+        answer:
+          "Yes, you can change your username in Settings > Profile. Keep in mind that changing your username will affect how others find you in the app.",
+      },
+      {
+        question: "How do I delete my account?",
+        answer:
+          "To delete your account, go to Settings > Account > Delete Account. Please note that this action is irreversible and will permanently delete all your data.",
+      },
+    ],
+  },
+  {
+    category: "Terms and Privacy Policy",
+    questions: [
+      {
+        question: "What data do you collect?",
+        answer:
+          "We collect basic account information, chat logs, and usage data to improve our service. For a full list, please refer to our Privacy Policy.",
+      },
+      {
+        question: "How is my data protected?",
+        answer:
+          "We use industry-standard encryption for all data transmissions and storage. We also employ strict access controls and regular security audits.",
+      },
+      {
+        question: "Can I request my data?",
+        answer:
+          "Yes, you can request a copy of your data under the GDPR and similar regulations. Go to Settings > Privacy > Request My Data to start the process.",
+      },
+    ],
+  },
+];
+
+export default function HelpPage() {
   const [activeTab, setActiveTab] = useState("overview");
   const { isDarkMode } = useTheme();
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredItems = helpItems.flatMap((category) =>
+    category.questions
+      .filter(
+        (item) =>
+          item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.answer.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .map((item) => ({ ...item, category: category.category }))
+  );
 
   // Track if it's mobile view
   useEffect(() => {
@@ -31,144 +109,55 @@ const HelpPage = () => {
   return (
     <TooltipProvider>
       <div
-        className={`grid h-screen w-full md:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen w-full md:grid-cols-[auto_1fr] ${
           isDarkMode ? "dark" : ""
         }`}
       >
-        {!isMobile && <Sidebar />} {/* Render sidebar */}
+        {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
-          {/* Render Navbar */}
           <Navbar isMobile={isMobile} />
-          <main className="flex-1 overflow-auto p-6 md:p-8 flex flex-col bg-gray-50 dark:bg-gray-900">
-            <div className="flex space-x-6 p-4 items-center justify-center md:justify-start">
-              <Button
-                variant={activeTab === "overview" ? "default" : "ghost"}
-                onClick={() => setActiveTab("overview")}
-                className="flex-1 md:flex-none text-lg font-medium p-4 transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
-              >
-                Overview
-              </Button>
-              <Button
-                variant={activeTab === "faq" ? "default" : "ghost"}
-                onClick={() => setActiveTab("faq")}
-                className="flex-1 md:flex-none text-lg font-medium p-4 transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
-              >
-                FAQ
-              </Button>
-              <Button
-                variant={activeTab === "contact" ? "default" : "ghost"}
-                onClick={() => setActiveTab("contact")}
-                className="flex-1 md:flex-none text-lg font-medium p-4 transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
-              >
-                Contact Support
-              </Button>
+
+          <div className="container mx-auto p-4 md:p-6 lg:p-8">
+            <h1 className="text-2xl md:text-3xl font-bold mb-4">Help Center</h1>
+            <div className="relative mb-6">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search for help..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-8"
+              />
             </div>
-
-            {activeTab === "overview" && (
-              <div className="space-y-6 p-4 md:p-6">
-                <h2 className="text-3xl font-semibold text-gray-900 dark:text-white">
-                  App Overview
-                </h2>
-                <Card className="border-none shadow-lg bg-white dark:bg-gray-800">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {filteredItems.map((item, index) => (
+                <Card
+                  key={index}
+                  className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300"
+                >
                   <CardHeader>
-                    <CardTitle className="text-xl font-medium">
-                      Welcome to the Help Center
-                    </CardTitle>
-                    <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
-                      Learn how to make the most of the app
-                    </CardDescription>
+                    <CardTitle className="text-lg">{item.question}</CardTitle>
+                    <CardDescription>{item.category}</CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4 text-gray-700 dark:text-gray-300">
-                    <p>
-                      This app helps you improve your soft skills and focus on
-                      personal and professional growth. Explore settings, learn
-                      more, and get guidance on your goals.
-                    </p>
+                  <CardContent className="flex-grow">
+                    <p>{item.answer}</p>
                   </CardContent>
-                </Card>
-              </div>
-            )}
-
-            {activeTab === "faq" && (
-              <div className="space-y-6 p-4 md:p-6">
-                <h2 className="text-3xl font-semibold text-gray-900 dark:text-white">
-                  Frequently Asked Questions
-                </h2>
-                <Card className="border-none shadow-lg bg-white dark:bg-gray-800">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-medium">
-                      Common Questions
-                    </CardTitle>
-                    <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
-                      Answers to frequently asked questions about the app
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4 text-gray-700 dark:text-gray-300">
-                    <ul className="space-y-3">
-                      <li>
-                        <strong className="font-medium">
-                          How do I change my settings?
-                        </strong>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Go to the settings page from the sidebar to adjust
-                          your preferences.
-                        </p>
-                      </li>
-                      <li>
-                        <strong className="font-medium">
-                          Can I track my progress?
-                        </strong>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Yes, you can monitor your progress through the
-                          dashboard and set personal goals.
-                        </p>
-                      </li>
-                      <li>
-                        <strong className="font-medium">
-                          How can I get support?
-                        </strong>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Contact support through the contact page for help with
-                          any issues.
-                        </p>
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
-            {activeTab === "contact" && (
-              <div className="space-y-6 p-4 md:p-6">
-                <h2 className="text-3xl font-semibold text-gray-900 dark:text-white">
-                  Contact Support
-                </h2>
-                <Card className="border-none shadow-lg bg-white dark:bg-gray-800">
-                  <CardHeader>
-                    <CardTitle className="text-xl font-medium">
-                      Get in Touch
-                    </CardTitle>
-                    <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
-                      Reach out to our support team for assistance
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4 text-gray-700 dark:text-gray-300">
-                    <p>
-                      If you have any issues or questions, feel free to contact
-                      us.
-                    </p>
-                    <Button variant="outline" className="w-full md:w-auto">
-                      Contact Support
+                  <CardFooter>
+                    <Button variant="ghost" className="w-full">
+                      Learn More
                     </Button>
-                  </CardContent>
+                  </CardFooter>
                 </Card>
-              </div>
+              ))}
+            </div>
+            {filteredItems.length === 0 && (
+              <p className="text-center text-muted-foreground mt-8">
+                No results found. Please try a different search term.
+              </p>
             )}
-          </main>
+          </div>
         </div>
       </div>
     </TooltipProvider>
   );
-};
-
-export default HelpPage;
+}

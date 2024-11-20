@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Camera, Mic, CornerDownLeft, Paperclip } from "lucide-react";
+import Footer from "./Footer";
 
 const ChatInput: React.FC<{
   inputMessage: string;
@@ -80,7 +81,7 @@ const ChatInput: React.FC<{
           placeholder="Type your question here ..."
           className={`min-h-1 border-0 p-2 mb-2 shadow-none focus-visible:ring-0 text-base rounded-xl ${
             isDarkMode
-              ? "text-white border-0 bg-gray-800"
+              ? "text-white border-0 bg-gray-900"
               : "bg-gray-300 text-black"
           }`}
           value={inputMessage}
@@ -88,7 +89,7 @@ const ChatInput: React.FC<{
           onKeyDown={handleKeyDown}
         />
 
-        <div className="flex items-center p-3 pt-0">
+        <div className="flex items-center p-3 pt-0 bg-white dark:bg-black">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -125,7 +126,7 @@ const ChatInput: React.FC<{
             className={`ml-auto mt-4 gap-1.5 text-white ${
               isDarkMode
                 ? "bg-black text-white border-2 border-white"
-                : "text-black border-2 border-black"
+                : "text-black border-2 border-black bg-white"
             } rounded-full px-3.5 py-2`}
           >
             Send Message
@@ -133,6 +134,7 @@ const ChatInput: React.FC<{
           </Button>
         </div>
       </div>
+      <Footer />
     </form>
   );
 };

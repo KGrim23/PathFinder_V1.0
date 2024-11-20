@@ -56,7 +56,7 @@ export default function Sidebar() {
           className="w-full flex items-center justify-start "
         >
           <span className="ml-2 font-semibold text-2xl">
-            <Image src="/sidebar.png" alt="Logo" width={100} height={100} />
+            <Image src="/sidebar.png" alt="Logo" width={150} height={100} />
           </span>
         </Button>
       </div>
