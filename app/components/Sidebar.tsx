@@ -55,17 +55,8 @@ export default function Sidebar() {
           }}
           className="w-full flex items-center justify-start "
         >
-          <span
-            className="ml-2 font-semibold text-2xl"
-            // style={{
-            //   background:
-            //     "linear-gradient(to right, #00aaff, #aa00ff, #00ff6a, #ff003c)",
-            //   WebkitBackgroundClip: "text",
-            //   backgroundClip: "text",
-            //   color: "transparent",
-            // }}
-          >
-            <Image src="/pathfinder.png" alt="Logo" width={200} height={200} />
+          <span className="ml-2 font-semibold text-2xl">
+            <Image src="/sidebar.png" alt="Logo" width={100} height={100} />
           </span>
         </Button>
       </div>

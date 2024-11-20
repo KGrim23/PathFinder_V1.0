@@ -21,7 +21,7 @@ export default function LoginPage() {
 
       <div className="z-10 w-full max-w-md px-4 space-y-8">
         <div className="flex items-center justify-center">
-          <Image src="/pathfinder2.png" alt="logo" width={250} height={250} />
+          <Image src="/sidebar.png" alt="logo" width={150} height={100} />
         </div>
         <form className="space-y-6">
           <div className="space-y-2">
