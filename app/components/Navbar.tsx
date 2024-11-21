@@ -8,7 +8,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
 import { useTheme } from "./ThemeContext";
 import LandingPage from "../LandingPage/page";
-import Link from "next/link";
 
 export type NavbarProps = {
   isMobile: boolean;
@@ -80,8 +79,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
             onClick={goToNotificationPage}
             variant="ghost"
             size="icon"
-            aria-label="Go to Home"
-            disabled={pathname === "/LandingPage"} // Disable button if already on Dashboard
+            aria-label="Go to Notifications"
           >
             <Bell className="h-5 w-5" />
           </Button>
