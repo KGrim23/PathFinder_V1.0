@@ -33,11 +33,11 @@ export default function NotificationsPage() {
         {notifications.map((notification) => (
           <Card
             key={notification.id}
-            className="border-0 bg-gray-900 rounded-xl "
+            className="border-0 bg-gray-300 dark:bg-gray-800 rounded-xl "
           >
             <CardHeader className="flex flex-row items-center gap-4 p-4">
               <div>
-                <CardTitle className="text-xl lg:text-2xl">
+                <CardTitle className="text-xl lg:text-2xl text-black dark:text-white">
                   {notification.title}
                 </CardTitle>
                 <CardDescription className="text-blue-700 text-sm font-normal">
