@@ -75,6 +75,7 @@ export default function Component() {
 
   const handleSave = () => {
     saveSettingsToLocalStorage();
+    alert("Settings saved!");
   };
 
   return (
