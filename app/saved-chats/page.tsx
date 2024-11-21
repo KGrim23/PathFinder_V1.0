@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { useTheme } from "../components/ThemeContext";
-import { marked } from "marked"; // Import marked library
+import { marked } from "marked";
 
 export type UserMessage = {
   type: "user";
@@ -136,7 +136,9 @@ const SavedChatsPage: React.FC = () => {
         {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
-          <main className="flex-1 overflow-auto p-4 flex flex-col">
+
+          {/* main contents */}
+          <main className="flex-1 overflow-auto p-2 flex flex-col">
             <h2 className="text-2xl font-bold mb-4">Saved Chats</h2>
             {savedChats.length === 0 ? (
               <p>No saved chats found.</p>
@@ -145,8 +147,8 @@ const SavedChatsPage: React.FC = () => {
                 {savedChats.map((chat, chatIndex) => (
                   <div
                     key={chatIndex}
-                    className={`p-4 rounded-xl ${
-                      isDarkMode ? "bg-zinc-600 text-white" : "bg-gray-300"
+                    className={`p-2 rounded-xl ${
+                      isDarkMode ? "bg-gray-800 text-white" : "bg-gray-300"
                     }`}
                   >
                     <div className="flex justify-between items-center">
@@ -160,7 +162,7 @@ const SavedChatsPage: React.FC = () => {
                       </div>
                       <button
                         className={`ml-4 p-2 rounded-xl ${
-                          isDarkMode ? " text-black" : "text-black"
+                          isDarkMode ? " text-white" : "text-black"
                         }`}
                         onClick={() => deleteChatSession(chatIndex)}
                       >
@@ -174,8 +176,6 @@ const SavedChatsPage: React.FC = () => {
                             key={messageIndex}
                             className={`p-3 rounded-xl ${
                               message.type === "user"
-                                ? "bg-gray-200 text-left dark:bg-gray-700 dark:text-white"
-                                : "bg-gray-300 text-left dark:bg-gray-800 dark:text-white"
                             }`}
                           >
                             <div className="text-md leading-relaxed">
@@ -199,11 +199,7 @@ const SavedChatsPage: React.FC = () => {
                 ))}
                 <div className="flex justify-end mt-24">
                   <button
-                    className={`ml-auto gap-1.5 ${
-                      isDarkMode
-                        ? "bg-black text-white border-2 border-white"
-                        : "bg-black text-white"
-                    } rounded-full px-3.5 py-2`}
+                    className={`ml-auto gap-1.5 ${isDarkMode} rounded-full px-3.5 py-2`}
                     onClick={deleteAllChats}
                   >
                     Delete All Chats

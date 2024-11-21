@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Archive, Bell, Moon, Sun, Trash2, User } from "lucide-react";
+import { Archive, Trash2, User } from "lucide-react";
 import { useTheme } from "../components/ThemeContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -15,23 +15,22 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Footer from "../components/Footer";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function Component() {
-  const [username, setUsername] = useState("johndoe");
-  const [email, setEmail] = useState("john@example.com");
+  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [notifications, setNotifications] = useState({
     messages: true,
     mentions: true,
     updates: false,
   });
-  const [autoDeleteMessages, setAutoDeleteMessages] = useState(false);
-  // const { theme, setTheme } = useTheme();
+
   const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMobile, setIsMobile] = useState(false);
 
@@ -50,15 +49,32 @@ export default function Component() {
     document.body.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
 
-  const handleSave = () => {
-    console.log("Saving settings:", {
+  // Effect to load settings from localStorage
+  useEffect(() => {
+    const savedSettings = localStorage.getItem("userSettings");
+    if (savedSettings) {
+      const { username, email, notifications, isDarkMode } =
+        JSON.parse(savedSettings);
+      setUsername(username);
+      setEmail(email);
+      setNotifications(notifications);
+    }
+  }, [toggleDarkMode]);
+
+  // Save settings to localStorage
+  const saveSettingsToLocalStorage = () => {
+    const settings = {
       username,
       email,
       notifications,
       isDarkMode,
-      autoDeleteMessages,
-    });
-    // Add backend API call here
+    };
+    localStorage.setItem("userSettings", JSON.stringify(settings));
+    console.log("Settings saved:", settings);
+  };
+
+  const handleSave = () => {
+    saveSettingsToLocalStorage();
   };
 
   return (
@@ -84,19 +100,19 @@ export default function Component() {
                 <TabsList className="flex justify-start gap-1 mb-20">
                   <TabsTrigger
                     value="profile"
-                    className="flex-grow sm:flex-grow-0"
+                    className="flex-grow sm:flex-grow-0 text-lg"
                   >
                     Profile
                   </TabsTrigger>
                   <TabsTrigger
                     value="notifications"
-                    className="flex-grow sm:flex-grow-0"
+                    className="flex-grow sm:flex-grow-0 text-lg"
                   >
                     Notifications
                   </TabsTrigger>
                   <TabsTrigger
                     value="personalization"
-                    className="flex-grow sm:flex-grow-0"
+                    className="flex-grow sm:flex-grow-0 text-lg"
                   >
                     Personalization
                   </TabsTrigger>
@@ -110,7 +126,11 @@ export default function Component() {
                         <User className="w-12 h-12" />
                       </AvatarFallback>
                     </Avatar>
-                    <Button className="mt-6 mb-10 md:mt-0 md:ml-6">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className="mt-6 mb-10 md:mt-0 bg-gray-800 text-white rounded-xl"
+                    >
                       Change Avatar
                     </Button>
                   </div>
@@ -138,26 +158,26 @@ export default function Component() {
                 </TabsContent>
 
                 <TabsContent value="notifications">
-                  <div className="grid gap-10 mb-10">
-                    {["messages", "emails", "updates"].map((key) => (
+                  <div className="grid gap-10 mb-10 text-md lg:text-lg">
+                    {["messages", "mentions", "updates"].map((key) => (
                       <div
                         key={key}
                         className="flex items-center justify-between space-x-4"
                       >
                         <div className="space-y-1">
-                          <Label htmlFor={key}>
+                          <Label htmlFor={key} className="text-md lg:text-lg">
                             {key.charAt(0).toUpperCase() + key.slice(1)}{" "}
                             Notifications
                           </Label>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm lg:text-md text-muted-foreground">
                             {key === "messages"
                               ? "Receive notifications for new messages."
                               : key === "mentions"
-                              ? "Receive notifications when you're sent emails."
+                              ? "Receive notifications when you're mentioned."
                               : "Receive notifications about app updates."}
                           </p>
                         </div>
-                        <Switch
+                        <Checkbox
                           id={key}
                           checked={
                             notifications[key as keyof typeof notifications]
@@ -168,6 +188,7 @@ export default function Component() {
                               [key]: checked,
                             }))
                           }
+                          className={`h-5 w-5 text-blue-500 border-gray-700 dark:border-gray-800 dark:checked:bg-blue-400`}
                         />
                       </div>
                     ))}
@@ -176,51 +197,37 @@ export default function Component() {
 
                 <TabsContent value="personalization">
                   <div className="grid gap-10 mb-10">
-                    <div className="flex items-center justify-between space-x-2">
-                      <div className="space-y-0.5">
-                        <Label>Archive Chat History</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Download and save your chat history.
-                        </p>
+                    <div className="flex items-center justify-between space-x-2 ">
+                      <div className="space-y-0.5 ">
+                        <Label className="text-md lg:text-lg">
+                          Archive Chat History
+                        </Label>
                       </div>
                       <Button>
-                        <Archive className="w-4 h-4 mr-2" />
-                        Archive
+                        <Archive className="w-5 h-5 mr-2" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-between space-x-2">
                       <div className="space-y-0.5">
-                        <Label>Clear Cache</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Clear local chat cache and temporary data.
-                        </p>
+                        <Label className="text-md lg:text-lg">
+                          Clear Cache
+                        </Label>
                       </div>
                       <Button variant="destructive">
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        Clear
+                        <Trash2 className="w-5 h-5 mr-2" />
                       </Button>
-                    </div>
-                    <div className="flex items-center justify-between space-x-2">
-                      <div className="space-y-0.5">
-                        <Label htmlFor="autoDeleteMessages">
-                          Auto-delete Messages
-                        </Label>
-                        <p className="text-sm text-muted-foreground">
-                          Automatically delete messages after 30 days.
-                        </p>
-                      </div>
-                      <Switch
-                        id="autoDeleteMessages"
-                        checked={autoDeleteMessages}
-                        onCheckedChange={setAutoDeleteMessages}
-                      />
                     </div>
                   </div>
                 </TabsContent>
               </Tabs>
             </CardContent>
             <CardFooter className="flex justify-end">
-              <Button onClick={handleSave}>Save Changes</Button>
+              <Button
+                onClick={handleSave}
+                className="bg-gray-800 text-white rounded-xl"
+              >
+                Save Changes
+              </Button>
             </CardFooter>
           </Card>
         </div>
