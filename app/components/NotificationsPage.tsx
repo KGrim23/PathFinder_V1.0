@@ -27,19 +27,25 @@ export default function NotificationsPage() {
   return (
     <div className="container mx-auto p-4">
       <header className="mb-6">
-        <h1 className="text-3xl font-bold">Notifications</h1>
+        <h1 className="text-2xl font-bold">Notifications</h1>
       </header>
       <div className="space-y-4">
         {notifications.map((notification) => (
-          <Card key={notification.id}>
-            <CardHeader className="flex flex-row items-center gap-4">
-              {/* <Bell className="h-6 w-6 text-blue-500" /> */}
+          <Card
+            key={notification.id}
+            className="border-0 bg-gray-900 rounded-xl "
+          >
+            <CardHeader className="flex flex-row items-center gap-4 p-4">
               <div>
-                <CardTitle>{notification.title}</CardTitle>
-                <CardDescription>{notification.timestamp}</CardDescription>
+                <CardTitle className="text-xl lg:text-2xl">
+                  {notification.title}
+                </CardTitle>
+                <CardDescription className="text-blue-700 text-sm font-normal">
+                  {notification.timestamp}
+                </CardDescription>
               </div>
             </CardHeader>
-            <CardContent>
+            <CardContent className="text-gray-400 p-4">
               <p>{notification.message}</p>
             </CardContent>
           </Card>

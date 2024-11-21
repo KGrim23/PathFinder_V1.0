@@ -21,10 +21,14 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
   const pathname = usePathname();
 
   const goToHomePage = () => {
-    if (pathname !== "/Dashboard") {
+    if (pathname !== "/LandingPage") {
       setShowHero(true); // Only show home button if it is not already on the home page
       router.push("/LandingPage");
     }
+  };
+
+  const goToNotificationPage = () => {
+    router.push("/Notifications");
   };
 
   return (
@@ -72,14 +76,15 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           </Button>
 
           {/* Notifications */}
-          <Link href="/Notifications">
-            <Button
-              type="submit"
-              className="w-full bg-white text-black hover:bg-gray-200 rounded-xl"
-            >
-              <Bell className="h-5 w-5" />
-            </Button>
-          </Link>
+          <Button
+            onClick={goToNotificationPage}
+            variant="ghost"
+            size="icon"
+            aria-label="Go to Home"
+            disabled={pathname === "/LandingPage"} // Disable button if already on Dashboard
+          >
+            <Bell className="h-5 w-5" />
+          </Button>
         </div>
       </header>
 
