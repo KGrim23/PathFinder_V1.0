@@ -1,6 +1,8 @@
 import "./globals.css";
 import { ReactNode } from "react";
 import { ThemeProvider } from "./components/ThemeContext";
+import { ClerkProvider, SignedOut, SignedIn, UserButton } from "@clerk/clerk-react";
+import SignInBurton from "./components/SignInBurton";
 
 // No need for the localFont imports for GeistSans and GeistMono anymore
 // Instead, you can add the Inter font in the head
