@@ -12,6 +12,7 @@ export const metadata = {
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
+<ClerkProvider>
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
@@ -29,9 +30,11 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       </head>
 
       <body className="overscroll-x-none font-sans font-light">
+<header><SignedOut><SignInBurton></SignedOut><SignedIn><SignOutButton></SignedIn></header>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
+</ClerkProvider>
   );
 };
 
