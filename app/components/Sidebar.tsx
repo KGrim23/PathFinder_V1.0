@@ -56,7 +56,7 @@ export default function Sidebar() {
           className="w-full flex items-center justify-start "
         >
           <span className="ml-2 font-semibold text-2xl">
-            <Image src="/sidebar.png" alt="Logo" width={150} height={100} />
+            <Image src="/sidebar.png" alt="Logo" width={100} height={150} />
           </span>
         </Button>
       </div>
@@ -155,6 +155,26 @@ export default function Sidebar() {
           </TooltipTrigger>
           <TooltipContent side="right">Help</TooltipContent>
         </Tooltip>
+
+        {/* Log Out */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className={`flex items-center gap-2 rounded-lg transition-colors duration-200 ${
+                currentPage === "logout"
+                  ? "bg-muted text-primary"
+                  : "text-gray-700"
+              } w-full p-2 justify-start`}
+              aria-label="Log Out"
+            >
+              <LogOut className="w-5 h-5 text-black dark:text-white" />
+              <span className="text-black dark:text-white">Log Out</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Log Out</TooltipContent>
+        </Tooltip>
       </nav>
 
       {/* Profile Section */}
@@ -181,16 +201,6 @@ export default function Sidebar() {
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <User className="w-5 h-5 mr-2" /> Profile
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={() => {
-                setCurrentPage("chat");
-                console.log("Navigating to homepage");
-                router.push("/");
-              }}
-            >
-              <LogOut className="w-5 h-5 mr-2" /> Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
