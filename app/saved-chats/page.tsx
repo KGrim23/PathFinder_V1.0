@@ -197,7 +197,7 @@ const SavedChatsPage: React.FC = () => {
                     )}
                   </div>
                 ))}
-                <div className="flex justify-end mt-24">
+                <div className="flex justify-end mt-24 mb-10">
                   <button
                     className={`ml-auto gap-1.5 ${isDarkMode} rounded-full px-3.5 py-2`}
                     onClick={deleteAllChats}

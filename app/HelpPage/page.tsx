@@ -114,7 +114,7 @@ export default function HelpPage() {
         }`}
       >
         {!isMobile && <Sidebar />}
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full mb-10">
           <Navbar isMobile={isMobile} />
 
           <div className="container mx-auto p-4 md:p-6 lg:p-8">
@@ -142,11 +142,7 @@ export default function HelpPage() {
                   <CardContent className="flex-grow">
                     <p>{item.answer}</p>
                   </CardContent>
-                  <CardFooter>
-                    <Button variant="ghost" className="w-full">
-                      Learn More
-                    </Button>
-                  </CardFooter>
+                  <CardFooter></CardFooter>
                 </Card>
               ))}
             </div>
