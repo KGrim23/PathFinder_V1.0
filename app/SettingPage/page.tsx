@@ -22,7 +22,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Footer from "../components/Footer";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export default function Component() {
+export default function SettingPage() {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [notifications, setNotifications] = useState({
@@ -78,6 +78,11 @@ export default function Component() {
     alert("Settings saved!");
   };
 
+  const clearCahce = () => {
+    localStorage.clear();
+    alert("Cache cleared!");
+  };
+
   return (
     <TooltipProvider>
       <div
@@ -112,10 +117,10 @@ export default function Component() {
                     Notifications
                   </TabsTrigger>
                   <TabsTrigger
-                    value="personalization"
+                    value="personalisation"
                     className="flex-grow sm:flex-grow-0 text-lg"
                   >
-                    Personalization
+                    Personalisation
                   </TabsTrigger>
                 </TabsList>
 
@@ -160,7 +165,7 @@ export default function Component() {
 
                 <TabsContent value="notifications">
                   <div className="grid gap-10 mb-10 text-md lg:text-lg">
-                    {["messages", "mentions", "updates"].map((key) => (
+                    {["messages", "emails", "updates"].map((key) => (
                       <div
                         key={key}
                         className="flex items-center justify-between space-x-4"
@@ -173,8 +178,8 @@ export default function Component() {
                           <p className="text-sm lg:text-md text-muted-foreground">
                             {key === "messages"
                               ? "Receive notifications for new messages."
-                              : key === "mentions"
-                              ? "Receive notifications when you're mentioned."
+                              : key === "emails"
+                              ? "Receive notifications when you get new emails."
                               : "Receive notifications about app updates."}
                           </p>
                         </div>
@@ -196,7 +201,7 @@ export default function Component() {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="personalization">
+                <TabsContent value="personalisation">
                   <div className="grid gap-10 mb-10">
                     <div className="flex items-center justify-between space-x-2 ">
                       <div className="space-y-0.5 ">
@@ -214,7 +219,7 @@ export default function Component() {
                           Clear Cache
                         </Label>
                       </div>
-                      <Button variant="destructive">
+                      <Button onClick={clearCahce} variant="destructive">
                         <Trash2 className="w-5 h-5 mr-2" />
                       </Button>
                     </div>

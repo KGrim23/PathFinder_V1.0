@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
 import { useTheme } from "./ThemeContext";
 import LandingPage from "../LandingPage/page";
+import Link from "next/link";
 
 export type NavbarProps = {
   isMobile: boolean;
@@ -71,14 +72,14 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           </Button>
 
           {/* Notifications */}
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Notifications"
-            onClick={() => console.log("Notifications clicked")}
-          >
-            <Bell className="h-5 w-5" />
-          </Button>
+          <Link href="/Notifications">
+            <Button
+              type="submit"
+              className="w-full bg-white text-black hover:bg-gray-200 rounded-xl"
+            >
+              <Bell className="h-5 w-5" />
+            </Button>
+          </Link>
         </div>
       </header>
 
