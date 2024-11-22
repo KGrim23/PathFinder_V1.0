@@ -13,18 +13,18 @@ export default function LoginPage() {
       >
         <div className="z-10 w-full max-w-md px-4 space-y-8">
           <SignIn
-            routing="hash" // Add this line
+            routing="hash"
             appearance={{
               elements: {
                 formButtonPrimary:
                   "bg-white text-black hover:bg-gray-200 rounded-xl",
-                card: "bg-transparent rounded-xl",
-                headerTitle: "text-white",
-                headerSubtitle: "text-gray-400",
+                card: "bg-gray-300 rounded-xl",
+                headerTitle: "text-black text-xl font-bold",
+                headerSubtitle: "text-gray-700",
                 socialButtonsBlockButton:
                   "bg-gray-800 border border-gray-700 text-white hover:bg-gray-700",
                 formFieldInput:
-                  "bg-gray-800 border-gray-700 text-white placeholder-gray-400 rounded-xl",
+                  "bg-gray-400 border-gray-700 text-white placeholder-gray-400 rounded-xl",
                 footerActionLink: "text-gray-400 hover:text-white",
               },
             }}
