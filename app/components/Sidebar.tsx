@@ -25,6 +25,7 @@ import {
   LifeBuoy,
   User,
   LogOut,
+  Bell,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -35,6 +36,10 @@ export default function Sidebar() {
 
   const navigateToSavedChats = () => {
     router.push("/saved-chats");
+  };
+
+  const goToNotificationPage = () => {
+    router.push("/Notifications");
   };
 
   return (
@@ -74,7 +79,6 @@ export default function Sidebar() {
                   ? "bg-muted text-primary"
                   : "text-gray-700"
               } w-full p-2 justify-start`}
-              aria-label="New Chat"
               onClick={() => {
                 setCurrentPage("chats");
                 router.push("/chats");
@@ -98,7 +102,6 @@ export default function Sidebar() {
                   ? "bg-muted text-primary"
                   : "text-gray-700"
               } w-full p-2 justify-start`}
-              aria-label="History"
               onClick={navigateToSavedChats}
             >
               <History className="w-5 h-5 text-black dark:text-white" />
@@ -119,7 +122,6 @@ export default function Sidebar() {
                   ? "bg-muted text-primary"
                   : "text-gray-700"
               } w-full p-2 justify-start`}
-              aria-label="Settings"
               onClick={() => {
                 setCurrentPage("settings");
                 router.push("/SettingPage");
@@ -143,7 +145,6 @@ export default function Sidebar() {
                   ? "bg-muted text-primary"
                   : "text-gray-700"
               } w-full p-2 justify-start`}
-              aria-label="Help Page"
               onClick={() => {
                 setCurrentPage("help");
                 router.push("/HelpPage");
@@ -156,24 +157,20 @@ export default function Sidebar() {
           <TooltipContent side="right">Help</TooltipContent>
         </Tooltip>
 
-        {/* Log Out */}
+        {/* Notifications Page */}
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
+              onClick={goToNotificationPage}
               variant="ghost"
               size="icon"
-              className={`flex items-center gap-2 rounded-lg transition-colors duration-200 ${
-                currentPage === "logout"
-                  ? "bg-muted text-primary"
-                  : "text-gray-700"
-              } w-full p-2 justify-start`}
-              aria-label="Log Out"
+              className={`flex items-center gap-2 rounded-lg transition-colors duration-200 w-full p-2 justify-start`}
             >
-              <LogOut className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white">Log Out</span>
+              <Bell className="w-5 h-5 text-black dark:text-white" />
+              <span className="text-black dark:text-white">Notifications</span>
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="right">Log Out</TooltipContent>
+          <TooltipContent side="right">Notifications</TooltipContent>
         </Tooltip>
       </nav>
 

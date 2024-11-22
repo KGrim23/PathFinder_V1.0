@@ -27,10 +27,6 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
     }
   };
 
-  const goToNotificationPage = () => {
-    router.push("/Notifications");
-  };
-
   return (
     <>
       <header className="sticky top-0 z-10 flex h-[57px] items-center justify-between dark:text-white dark:bg-black px-4 shadow w-full sm:w-[100%] md:w-[80%] lg:w-[80%] mx-auto">
@@ -49,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
         )}
 
         {/* Navbar Actions */}
-        <div className="flex items-center gap-2 ml-auto">
+        <div className="flex items-center justify-center gap-2 ml-auto">
           {/* Home Button */}
           <Button
             onClick={goToHomePage}
@@ -76,23 +72,24 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           </Button>
 
           {/* Notifications */}
-          <Button
+          {/* <Button
             onClick={goToNotificationPage}
             variant="ghost"
             size="icon"
             aria-label="Go to Notifications"
           >
             <Bell className="h-5 w-5" />
-          </Button>
+          </Button> */}
 
-          <div className="">
+          {/* Login Logout Buttons */}
+          <Button className="">
             <SignedOut>
               <SignInButton />
             </SignedOut>
             <SignedIn>
               <UserButton />
             </SignedIn>
-          </div>
+          </Button>
         </div>
       </header>
 
