@@ -162,7 +162,7 @@ export default function SettingPage() {
                           Change Avatar
                         </Button>
                       </DialogTrigger>
-                      <DialogContent className="max-w-md">
+                      <DialogContent className="max-w-sm bg-gray-900 dark:bg-gray-600 border-0 rounded-xl lg:rounded-xl">
                         <DialogHeader>
                           <DialogTitle className="text-xl font-semibold">
                             Choose an Avatar
