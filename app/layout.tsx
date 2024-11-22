@@ -1,9 +1,14 @@
 import "./globals.css";
 import { ReactNode } from "react";
 import { ThemeProvider } from "./components/ThemeContext";
-import { ClerkProvider, SignedOut, SignedIn, UserButton } from "@clerk/clerk-react";
-import SignInBurton from "./components/SignInBurton";
 
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 // No need for the localFont imports for GeistSans and GeistMono anymore
 // Instead, you can add the Inter font in the head
 
@@ -14,29 +19,36 @@ export const metadata = {
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
-<ClerkProvider>
-    <html lang="en">
-      <head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#000000" />
-        <link rel="icon" href="/favicon.ico" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no"
-        />
+    <ClerkProvider>
+      <html lang="en">
+        <head>
+          <link rel="manifest" href="/manifest.json" />
+          <meta name="theme-color" content="#000000" />
+          <link rel="icon" href="/favicon.ico" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no"
+          />
 
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+            rel="stylesheet"
+          />
+        </head>
 
-      <body className="overscroll-x-none font-sans font-light">
-<header><SignedOut><SignInBurton/></SignedOut><SignedIn><UserButton/></SignedIn></header>
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
-    </html>
-</ClerkProvider>
+        <body className="overscroll-x-none font-sans font-light">
+          <header>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </header>
+          <ThemeProvider>{children}</ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 };
 
