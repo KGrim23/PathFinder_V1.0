@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { useTheme } from "../components/ThemeContext";
+import Footer from "../components/Footer";
 
 const PrivacyPolicy: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,21 +29,19 @@ const PrivacyPolicy: React.FC = () => {
   return (
     <TooltipProvider>
       <div
-        className={`grid h-screen w-full md:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen w-full md:grid-cols-[auto_1fr] ${
           isDarkMode ? "dark" : ""
         }`}
       >
-        {/* Mobile Sidebar */}
-        {isMobile && isSidebarOpen && <Sidebar />}
+        {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
+
+          {/* Main Content */}
           <main className="flex-1 overflow-auto flex flex-col">
             <div className="max-w-3xl mx-auto p-2 text-gray-800 dark:text-gray-200">
               <div className="flex flex-col justify-center p-4 text-md">
                 <h1 className="text-xl font-bold mb-6">Privacy Policy</h1>
-                <p className="mb-6 text-sm">
-                  Last updated: {new Date().toLocaleDateString()}
-                </p>
 
                 <p className="mb-6 text-sm">
                   This Privacy Policy describes how PathFinder ("we," "us," or
@@ -114,9 +113,13 @@ const PrivacyPolicy: React.FC = () => {
                 <p className="mb-6">
                   If you have questions, contact us at PathFinder.com
                 </p>
+                <p className="mb-6 text-sm">
+                  Last updated: {new Date().toLocaleDateString()}
+                </p>
               </div>
             </div>
           </main>
+          <Footer />
         </div>
       </div>
     </TooltipProvider>
