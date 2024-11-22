@@ -42,6 +42,10 @@ export default function Sidebar() {
     router.push("/Notifications");
   };
 
+  const goToSettingPage = () => {
+    router.push("/SettingPage");
+  };
+
   return (
     <aside
       className={`flex flex-col min-h-screen w-64 transition-all duration-300 ease-in-out ${
@@ -179,6 +183,7 @@ export default function Sidebar() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
+              onClick={goToSettingPage}
               variant="ghost"
               size="icon"
               className={`rounded-lg w-full flex items-center justify-start p-2 ${
@@ -193,13 +198,14 @@ export default function Sidebar() {
               </span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>User Menu</DropdownMenuLabel>
+          {/* <DropdownMenuContent>
+            <DropdownMenuLabel>User Profile</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <User className="w-5 h-5 mr-2" /> Profile
+              <User className="w-5 h-5 mr-2" />
+              Profile
             </DropdownMenuItem>
-          </DropdownMenuContent>
+          </DropdownMenuContent> */}
         </DropdownMenu>
       </nav>
     </aside>

@@ -25,6 +25,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 export default function SettingPage() {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [pronouns, setPronouns] = useState<string>("");
   const [notifications, setNotifications] = useState({
     messages: true,
     mentions: true,
@@ -53,7 +54,7 @@ export default function SettingPage() {
   useEffect(() => {
     const savedSettings = localStorage.getItem("userSettings");
     if (savedSettings) {
-      const { username, email, notifications, isDarkMode } =
+      const { username, email, pronouns, notifications, isDarkMode } =
         JSON.parse(savedSettings);
       setUsername(username);
       setEmail(email);
@@ -97,13 +98,10 @@ export default function SettingPage() {
           <Card className="w-full max-w-5xl mx-auto border-0">
             <CardHeader>
               <CardTitle className="text-2xl md:text-3xl">Settings</CardTitle>
-              <CardDescription>
-                Manage your account preferences and application settings.
-              </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="profile">
-                <TabsList className="flex justify-start gap-1 mb-20">
+                <TabsList className="flex justify-start gap-1 mb-10">
                   <TabsTrigger
                     value="profile"
                     className="flex-grow sm:flex-grow-0 text-lg"
@@ -140,16 +138,20 @@ export default function SettingPage() {
                       Change Avatar
                     </Button>
                   </div>
-                  <div className="grid gap-6">
+
+                  {/* Username */}
+                  <div className="grid gap-4 mb-10">
                     <div className="space-y-2">
                       <Label htmlFor="username">Username</Label>
                       <Input
                         id="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="text-base bg-slate-200"
+                        className="text-base bg-slate-200 border-0 rounded-xl"
                       />
                     </div>
+
+                    {/* Emails */}
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
                       <Input
@@ -157,7 +159,19 @@ export default function SettingPage() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="text-base bg-slate-200"
+                        className="text-base bg-slate-200 border-0 rounded-xl"
+                      />
+                    </div>
+
+                    {/* Pronouns */}
+                    <div className="space-y-2">
+                      <Label htmlFor="pronouns">Pronouns</Label>
+                      <Input
+                        id="pronouns"
+                        type="pronouns"
+                        value={pronouns}
+                        onChange={(e) => setPronouns(e.target.value)}
+                        className="text-base bg-slate-200 border-0 rounded-xl"
                       />
                     </div>
                   </div>
