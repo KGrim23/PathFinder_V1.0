@@ -21,6 +21,14 @@ import Sidebar from "../components/Sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Footer from "../components/Footer";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function SettingPage() {
   const [username, setUsername] = useState<string>("");
@@ -34,6 +42,14 @@ export default function SettingPage() {
 
   const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMobile, setIsMobile] = useState(false);
+  const [selectedAvatar, setSelectedAvatar] = useState<string>("/profile1.png");
+
+  // Avatar options
+  const avatars = [
+    { src: "/profile1.png", alt: "Avatar 1" },
+    { src: "/profile2.png", alt: "Avatar 2" },
+    { src: "/profile3.png", alt: "Avatar 3" },
+  ];
 
   // Effect to track if it's mobile view
   useEffect(() => {
@@ -84,6 +100,10 @@ export default function SettingPage() {
     alert("Cache cleared!");
   };
 
+  const handleAvatarSelect = (src: string) => {
+    setSelectedAvatar(src);
+  };
+
   return (
     <TooltipProvider>
       <div
@@ -125,18 +145,52 @@ export default function SettingPage() {
                 <TabsContent value="profile">
                   <div className="flex flex-col mb-10 md:flex-row md:items-center md:space-x-4 md:space-y-0 space-y-4">
                     <Avatar className="w-24 h-24 mx-auto md:mx-0">
-                      <AvatarImage src="/profile1.png" alt="Profile picture" />
+                      <AvatarImage src={selectedAvatar} alt="Profile picture" />
                       <AvatarFallback>
                         <User className="w-12 h-12" />
                       </AvatarFallback>
                     </Avatar>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      className="mt-6 mb-10 md:mt-0 bg-gray-800 text-white rounded-xl"
-                    >
-                      Change Avatar
-                    </Button>
+
+                    {/* Dialog Trigger */}
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          className="mt-6 mb-10 md:mt-0 bg-gray-800 text-white rounded-xl"
+                        >
+                          Change Avatar
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-md">
+                        <DialogHeader>
+                          <DialogTitle className="text-xl font-semibold">
+                            Choose an Avatar
+                          </DialogTitle>
+                        </DialogHeader>
+                        <CardContent>
+                          <div className="grid grid-cols-3 gap-4">
+                            {avatars.map((avatar) => (
+                              <div
+                                key={avatar.src}
+                                className="cursor-pointer p-2 border rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                onClick={() => handleAvatarSelect(avatar.src)}
+                              >
+                                <Avatar>
+                                  <AvatarImage
+                                    src={avatar.src}
+                                    alt={avatar.alt}
+                                  />
+                                </Avatar>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                        <DialogFooter>
+                          <Button variant="secondary">Close</Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
                   </div>
 
                   {/* Username */}
@@ -224,17 +278,23 @@ export default function SettingPage() {
                         </Label>
                       </div>
                       <Button>
-                        <Archive className="w-5 h-5 mr-2" />
+                        <Archive size={16} />
                       </Button>
                     </div>
-                    <div className="flex items-center justify-between space-x-2">
-                      <div className="space-y-0.5">
+
+                    <div className="flex items-center justify-between space-x-2 ">
+                      <div className="space-y-0.5 ">
                         <Label className="text-md lg:text-lg">
-                          Clear Cache
+                          Clear Chat History
                         </Label>
                       </div>
-                      <Button onClick={clearCahce} variant="destructive">
-                        <Trash2 className="w-5 h-5 mr-2" />
+                      <Button
+                        variant="destructive"
+                        onClick={clearCahce}
+                        className="flex items-center justify-center space-x-2"
+                      >
+                        <Trash2 size={16} />
+                        <span className="text-sm lg:text-md">Clear</span>
                       </Button>
                     </div>
                   </div>
@@ -250,9 +310,9 @@ export default function SettingPage() {
               </Button>
             </CardFooter>
           </Card>
+          <Footer />
         </div>
       </div>
-      <Footer />
     </TooltipProvider>
   );
 }
