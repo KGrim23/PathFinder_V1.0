@@ -18,7 +18,7 @@ export default function LoginPage() {
               elements: {
                 formButtonPrimary:
                   "bg-white text-black hover:bg-gray-200 rounded-xl",
-                card: "bg-gray-900 border-gray-700",
+                card: "bg-transparent rounded-xl",
                 headerTitle: "text-white",
                 headerSubtitle: "text-gray-400",
                 socialButtonsBlockButton:

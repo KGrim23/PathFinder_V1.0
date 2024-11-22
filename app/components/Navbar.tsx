@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Sidebar from "./Sidebar";
 import { useTheme } from "./ThemeContext";
 import LandingPage from "../LandingPage/page";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export type NavbarProps = {
   isMobile: boolean;
@@ -83,6 +84,15 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
           >
             <Bell className="h-5 w-5" />
           </Button>
+
+          <div className="">
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </div>
         </div>
       </header>
 

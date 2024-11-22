@@ -37,14 +37,14 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         </head>
 
         <body className="overscroll-x-none font-sans font-light">
-          <header>
+          {/* <header>
             <SignedOut>
               <SignInButton />
             </SignedOut>
             <SignedIn>
               <UserButton />
             </SignedIn>
-          </header>
+          </header> */}
           <ThemeProvider>{children}</ThemeProvider>
         </body>
       </html>
