@@ -43,7 +43,7 @@ const PrivacyPolicy: React.FC = () => {
               <div className="flex flex-col justify-center p-4 text-md">
                 <h1 className="text-xl font-bold mb-6">Privacy Policy</h1>
 
-                <p className="mb-6 text-sm">
+                <p className="mb-6 text-md">
                   This Privacy Policy describes how PathFinder ("we," "us," or
                   "our") collects, uses, discloses, and protects your
                   information when you use the Path Finder App (the “App”). By
@@ -113,9 +113,7 @@ const PrivacyPolicy: React.FC = () => {
                 <p className="mb-6">
                   If you have questions, contact us at PathFinder.com
                 </p>
-                <p className="mb-6 text-sm">
-                  Last updated: {new Date().toLocaleDateString()}
-                </p>
+                <p className="mb-6 text-sm">Last updated: 22-11-2024</p>
               </div>
             </div>
           </main>

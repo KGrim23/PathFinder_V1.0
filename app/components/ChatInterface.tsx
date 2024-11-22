@@ -234,7 +234,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   return (
     <div
-      className={`flex flex-col h-full text-md ${
+      className={`flex flex-col h-full text-lg ${
         isDarkMode ? "bg-black text-gray-400" : "bg-white text-black"
       }`}
     >

@@ -63,7 +63,7 @@ export default function LandingPage() {
                     <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
                       Welcome to PathFinder AI
                     </h1>
-                    <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                    <p className="mx-auto max-w-[700px] text-gray-500 text-lg md:text-xl dark:text-gray-400">
                       Get personalized career guidance with our AI-powered
                       advisor. Based on your skills and interests, it suggests
                       tailored career paths, university courses, and skill
@@ -76,7 +76,7 @@ export default function LandingPage() {
                       size="lg"
                       variant="secondary"
                       onClick={handleStartChat}
-                      className={`mt-10 gap-1.5 text-md lg:text-xl lg:mt-4 lg:p-6 bg-zinc-800 rounded-full ${
+                      className={`mt-10 gap-1.5 text-lg lg:text-xl lg:mt-4 lg:p-6 bg-zinc-800 rounded-full ${
                         isDarkMode ? "text-white" : "text-white"
                       }`}
                     >

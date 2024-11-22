@@ -40,10 +40,10 @@ const Terms: React.FC = () => {
           {/* Main Content */}
           <main className="flex-1 overflow-auto flex flex-col">
             <div className="max-w-3xl mx-auto p-2 text-gray-800 dark:text-gray-200">
-              <div className="flex flex-col justify-center p-4 text-md">
+              <div className="flex flex-col justify-center p-4">
                 <h1 className="text-xl font-bold mb-6">Terms of Service</h1>
 
-                <p className="mb-6 text-sm">
+                <p className="mb-6 text-md">
                   Welcome to the PathFinder App! By using our services, you
                   agree to the following terms. If you do not agree with these
                   terms, please do not use our services.
@@ -52,7 +52,7 @@ const Terms: React.FC = () => {
                 <h2 className="text-lg font-semibold mt-4 mb-4">
                   1. Acceptance of Terms
                 </h2>
-                <p className="mb-6 text-sm">
+                <p className="mb-6 text-md">
                   By using the PathFinder App, you affirm that you are at least
                   18 years old or have the consent of a parent or guardian to
                   use the app. If you are using the app on behalf of a company
@@ -63,7 +63,7 @@ const Terms: React.FC = () => {
                 <h2 className="text-lg font-semibold mt-4 mb-4">
                   2. Changes to the Terms
                 </h2>
-                <p className="mb-6 text-sm">
+                <p className="mb-6 text-md">
                   We may modify these terms at any time. If we make changes, we
                   will notify you by revising the “Effective Date” at the top of
                   these terms. Your continued use of the app after any changes
@@ -73,7 +73,7 @@ const Terms: React.FC = () => {
                 <h2 className="text-lg font-semibold mt-4 mb-4">
                   3. Use of the Service
                 </h2>
-                <p className="mb-6 text-sm">
+                <p className="mb-6 text-md">
                   You agree to use the PathFinder App only for lawful purposes
                   and in accordance with these terms. You agree not to use the
                   app:
@@ -92,7 +92,7 @@ const Terms: React.FC = () => {
                 <h2 className="text-lg font-semibold mt-4 mb-4">
                   4. Limitation of Liability
                 </h2>
-                <p className="mb-6 text-sm">
+                <p className="mb-6 text-md">
                   To the fullest extent permitted by law, in no event shall Path
                   Finder, its affiliates, or their licensors, service providers,
                   employees, agents, or contractors be liable for damages of any
@@ -105,7 +105,7 @@ const Terms: React.FC = () => {
                 <h2 className="text-lg font-semibold mt-4 mb-4">
                   5. Governing Law
                 </h2>
-                <p className="mb-6 text-sm">
+                <p className="mb-6 text-md">
                   These terms shall be governed by and construed in accordance
                   with the laws of United Kingdom, without regard to its
                   conflict of law principles.
@@ -114,13 +114,11 @@ const Terms: React.FC = () => {
                 <h2 className="text-lg font-semibold mt-4 mb-4">
                   6. Contact Us
                 </h2>
-                <p className="mb-6 text-sm">
+                <p className="mb-6 text-md">
                   If you have any questions about these terms, please contact us
                   at PathFinder.com
                 </p>
-                <p className="mb-6 text-sm">
-                  Last updated: {new Date().toLocaleDateString()}
-                </p>
+                <p className="mb-6 text-sm">Last updated: 22-11-2024</p>
               </div>
             </div>
           </main>
