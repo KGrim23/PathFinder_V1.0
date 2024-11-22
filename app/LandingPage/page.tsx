@@ -97,7 +97,7 @@ export default function LandingPage() {
                   Key Features
                 </h2>
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  <Card className="dark:border-gray-800 shadow-zinc-700 rounded-xl">
+                  <Card className="dark:border-gray-800 shadow-zinc-600 rounded-xl">
                     <CardHeader>
                       <Brain className="h-6 w-6 mb-2" />
                       <CardTitle>Personalized Guidance</CardTitle>
