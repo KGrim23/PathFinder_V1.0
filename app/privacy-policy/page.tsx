@@ -113,7 +113,9 @@ const PrivacyPolicy: React.FC = () => {
                 <p className="mb-6">
                   If you have questions, contact us at PathFinder.com
                 </p>
-                <p className="mb-6 text-sm">Last updated: 22-11-2024</p>
+                <p className="mb-6 text-md text-blue-800">
+                  Last updated: 22-11-2024
+                </p>
               </div>
             </div>
           </main>
