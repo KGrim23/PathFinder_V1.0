@@ -14,6 +14,7 @@ import {
   CheckCircle,
   GraduationCap,
   LineChart,
+  MessageCircleMore,
   Users,
 } from "lucide-react";
 
@@ -80,7 +81,7 @@ export default function LandingPage() {
                         isDarkMode ? "text-white" : "text-white"
                       }`}
                     >
-                      Start Chat 💬
+                      Start Chat <MessageCircleMore />
                     </Button>
                   </div>
                 </div>
