@@ -80,7 +80,7 @@ export default function LandingPage() {
                         isDarkMode ? "text-white" : "text-white"
                       }`}
                     >
-                      Let's talk!
+                      Start Chat 💬
                     </Button>
                   </div>
                 </div>
