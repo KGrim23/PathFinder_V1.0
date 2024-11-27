@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { useTheme } from "../components/ThemeContext";
 import { marked } from "marked";
+import { useRouter } from "next/navigation";
 
 export type UserMessage = {
   type: "user";
@@ -30,6 +31,7 @@ export type AIMessage = {
 export type MessageType = UserMessage | AIMessage;
 
 const SavedChatsPage: React.FC = () => {
+  const router = useRouter();
   const { isDarkMode } = useTheme();
   const [savedChats, setSavedChats] = useState<MessageType[][]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -78,8 +80,21 @@ const SavedChatsPage: React.FC = () => {
     alert(`Chat Session ${chatIndex + 1} has been deleted!`);
   };
 
+  const continueChatSession = (chatIndex: number) => {
+    const selectedChat = savedChats[chatIndex];
+
+    // Store the selected chat in localStorage
+    localStorage.setItem("continuedChatSession", JSON.stringify(selectedChat));
+
+    // Debugging to check if the chat is being saved correctly
+    console.log("Selected Chat Saved to localStorage:", selectedChat);
+
+    // Navigate to the chat page
+    router.push("/chats");
+  };
+
   const formatAIMessageContent = (content: string): string => {
-    let formattedContent = marked(content) as string; // Parse markdown to HTML using marked
+    let formattedContent = marked(content) as string;
 
     formattedContent = formattedContent.replace(
       /^\*(.*?)\*/gm,
@@ -162,14 +177,24 @@ const SavedChatsPage: React.FC = () => {
                       >
                         Session {chatIndex + 1}
                       </div>
-                      <button
-                        className={`ml-4 p-2 rounded-xl ${
-                          isDarkMode ? " text-white" : "text-black"
-                        }`}
-                        onClick={() => deleteChatSession(chatIndex)}
-                      >
-                        Delete
-                      </button>
+                      <div className="flex space-x-2">
+                        <button
+                          className={`p-2 rounded-xl ${
+                            isDarkMode ? " text-white" : "text-black"
+                          }`}
+                          onClick={() => continueChatSession(chatIndex)}
+                        >
+                          Continue
+                        </button>
+                        <button
+                          className={`p-2 rounded-xl ${
+                            isDarkMode ? " text-white" : "text-black"
+                          }`}
+                          onClick={() => deleteChatSession(chatIndex)}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                     {selectedChatIndex === chatIndex && (
                       <div className="space-y-4">

@@ -41,6 +41,15 @@ const Chats = () => {
     alert("Chat history saved!");
   };
 
+  // Retrieve the continued chat session from localStorage so user can continue the chat
+  useEffect(() => {
+    const continuedChat = localStorage.getItem("continuedChatSession");
+    if (continuedChat) {
+      const parsedChat = JSON.parse(continuedChat);
+      setMessages(parsedChat); // Set the chat messages in the state
+    }
+  }, []);
+
   const sendMessageToOpenAI = async (message: string) => {
     try {
       setLoading(true);
