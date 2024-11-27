@@ -45,7 +45,7 @@ export default function LandingPage() {
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full itemmd:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen w-full items-center justify-center md:grid-cols-[auto_1fr] ${
           isDarkMode ? "dark" : ""
         }`}
       >
@@ -54,7 +54,9 @@ export default function LandingPage() {
           <Navbar isMobile={isMobile} />
 
           <main
-            className={`flex-1 mt-16 lg:mt-2 mb-20 ${isDarkMode ? "dark" : ""}`}
+            className={`flex-1 w-full mb-20 lg:ml-64 items-center justify-center ${
+              isDarkMode ? "dark" : ""
+            }`}
           >
             <section
               id="about"
@@ -62,7 +64,7 @@ export default function LandingPage() {
             >
               <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center space-y-4 text-center">
-                  <div className="space-y-6">
+                  <div className="space-y-6 mt-8 lg:mt-2">
                     <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
                       Welcome to PathFinder AI
                     </h1>
