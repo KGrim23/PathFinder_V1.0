@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="fixed bottom-0 shadow-sm shadow-slate-100 bg-white text-black flex flex-col gap-2 p-4 w-full shrink-0 items-center md:px-6 dark:text-white dark:bg-black">
+    <footer className="fixed bottom-0 bg-white text-black flex flex-col gap-2 p-4 w-full shrink-0 items-center md:px-6 dark:text-white dark:bg-black">
       <p className="text-sm text-black font-normal dark:text-gray-400">
         © 2024 PathFinder AI. All rights reserved.
       </p>
