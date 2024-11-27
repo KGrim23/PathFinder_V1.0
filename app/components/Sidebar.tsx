@@ -13,18 +13,12 @@ import {
 import {
   DropdownMenu,
   DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import {
   MessageSquarePlus,
   History,
   Settings2,
   LifeBuoy,
-  User,
-  LogOut,
   Bell,
 } from "lucide-react";
 import Image from "next/image";
@@ -89,7 +83,9 @@ export default function Sidebar() {
               }}
             >
               <MessageSquarePlus className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white">New Chat</span>
+              <span className="text-black dark:text-white lg:text-lg">
+                New Chat
+              </span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">New Chat</TooltipContent>
@@ -109,7 +105,9 @@ export default function Sidebar() {
               onClick={navigateToSavedChats}
             >
               <History className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white">History</span>
+              <span className="text-black dark:text-white lg:text-lg">
+                History
+              </span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">History</TooltipContent>
@@ -132,7 +130,9 @@ export default function Sidebar() {
               }}
             >
               <Settings2 className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white">Settings</span>
+              <span className="text-black dark:text-white lg:text-lg">
+                Settings
+              </span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">Settings</TooltipContent>
@@ -155,7 +155,9 @@ export default function Sidebar() {
               }}
             >
               <LifeBuoy className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white">Help</span>
+              <span className="text-black dark:text-white lg:text-lg">
+                Help
+              </span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">Help</TooltipContent>
@@ -171,7 +173,9 @@ export default function Sidebar() {
               className={`flex items-center gap-2 rounded-lg transition-colors duration-200 w-full p-2 justify-start`}
             >
               <Bell className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white">Notifications</span>
+              <span className="text-black dark:text-white lg:text-lg">
+                Notifications
+              </span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">Notifications</TooltipContent>

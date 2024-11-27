@@ -9,8 +9,6 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
-// No need for the localFont imports for GeistSans and GeistMono anymore
-// Instead, you can add the Inter font in the head
 
 export const metadata = {
   title: "Path Finder",
