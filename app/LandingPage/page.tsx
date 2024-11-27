@@ -53,7 +53,7 @@ export default function LandingPage() {
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 
-          <main className={`flex-1 ${isDarkMode ? "dark" : ""}`}>
+          <main className={`flex-1 mb-20 ${isDarkMode ? "dark" : ""}`}>
             <section
               id="about"
               className="w-full py-12 md:py-24 lg:py-32 xl:py-48"
