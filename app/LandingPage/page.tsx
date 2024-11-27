@@ -5,9 +5,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTheme } from "../components/ThemeContext";
+import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-
+import Footer from "../components/Footer";
 import {
   Brain,
   CheckCircle,
@@ -16,7 +17,6 @@ import {
   MessageCircleMore,
   Users,
 } from "lucide-react";
-import Sidebar from "../components/Sidebar";
 
 export default function LandingPage() {
   const { isDarkMode, toggleDarkMode } = useTheme();
@@ -45,24 +45,16 @@ export default function LandingPage() {
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full lg:item-center lg:justify-center md:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen w-full itemmd:grid-cols-[auto_1fr] ${
           isDarkMode ? "dark" : ""
         }`}
       >
-        {!isMobile && (
-          <Sidebar
-            onChatSelect={function (index: number): void {
-              throw new Error("Function not implemented.");
-            }}
-          />
-        )}
+        {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 
           <main
-            className={`flex-1 mt-16 lg:mt-2 lg:ml-64 ${
-              isDarkMode ? "dark" : ""
-            }`}
+            className={`flex-1 mt-16 lg:mt-2 mb-20 ${isDarkMode ? "dark" : ""}`}
           >
             <section
               id="about"
