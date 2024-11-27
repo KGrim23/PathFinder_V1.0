@@ -129,7 +129,7 @@ const SavedChatsPage: React.FC = () => {
   return (
     <TooltipProvider>
       <div
-        className={`grid h-screen w-full md:grid-cols-[auto_1fr] ${
+        className={`grid h-screen w-full mt-16 p-2 md:grid-cols-[auto_1fr] ${
           isDarkMode ? "dark" : ""
         }`}
       >
@@ -148,7 +148,9 @@ const SavedChatsPage: React.FC = () => {
                   <div
                     key={chatIndex}
                     className={`p-2 rounded-xl ${
-                      isDarkMode ? "bg-gray-800 text-white" : "bg-gray-300"
+                      isDarkMode
+                        ? " text-white font-normal"
+                        : "text-black font-normal"
                     }`}
                   >
                     <div className="flex justify-between items-center">

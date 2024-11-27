@@ -109,7 +109,7 @@ export default function HelpPage() {
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full md:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen mt-16 w-full md:grid-cols-[auto_1fr] ${
           isDarkMode ? "dark" : ""
         }`}
       >

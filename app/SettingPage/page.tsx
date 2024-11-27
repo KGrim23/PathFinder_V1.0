@@ -107,7 +107,7 @@ export default function SettingPage() {
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full md:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen w-full mt-16 md:grid-cols-[auto_1fr] ${
           isDarkMode ? "dark" : ""
         }`}
       >
