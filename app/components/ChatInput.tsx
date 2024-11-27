@@ -88,7 +88,7 @@ const ChatInput: React.FC<{
           onKeyDown={handleKeyDown}
         />
 
-        <div className="flex items-center p-3 pt-0 bg-white dark:bg-black">
+        <div className="flex items-center justify-center p-3 pt-0 bg-white dark:bg-black">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon">

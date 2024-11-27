@@ -145,7 +145,7 @@ const Chats = () => {
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 
-          <main className="flex-1 overflow-auto w-full lg:ml-64 h-full md:w-[90%] lg:w-[80%] mt-4 lg:mt-10 p-4 flex flex-col relative">
+          <main className="flex-1 overflow-auto w-full lg:ml-64 h-full md:w-[90%] lg:w-[85%] mt-4 lg:mt-10 p-4 flex flex-col relative">
             {messages.length > 0 && (
               <button
                 onClick={closeChat}
