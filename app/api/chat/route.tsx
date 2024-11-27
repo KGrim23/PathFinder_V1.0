@@ -120,7 +120,7 @@ export async function POST(req: Request) {
           const text = chunk.choices[0]?.delta?.content || "";
           if (text) {
             controller.enqueue(new TextEncoder().encode(text));
-            await new Promise((resolve) => setTimeout(resolve, 100));
+            await new Promise((resolve) => setTimeout(resolve, 40));
           }
         }
         controller.close();
