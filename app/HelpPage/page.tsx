@@ -133,7 +133,7 @@ export default function HelpPage() {
               {filteredItems.map((item, index) => (
                 <Card
                   key={index}
-                  className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-800 text-gray-300 border-0 rounded-xl"
+                  className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-600 text-white border-0 rounded-xl"
                 >
                   <CardHeader>
                     <CardTitle className="text-lg">{item.question}</CardTitle>
