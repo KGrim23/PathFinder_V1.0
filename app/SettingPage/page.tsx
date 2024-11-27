@@ -310,7 +310,6 @@ export default function SettingPage() {
               </Button>
             </CardFooter>
           </Card>
-          <Footer />
         </div>
       </div>
     </TooltipProvider>

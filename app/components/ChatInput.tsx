@@ -11,7 +11,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Camera, Mic, CornerDownLeft, Paperclip } from "lucide-react";
-import Footer from "./Footer";
 
 const ChatInput: React.FC<{
   inputMessage: string;
@@ -134,7 +133,6 @@ const ChatInput: React.FC<{
           </Button>
         </div>
       </div>
-      <Footer />
     </form>
   );
 };
