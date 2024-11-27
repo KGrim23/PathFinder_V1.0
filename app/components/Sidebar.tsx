@@ -42,7 +42,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`lg:fixed flex flex-col min-h-screen w-64 transition-all duration-300 ease-in-out position-fixed mb-10 ${
+      className={`lg:fixed top-0 flex flex-col min-h-screen w-64 transition-all duration-300 ease-in-out position-fixed mb-10 ${
         isDarkMode ? "bg-black text-white" : "bg-white text-black"
       }`}
     >
@@ -183,7 +183,7 @@ export default function Sidebar() {
       </nav>
 
       {/* Profile Section */}
-      <nav className="p-2 mb-4">
+      <nav className="p-2 bottom-0">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

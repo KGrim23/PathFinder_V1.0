@@ -107,9 +107,7 @@ export default function SettingPage() {
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full mt-16 mx-auto ${
-          isDarkMode ? "dark" : ""
-        }`}
+        className={`grid min-h-screen w-full mt-16 ${isDarkMode ? "dark" : ""}`}
       >
         {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">

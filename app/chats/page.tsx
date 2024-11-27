@@ -139,7 +139,9 @@ const Chats = () => {
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full mt-16 ${isDarkMode ? "dark" : ""}`}
+        className={`grid min-h-screen w-full items-center mt-16 ${
+          isDarkMode ? "dark" : ""
+        }`}
       >
         {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
