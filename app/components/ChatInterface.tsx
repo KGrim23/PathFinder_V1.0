@@ -238,7 +238,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         isDarkMode ? "bg-black text-gray-400" : "bg-white text-black"
       }`}
     >
-      <div className="flex-1 overflow-y-auto mb-4 p-2">
+      <div className="flex-1 overflow-y-auto mt-6 mb-4 p-2">
         {messages.map((message, index) => (
           <div
             key={index}

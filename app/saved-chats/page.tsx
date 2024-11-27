@@ -129,7 +129,7 @@ const SavedChatsPage: React.FC = () => {
   return (
     <TooltipProvider>
       <div
-        className={`grid h-screen w-full mt-16 p-2 md:grid-cols-[auto_1fr] ${
+        className={`grid h-screen w-full mt-16 p-2  ${
           isDarkMode ? "dark" : ""
         }`}
       >
@@ -138,7 +138,7 @@ const SavedChatsPage: React.FC = () => {
           <Navbar isMobile={isMobile} />
 
           {/* main contents */}
-          <main className="flex-1 overflow-auto p-2 flex flex-col">
+          <main className="flex-1 overflow-auto p-2 flex flex-col lg:ml-64 ">
             <h2 className="text-2xl font-bold mb-4">Saved Chats</h2>
             {savedChats.length === 0 ? (
               <p>No saved chats found.</p>

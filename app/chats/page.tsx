@@ -139,15 +139,13 @@ const Chats = () => {
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full mt-16 md:grid-cols-[auto_1fr] ${
-          isDarkMode ? "dark" : ""
-        }`}
+        className={`grid min-h-screen w-full mt-16 ${isDarkMode ? "dark" : ""}`}
       >
         {!isMobile && <Sidebar />}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 
-          <main className="flex-1 overflow-auto w-full sm:wßß-full h-full md:w-[90%] lg:w-[90%] mx-auto mt-4 lg:mt-10 p-4 flex flex-col relative">
+          <main className="flex-1 overflow-auto w-full lg:ml-64 h-full md:w-[90%] lg:w-[80%] mt-4 lg:mt-10 p-4 flex flex-col relative">
             {messages.length > 0 && (
               <button
                 onClick={closeChat}

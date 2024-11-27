@@ -107,7 +107,7 @@ export default function SettingPage() {
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full mt-16 md:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen w-full mt-16 mx-auto ${
           isDarkMode ? "dark" : ""
         }`}
       >
@@ -115,7 +115,7 @@ export default function SettingPage() {
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 
-          <Card className="w-full max-w-5xl mx-auto border-0">
+          <Card className="w-full max-w-5xl lg:ml-64 border-0 items-center justify-center">
             <CardHeader>
               <CardTitle className="text-2xl md:text-3xl">Settings</CardTitle>
             </CardHeader>
