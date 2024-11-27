@@ -45,7 +45,7 @@ export default function LandingPage() {
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full md:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen w-full lg:item-center lg:justify-center md:grid-cols-[auto_1fr] ${
           isDarkMode ? "dark" : ""
         }`}
       >
@@ -54,7 +54,9 @@ export default function LandingPage() {
           <Navbar isMobile={isMobile} />
 
           <main
-            className={`flex-1 mt-16 lg:mt-2 mb-20 ${isDarkMode ? "dark" : ""}`}
+            className={`flex-1 mt-16 lg:mt-2 lg:ml-64 ${
+              isDarkMode ? "dark" : ""
+            }`}
           >
             <section
               id="about"

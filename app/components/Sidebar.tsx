@@ -42,7 +42,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`flex flex-col min-h-screen w-64 transition-all duration-300 ease-in-out position-fixed mb-20 ${
+      className={`lg:fixed flex flex-col min-h-screen w-64 transition-all duration-300 ease-in-out position-fixed mb-10 ${
         isDarkMode ? "bg-black text-white" : "bg-white text-black"
       }`}
     >
