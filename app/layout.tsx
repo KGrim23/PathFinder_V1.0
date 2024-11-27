@@ -9,6 +9,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import Footer from "./components/Footer";
 
 export const metadata = {
   title: "Path Finder",
@@ -36,6 +37,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 
         <body className="overscroll-x-none font-sans font-light">
           <ThemeProvider>{children}</ThemeProvider>
+          <Footer />
         </body>
       </html>
     </ClerkProvider>

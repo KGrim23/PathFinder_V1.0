@@ -42,7 +42,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`flex flex-col min-h-screen w-64 transition-all duration-300 ease-in-out ${
+      className={`flex flex-col min-h-screen w-64 transition-all duration-300 ease-in-out position-fixed mb-20 ${
         isDarkMode ? "bg-black text-white" : "bg-white text-black"
       }`}
     >
@@ -65,7 +65,7 @@ export default function Sidebar() {
       </div>
 
       {/* Top Navigation with Buttons */}
-      <nav className="flex-grow flex flex-col gap-10 p-2 mt-8">
+      <nav className="flex-grow flex flex-col gap-8 lg:gap-10 p-2 mt-8">
         {/* New Chat */}
         <Tooltip>
           <TooltipTrigger asChild>
