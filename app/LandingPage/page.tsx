@@ -5,10 +5,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTheme } from "../components/ThemeContext";
-import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import Footer from "../components/Footer";
+
 import {
   Brain,
   CheckCircle,
@@ -17,6 +16,7 @@ import {
   MessageCircleMore,
   Users,
 } from "lucide-react";
+import Sidebar from "../components/Sidebar";
 
 export default function LandingPage() {
   const { isDarkMode, toggleDarkMode } = useTheme();
@@ -49,7 +49,13 @@ export default function LandingPage() {
           isDarkMode ? "dark" : ""
         }`}
       >
-        {!isMobile && <Sidebar />}
+        {!isMobile && (
+          <Sidebar
+            onChatSelect={function (index: number): void {
+              throw new Error("Function not implemented.");
+            }}
+          />
+        )}
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 

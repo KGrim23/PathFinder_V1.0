@@ -29,6 +29,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import SavedChatsPage from "../saved-chats/page";
 
 export default function SettingPage() {
   const [username, setUsername] = useState<string>("");
@@ -132,12 +133,13 @@ export default function SettingPage() {
                   >
                     Notifications
                   </TabsTrigger>
-                  <TabsTrigger
+
+                  {/* <TabsTrigger
                     value="personalisation"
                     className="flex-grow sm:flex-grow-0 text-lg"
                   >
                     Personalisation
-                  </TabsTrigger>
+                  </TabsTrigger> */}
                 </TabsList>
 
                 <TabsContent value="profile">
