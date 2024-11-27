@@ -45,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
         )}
 
         {/* Navbar Actions */}
-        <div className="flex items-center justify-center gap-2 ml-auto">
+        <div className="flex items-center justify-center gap-2 ml-auto p-2">
           {/* Home Button */}
           <Button
             onClick={goToHomePage}
