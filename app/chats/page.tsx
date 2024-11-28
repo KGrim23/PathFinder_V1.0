@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "../components/ThemeContext";
-import { CircleX } from "lucide-react";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import ChatInterface from "../components/ChatInterface";
 import Sidebar from "../components/Sidebar";
