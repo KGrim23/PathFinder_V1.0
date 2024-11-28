@@ -59,3 +59,9 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+/* Apply background color to the active tab only */
+.peer[data-state="active"] {
+  background-color: #4c9dff; /* Customize with your color */
+  color: white; /* Ensure the text is readable */
+}
