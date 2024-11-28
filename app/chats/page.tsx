@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, FormEvent } from "react";
+import React, { useState, useEffect, useCallback, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "../components/ThemeContext";
-import { CircleX, Save } from "lucide-react";
+import { CircleX } from "lucide-react";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import ChatInterface from "../components/ChatInterface";
 import Sidebar from "../components/Sidebar";
@@ -38,15 +38,15 @@ const Chats = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Load saved chats from localStorage and save in same session when user continue the chat later on
-  // this pass tot he chatinterface
-  const saveChatHistory = () => {
+  // Automatically save chat history whenever messages change
+  const saveChatHistory = useCallback(() => {
+    if (messages.length === 0) {
+      return; // Don't save empty chat sessions
+    }
+
     const chatSessions = JSON.parse(
       localStorage.getItem("chatSessions") || "[]"
     );
-
-    console.log("Current Chat Session Index:", currentChatSessionIndex);
-    console.log("Existing Chat Sessions:", chatSessions);
 
     if (
       currentChatSessionIndex !== null &&
@@ -54,36 +54,31 @@ const Chats = () => {
     ) {
       // Update existing chat session
       chatSessions[currentChatSessionIndex] = messages;
-      console.log(
-        "Updating existing session at index:",
-        currentChatSessionIndex
-      );
     } else {
       // Add new chat session
       chatSessions.push(messages);
       const newIndex = chatSessions.length - 1;
       setCurrentChatSessionIndex(newIndex);
-      console.log("Creating new session at index:", newIndex);
     }
 
     localStorage.setItem("chatSessions", JSON.stringify(chatSessions));
-    alert("Chat history saved!");
-  };
+  }, [messages, currentChatSessionIndex]);
 
+  // Trigger saving the chat history automatically when messages change
+  useEffect(() => {
+    saveChatHistory();
+  }, [messages, saveChatHistory]);
+
+  // Load saved chats from localStorage and initialize session when the user continues a chat
   useEffect(() => {
     const continuedChat = localStorage.getItem("continuedChatSession");
     const continuedChatIndex = localStorage.getItem(
       "continuedChatSessionIndex"
     );
 
-    console.log("Continued Chat:", continuedChat);
-    console.log("Continued Chat Index:", continuedChatIndex);
-
     if (continuedChat && continuedChatIndex !== null) {
       setMessages(JSON.parse(continuedChat));
-      const parsedIndex = parseInt(continuedChatIndex, 10);
-      console.log("Setting Current Chat Session Index:", parsedIndex);
-      setCurrentChatSessionIndex(parsedIndex);
+      setCurrentChatSessionIndex(parseInt(continuedChatIndex, 10));
     }
 
     // Clear session flags after loading
@@ -91,30 +86,9 @@ const Chats = () => {
     localStorage.removeItem("continuedChatSessionIndex");
   }, []);
 
-  // Retrieve the continued chat session from localStorage so user can continue the chat
-  useEffect(() => {
-    const continuedChat = localStorage.getItem("continuedChatSession");
-    const continuedChatIndex = localStorage.getItem(
-      "continuedChatSessionIndex"
-    );
-    const isFreshChat = localStorage.getItem("isFreshChat");
-
-    if (continuedChat && isFreshChat === "false" && continuedChatIndex) {
-      const parsedChat = JSON.parse(continuedChat);
-      setMessages(parsedChat);
-      setCurrentChatSessionIndex(parseInt(continuedChatIndex, 10));
-    }
-
-    // Remove the fresh chat flag and continued chat session after checking
-    localStorage.removeItem("isFreshChat");
-    localStorage.removeItem("continuedChatSession");
-    localStorage.removeItem("continuedChatSessionIndex");
-  }, []);
-
   // Modify the closeChat function to save before closing
   const closeChat = () => {
     saveChatHistory(); // Save chat before closing
-    console.log("Closing chat...");
     router.push("/LandingPage");
   };
 
