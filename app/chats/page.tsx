@@ -44,10 +44,16 @@ const Chats = () => {
   // Retrieve the continued chat session from localStorage so user can continue the chat
   useEffect(() => {
     const continuedChat = localStorage.getItem("continuedChatSession");
-    if (continuedChat) {
+    const isFreshChat = localStorage.getItem("isFreshChat");
+
+    if (continuedChat && isFreshChat === "false") {
       const parsedChat = JSON.parse(continuedChat);
       setMessages(parsedChat); // Set the chat messages in the state
     }
+
+    // Remove the fresh chat flag and continued chat session after checking
+    localStorage.removeItem("isFreshChat");
+    localStorage.removeItem("continuedChatSession");
   }, []);
 
   const sendMessageToOpenAI = async (message: string) => {

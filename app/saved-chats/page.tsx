@@ -82,13 +82,12 @@ const SavedChatsPage: React.FC = () => {
 
   const continueChatSession = (chatIndex: number) => {
     const selectedChat = savedChats[chatIndex];
-
     // Store the selected chat in localStorage
     localStorage.setItem("continuedChatSession", JSON.stringify(selectedChat));
-
+    // Set flag to indicate this is a continued chat session
+    localStorage.setItem("isFreshChat", "false");
     // Debugging to check if the chat is being saved correctly
     console.log("Selected Chat Saved to localStorage:", selectedChat);
-
     // Navigate to the chat page
     router.push("/chats");
   };
@@ -153,7 +152,7 @@ const SavedChatsPage: React.FC = () => {
           <Navbar isMobile={isMobile} />
 
           {/* main contents */}
-          <main className="flex-1 overflow-auto p-2 flex flex-col lg:ml-64 ">
+          <main className="flex-1 overflow-auto p-2 flex flex-col mt-10 mb-10 lg:ml-64">
             <h2 className="text-2xl font-bold mb-4">Saved Chats</h2>
             {savedChats.length === 0 ? (
               <p>No saved chats found.</p>

@@ -8,7 +8,7 @@ import { useTheme } from "../components/ThemeContext";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import Footer from "../components/Footer";
+
 import {
   Brain,
   CheckCircle,
@@ -23,6 +23,7 @@ export default function LandingPage() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const router = useRouter();
   const [startChat, setStartChat] = useState(false);
+  const [messages, setMessages] = useState<any[]>([]);
 
   useEffect(() => {
     document.body.classList.toggle("dark", isDarkMode);
@@ -39,6 +40,7 @@ export default function LandingPage() {
 
   const handleStartChat = () => {
     setStartChat(true);
+    setMessages([]);
     router.push("/chats"); // This will navigate to the 'Chats' page
   };
 
@@ -75,6 +77,7 @@ export default function LandingPage() {
                       development tips.
                     </p>
                   </div>
+
                   {/* Button Section */}
                   <div className="flex flex-col items-center justify-center mt-6 lg:mt-20">
                     <Button
@@ -83,7 +86,7 @@ export default function LandingPage() {
                       onClick={handleStartChat}
                       className={`mt-10 gap-1.5 text-lg lg:text-xl lg:mt-4 lg:p-6 bg-zinc-800 rounded-full ${
                         isDarkMode ? "text-white" : "text-white"
-                      }`}
+                      } hover:bg-zinc-700 hover:text-white hover:shadow-none`}
                     >
                       Start Chat <MessageCircleMore />
                     </Button>
@@ -279,9 +282,9 @@ export default function LandingPage() {
                   <div className="space-x-4">
                     <Button
                       size="lg"
-                      className={`mt-10 gap-1.5 text-md lg:text-xl lg:mt-4 lg:p-6 bg-zinc-800 rounded-xl ${
+                      className={`mt-10 gap-1.5 text-lg lg:text-xl lg:mt-4 lg:p-6 bg-zinc-800 rounded-full ${
                         isDarkMode ? "text-white" : "text-white"
-                      }`}
+                      } hover:bg-zinc-700 hover:text-white hover:shadow-none`}
                     >
                       <Link href="/signup">Sign Up</Link>
                     </Button>
