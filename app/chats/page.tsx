@@ -3,12 +3,11 @@
 import React, { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "../components/ThemeContext";
-import { CircleX } from "lucide-react";
+import { CircleX, Save } from "lucide-react";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import ChatInterface from "../components/ChatInterface";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
-import { Button } from "@/components/ui/button";
 
 type MessageType = {
   type: "user" | "ai";
@@ -38,6 +37,9 @@ const Chats = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Load saved chats from localStorage and save in same session when user continue the chat later on
+  // this pass tot he chatinterface
   const saveChatHistory = () => {
     const chatSessions = JSON.parse(
       localStorage.getItem("chatSessions") || "[]"
@@ -115,16 +117,6 @@ const Chats = () => {
     console.log("Closing chat...");
     router.push("/LandingPage");
   };
-
-  // Add a save button in the interface
-  const renderSaveButton = () => (
-    <button
-      onClick={saveChatHistory}
-      className="absolute top-1 right-2 rounded-xl px-3 py-1 z-10 bg-zinc-800 text-white"
-    >
-      Save Chat
-    </button>
-  );
 
   const sendMessageToOpenAI = async (message: string) => {
     try {
@@ -244,8 +236,6 @@ const Chats = () => {
                 >
                   <CircleX />
                 </button>
-
-                <div className="space-x-4">{renderSaveButton()}</div>
               </>
             )}
 
@@ -256,6 +246,7 @@ const Chats = () => {
               handleSendMessage={handleSendMessage}
               handleOptionClick={handleOptionClick}
               handleFeedback={handleFeedback}
+              saveChatHistory={saveChatHistory}
             />
           </main>
         </div>

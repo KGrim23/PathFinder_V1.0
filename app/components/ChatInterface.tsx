@@ -47,6 +47,7 @@ type ChatInterfaceProps = {
   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   handleOptionClick: (option: string) => void;
   handleFeedback: (index: number, type: "liked" | "disliked" | "sound") => void;
+  saveChatHistory: () => void;
 };
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -56,6 +57,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   handleSendMessage,
   handleOptionClick,
   handleFeedback,
+  saveChatHistory,
 }) => {
   const { isDarkMode } = useTheme();
   const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Track audio playing state
@@ -78,16 +80,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     await handleSendMessage(e);
   };
 
-  const saveChatHistory = () => {
-    const existingSessions = JSON.parse(
-      localStorage.getItem("chatSessions") || "[]"
-    ) as MessageType[][];
-    const newSession = messages;
-    existingSessions.push(newSession);
-    localStorage.setItem("chatSessions", JSON.stringify(existingSessions));
-    setChatSessions(existingSessions);
-    alert("Chat history saved!");
-  };
   const formatAIMessageContent = (content: string): string => {
     let formattedContent = marked(content) as string;
 
