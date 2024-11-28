@@ -55,9 +55,9 @@ export const Notifications = () => {
             {notifications.map((notification) => (
               <div key={notification.id} className="mb-4 last:mb-0">
                 <div className="flex items-start space-x-4">
-                  <div className="mt-1 bg-muted rounded-full p-1">
+                  <div className="mt-1 rounded-full p-1">
                     {notification.type === "insight" && (
-                      <Zap className="h-5 w-5 text-muted-foreground" />
+                      <Zap className="h-5 w-5" />
                     )}
                     {notification.type === "reminder" && (
                       <Star className="h-5 w-5 text-muted-foreground" />
@@ -70,9 +70,7 @@ export const Notifications = () => {
                     <p className="text-sm font-medium leading-none">
                       {notification.title}
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                      {notification.description}
-                    </p>
+                    <p className="text-sm">{notification.description}</p>
                   </div>
                 </div>
               </div>

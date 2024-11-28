@@ -117,7 +117,7 @@ export default function HelpPage() {
         <div className="flex flex-col h-full mb-10">
           <Navbar isMobile={isMobile} />
 
-          <div className="container mx-auto p-4 md:p-6 lg:p-8">
+          <div className="container mx-auto lg:ml-64 p-4 md:p-6 lg:p-8">
             <h1 className="text-2xl md:text-3xl font-bold mb-4">Help Center</h1>
             <div className="relative mb-6">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -133,7 +133,7 @@ export default function HelpPage() {
               {filteredItems.map((item, index) => (
                 <Card
                   key={index}
-                  className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-800 text-gray-300 border-0 rounded-xl"
+                  className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-600 text-white border-0 rounded-xl"
                 >
                   <CardHeader>
                     <CardTitle className="text-lg">{item.question}</CardTitle>

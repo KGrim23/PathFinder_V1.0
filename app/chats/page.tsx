@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, FormEvent } from "react";
+import React, { useState, useEffect, useCallback, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "../components/ThemeContext";
 import { CircleX } from "lucide-react";
@@ -12,7 +12,7 @@ import Navbar from "../components/Navbar";
 type MessageType = {
   type: "user" | "ai";
   content: string;
-  feedback?: {
+  feedback: {
     liked: boolean;
     disliked: boolean;
     sound: boolean;
@@ -26,6 +26,9 @@ const Chats = () => {
   const [inputMessage, setInputMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [currentChatSessionIndex, setCurrentChatSessionIndex] = useState<
+    number | null
+  >(null);
 
   // Detect mobile screen size
   useEffect(() => {
@@ -35,10 +38,58 @@ const Chats = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Save chat history to local storage
-  const saveChatHistory = () => {
-    localStorage.setItem("savedChats", JSON.stringify(messages));
-    alert("Chat history saved!");
+  // Automatically save chat history whenever messages change
+  const saveChatHistory = useCallback(() => {
+    if (messages.length === 0) {
+      return; // Don't save empty chat sessions
+    }
+
+    const chatSessions = JSON.parse(
+      localStorage.getItem("chatSessions") || "[]"
+    );
+
+    if (
+      currentChatSessionIndex !== null &&
+      chatSessions[currentChatSessionIndex]
+    ) {
+      // Update existing chat session
+      chatSessions[currentChatSessionIndex] = messages;
+    } else {
+      // Add new chat session
+      chatSessions.push(messages);
+      const newIndex = chatSessions.length - 1;
+      setCurrentChatSessionIndex(newIndex);
+    }
+
+    localStorage.setItem("chatSessions", JSON.stringify(chatSessions));
+  }, [messages, currentChatSessionIndex]);
+
+  // Saving chats automatically when messages change
+  useEffect(() => {
+    saveChatHistory();
+  }, [messages, saveChatHistory]);
+
+  // Load saved chats from localStorage with preload old messages
+  useEffect(() => {
+    const continuedChat = localStorage.getItem("continuedChatSession");
+    const continuedChatIndex = localStorage.getItem(
+      "continuedChatSessionIndex"
+    );
+
+    if (continuedChat && continuedChatIndex !== null) {
+      setMessages(JSON.parse(continuedChat));
+      setCurrentChatSessionIndex(parseInt(continuedChatIndex, 10));
+    }
+
+    // Clear session flags after loading
+    localStorage.removeItem("continuedChatSession");
+    localStorage.removeItem("continuedChatSessionIndex");
+  }, []);
+
+  // Modify the closeChat function to save before closing
+  const closeChat = () => {
+    saveChatHistory(); // Save chat before closing
+    router.push("/LandingPage");
   };
 
   const sendMessageToOpenAI = async (message: string) => {
@@ -105,7 +156,11 @@ const Chats = () => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
-    const newUserMessage: MessageType = { type: "user", content: inputMessage };
+    const newUserMessage: MessageType = {
+      type: "user",
+      content: inputMessage,
+      feedback: { liked: false, disliked: false, sound: false },
+    };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
 
     await sendMessageToOpenAI(inputMessage);
@@ -114,7 +169,11 @@ const Chats = () => {
 
   // Handle user option click
   const handleOptionClick = (option: string) => {
-    const newUserMessage: MessageType = { type: "user", content: option };
+    const newUserMessage: MessageType = {
+      type: "user",
+      content: option,
+      feedback: { liked: false, disliked: false, sound: false },
+    };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
     sendMessageToOpenAI(option);
   };
@@ -125,21 +184,15 @@ const Chats = () => {
     type: "liked" | "disliked" | "sound"
   ) => {
     const updatedMessages = [...messages];
-    updatedMessages[index].feedback![type] =
-      !updatedMessages[index].feedback![type];
+    updatedMessages[index].feedback[type] =
+      !updatedMessages[index].feedback[type];
     setMessages(updatedMessages);
-  };
-
-  // Close the chat and reset state
-  const closeChat = () => {
-    console.log("Closing chat...");
-    router.push("/LandingPage");
   };
 
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full mt-16 md:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen w-full items-center mt-16 ${
           isDarkMode ? "dark" : ""
         }`}
       >
@@ -147,16 +200,18 @@ const Chats = () => {
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 
-          <main className="flex-1 overflow-auto w-full sm:wßß-full h-full md:w-[90%] lg:w-[90%] mx-auto mt-4 lg:mt-10 p-4 flex flex-col relative">
-            {messages.length > 0 && (
-              <button
-                onClick={closeChat}
-                className="absolute top-1 left-2 rounded-full p-2 z-10 dark:text-gray-400"
-                aria-label="Close chat"
-              >
-                <CircleX />
-              </button>
-            )}
+          <main className="flex-1 overflow-auto w-full lg:ml-64 h-full md:w-[90%] lg:w-[85%] mt-4 lg:mt-10 p-4 flex flex-col relative">
+            {/* {messages.length > 0 && (
+              <>
+                <button
+                  onClick={closeChat}
+                  className="absolute top-1 left-2 rounded-full p-2 z-10 dark:text-gray-400"
+                  aria-label="Close chat"
+                >
+                  <CircleX />
+                </button>
+              </>
+            )} */}
 
             <ChatInterface
               messages={messages}
@@ -165,6 +220,7 @@ const Chats = () => {
               handleSendMessage={handleSendMessage}
               handleOptionClick={handleOptionClick}
               handleFeedback={handleFeedback}
+              saveChatHistory={saveChatHistory}
             />
           </main>
         </div>

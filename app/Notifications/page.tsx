@@ -24,14 +24,20 @@ const Page = () => {
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen mt-16 w-full md:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen w-full md:grid-cols-[auto_1fr] mt-10${
           isDarkMode ? "dark" : ""
+        } ${
+          isMobile ? "" : "lg:grid-cols-[auto_1fr]" // Grid layout for large screens
         }`}
       >
+        {/* Sidebar will only display on non-mobile view */}
         {!isMobile && <Sidebar />}
-        <div className="flex flex-col h-full mb-10">
+
+        <div className="flex flex-col w-full">
           <Navbar isMobile={isMobile} />
-          <div>
+
+          {/* Main content section should take the rest of the available space */}
+          <div className="flex-1 w-full p-4 lg:ml-64 ">
             <NotificationsPage />
           </div>
         </div>

@@ -47,6 +47,7 @@ type ChatInterfaceProps = {
   handleSendMessage: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   handleOptionClick: (option: string) => void;
   handleFeedback: (index: number, type: "liked" | "disliked" | "sound") => void;
+  saveChatHistory: () => void;
 };
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -56,6 +57,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   handleSendMessage,
   handleOptionClick,
   handleFeedback,
+  saveChatHistory,
 }) => {
   const { isDarkMode } = useTheme();
   const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Track audio playing state
@@ -78,16 +80,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     await handleSendMessage(e);
   };
 
-  const saveChatHistory = () => {
-    const existingSessions = JSON.parse(
-      localStorage.getItem("chatSessions") || "[]"
-    ) as MessageType[][];
-    const newSession = messages;
-    existingSessions.push(newSession);
-    localStorage.setItem("chatSessions", JSON.stringify(existingSessions));
-    setChatSessions(existingSessions);
-    alert("Chat history saved!");
-  };
   const formatAIMessageContent = (content: string): string => {
     let formattedContent = marked(content) as string;
 
@@ -234,11 +226,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   return (
     <div
-      className={`flex flex-col h-full text-lg ${
-        isDarkMode ? "bg-black text-gray-400" : "bg-white text-black"
+      className={`flex flex-col h-full text-md font-normal ${
+        isDarkMode ? "bg-black text-gray-200" : "bg-white text-black"
       }`}
     >
-      <div className="flex-1 overflow-y-auto mb-4 p-2">
+      <div className="flex-1 overflow-y-auto mt-6 mb-4 p-2">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -276,7 +268,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         ))}
       </div>
 
-      {messages.length > 0 && (
+      {/* {messages.length > 0 && (
         <div className="flex justify-start mb-4">
           <Button
             className="bg-primary hover:bg-primary-dark text-gray-700 "
@@ -285,7 +277,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             <Save />
           </Button>
         </div>
-      )}
+      )} */}
 
       <div className="mt-auto">
         <ChatInput

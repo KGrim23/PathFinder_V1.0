@@ -29,7 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
 
   return (
     <>
-      <header className="fixed bg-white text-black top-0 z-10 flex h-[57px] items-center justify-between dark:text-white dark:bg-black px-4 w-full sm:w-[100%] md:w-[80%] lg:w-[80%] mx-auto">
+      <header className="fixed bg-white text-black top-0 z-10 flex h-[57px] items-center justify-between dark:text-white dark:bg-black w-full sm:w-[100%] md:w-[80%] lg:w-[85%] mx-auto lg:ml-64">
         {/* Mobile Sidebar Toggle */}
         {isMobile && (
           <Sheet>
@@ -45,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ isMobile }) => {
         )}
 
         {/* Navbar Actions */}
-        <div className="flex items-center justify-center gap-2 ml-auto">
+        <div className="flex items-center justify-center gap-2 ml-auto p-2">
           {/* Home Button */}
           <Button
             onClick={goToHomePage}

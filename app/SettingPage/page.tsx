@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -19,7 +18,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Footer from "../components/Footer";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
@@ -74,6 +72,7 @@ export default function SettingPage() {
         JSON.parse(savedSettings);
       setUsername(username);
       setEmail(email);
+      setPronouns(pronouns);
       setNotifications(notifications);
     }
   }, [toggleDarkMode]);
@@ -83,6 +82,7 @@ export default function SettingPage() {
     const settings = {
       username,
       email,
+      pronouns,
       notifications,
       isDarkMode,
     };
@@ -95,7 +95,7 @@ export default function SettingPage() {
     alert("Settings saved!");
   };
 
-  const clearCahce = () => {
+  const clearCache = () => {
     localStorage.clear();
     alert("Cache cleared!");
   };
@@ -106,211 +106,235 @@ export default function SettingPage() {
 
   return (
     <TooltipProvider>
-      <div
-        className={`grid min-h-screen w-full mt-16 md:grid-cols-[auto_1fr] ${
-          isDarkMode ? "dark" : ""
-        }`}
-      >
-        {!isMobile && <Sidebar />}
-        <div className="flex flex-col h-full">
+      <div className={`min-h-screen w-full ${isDarkMode ? "dark" : ""}`}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Mobile and Desktop Navbar */}
           <Navbar isMobile={isMobile} />
 
-          <Card className="w-full max-w-5xl mx-auto border-0">
-            <CardHeader>
-              <CardTitle className="text-2xl md:text-3xl">Settings</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="profile">
-                <TabsList className="flex justify-start gap-1 mb-10">
-                  <TabsTrigger
-                    value="profile"
-                    className="flex-grow sm:flex-grow-0 text-lg"
-                  >
-                    Profile
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="notifications"
-                    className="flex-grow sm:flex-grow-0 text-lg"
-                  >
-                    Notifications
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="personalisation"
-                    className="flex-grow sm:flex-grow-0 text-lg"
-                  >
-                    Personalisation
-                  </TabsTrigger>
-                </TabsList>
+          {/* Sidebar for desktop */}
+          <div className="lg:flex">
+            {!isMobile && (
+              <div className="hidden lg:block lg:w-64 lg:flex-shrink-0">
+                <Sidebar />
+              </div>
+            )}
 
-                <TabsContent value="profile">
-                  <div className="flex flex-col mb-10 md:flex-row md:items-center md:space-x-4 md:space-y-0 space-y-4">
-                    <Avatar className="w-24 h-24 mx-auto md:mx-0">
-                      <AvatarImage src={selectedAvatar} alt="Profile picture" />
-                      <AvatarFallback>
-                        <User className="w-12 h-12" />
-                      </AvatarFallback>
-                    </Avatar>
+            {/* Main Content Area */}
+            <div className="w-full lg:max-w-4xl lg:mx-auto mt-10 sm:mt-8 lg:mt-12">
+              <Card className="w-full border-0 shadow-none">
+                <CardHeader>
+                  <CardTitle className="text-2xl sm:text-3xl mb-4">
+                    Settings
+                  </CardTitle>
+                </CardHeader>
 
-                    {/* Dialog Trigger */}
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          size="sm"
-                          variant="secondary"
-                          className="mt-6 mb-10 md:mt-0 bg-gray-800 text-white rounded-xl"
-                        >
-                          Change Avatar
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-sm bg-gray-900 dark:bg-gray-600 border-0 rounded-xl lg:rounded-xl">
-                        <DialogHeader>
-                          <DialogTitle className="text-xl font-semibold">
-                            Choose an Avatar
-                          </DialogTitle>
-                        </DialogHeader>
-                        <CardContent>
-                          <div className="grid grid-cols-3 gap-4">
-                            {avatars.map((avatar) => (
-                              <div
-                                key={avatar.src}
-                                className="cursor-pointer p-2 border rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                                onClick={() => handleAvatarSelect(avatar.src)}
-                              >
-                                <Avatar>
-                                  <AvatarImage
-                                    src={avatar.src}
-                                    alt={avatar.alt}
-                                  />
-                                </Avatar>
+                <CardContent>
+                  <Tabs defaultValue="profile" className="space-y-4">
+                    <TabsList className="grid grid-cols-3 gap-4 w-full mb-16">
+                      <TabsTrigger
+                        value="profile"
+                        className="text-sm sm:text-base py-2"
+                      >
+                        Profile
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="notifications"
+                        className="text-sm sm:text-base py-2"
+                      >
+                        Notifications
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="personalisation"
+                        className="text-sm sm:text-base py-2"
+                      >
+                        Personalisation
+                      </TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="profile" className="space-y-8">
+                      <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                        <Avatar className="w-24 h-24 mx-auto sm:mx-0">
+                          <AvatarImage
+                            src={selectedAvatar}
+                            alt="Profile picture"
+                          />
+                          <AvatarFallback>
+                            <User className="w-12 h-12" />
+                          </AvatarFallback>
+                        </Avatar>
+
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                              className="w-full sm:w-auto bg-gray-800 text-white rounded-xl"
+                            >
+                              Change Avatar
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-sm bg-gray-900 dark:bg-gray-600 border-0 rounded-xl lg:rounded-xl">
+                            <DialogHeader>
+                              <DialogTitle className="text-xl font-semibold">
+                                Choose an Avatar
+                              </DialogTitle>
+                            </DialogHeader>
+                            <CardContent>
+                              <div className="grid grid-cols-3 gap-4">
+                                {avatars.map((avatar) => (
+                                  <div
+                                    key={avatar.src}
+                                    className="cursor-pointer p-2 border rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    onClick={() =>
+                                      handleAvatarSelect(avatar.src)
+                                    }
+                                  >
+                                    <Avatar>
+                                      <AvatarImage
+                                        src={avatar.src}
+                                        alt={avatar.alt}
+                                      />
+                                    </Avatar>
+                                  </div>
+                                ))}
                               </div>
-                            ))}
+                            </CardContent>
+                            <DialogFooter>
+                              <Button variant="secondary">Close</Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
+
+                      {/* Input fields with improved responsiveness */}
+                      <div className="space-y-4">
+                        {[
+                          {
+                            label: "Username",
+                            type: "text",
+                            value: username,
+                            setter: setUsername,
+                          },
+                          {
+                            label: "Email",
+                            type: "email",
+                            value: email,
+                            setter: setEmail,
+                          },
+                          {
+                            label: "Pronouns",
+                            type: "text",
+                            value: pronouns,
+                            setter: setPronouns,
+                          },
+                        ].map(({ label, type, value, setter }) => (
+                          <div key={label} className="space-y-2">
+                            <Label htmlFor={label.toLowerCase()}>{label}</Label>
+                            <Input
+                              id={label.toLowerCase()}
+                              type={type}
+                              value={value}
+                              onChange={(e) => setter(e.target.value)}
+                              className="w-full text-base bg-slate-200 border-0 rounded-xl"
+                            />
                           </div>
-                        </CardContent>
-                        <DialogFooter>
-                          <Button variant="secondary">Close</Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
+                        ))}
+                      </div>
+                    </TabsContent>
 
-                  {/* Username */}
-                  <div className="grid gap-4 mb-10">
-                    <div className="space-y-2">
-                      <Label htmlFor="username">Username</Label>
-                      <Input
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        className="text-base bg-slate-200 border-0 rounded-xl"
-                      />
-                    </div>
+                    <TabsContent value="notifications" className="space-y-6">
+                      <div className="grid gap-6">
+                        {["messages", "emails", "updates"].map((key) => (
+                          <div
+                            key={key}
+                            className="flex items-center justify-between space-x-4"
+                          >
+                            <div className="space-y-1">
+                              <Label
+                                htmlFor={key}
+                                className="text-md sm:text-lg"
+                              >
+                                {key.charAt(0).toUpperCase() + key.slice(1)}{" "}
+                                Notifications
+                              </Label>
+                              <p className="text-sm text-muted-foreground">
+                                {key === "messages"
+                                  ? "Receive notifications for new messages."
+                                  : key === "emails"
+                                  ? "Receive notifications when you get new emails."
+                                  : "Receive notifications about app updates."}
+                              </p>
+                            </div>
+                            <Checkbox
+                              id={key}
+                              checked={
+                                notifications[key as keyof typeof notifications]
+                              }
+                              onCheckedChange={(checked) =>
+                                setNotifications((prev) => ({
+                                  ...prev,
+                                  [key]: checked,
+                                }))
+                              }
+                              className={`h-5 w-5 text-blue-500 border-gray-700 dark:border-gray-800 dark:checked:bg-blue-400`}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </TabsContent>
 
-                    {/* Emails */}
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="text-base bg-slate-200 border-0 rounded-xl"
-                      />
-                    </div>
-
-                    {/* Pronouns */}
-                    <div className="space-y-2">
-                      <Label htmlFor="pronouns">Pronouns</Label>
-                      <Input
-                        id="pronouns"
-                        type="pronouns"
-                        value={pronouns}
-                        onChange={(e) => setPronouns(e.target.value)}
-                        className="text-base bg-slate-200 border-0 rounded-xl"
-                      />
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="notifications">
-                  <div className="grid gap-10 mb-10 text-md lg:text-lg">
-                    {["messages", "emails", "updates"].map((key) => (
-                      <div
-                        key={key}
-                        className="flex items-center justify-between space-x-4"
-                      >
-                        <div className="space-y-1">
-                          <Label htmlFor={key} className="text-md lg:text-lg">
-                            {key.charAt(0).toUpperCase() + key.slice(1)}{" "}
-                            Notifications
-                          </Label>
-                          <p className="text-sm lg:text-md text-muted-foreground">
-                            {key === "messages"
-                              ? "Receive notifications for new messages."
-                              : key === "emails"
-                              ? "Receive notifications when you get new emails."
-                              : "Receive notifications about app updates."}
-                          </p>
+                    <TabsContent value="personalisation" className="space-y-6">
+                      <div className="grid gap-6">
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-1">
+                            <Label className="text-md sm:text-lg">
+                              Archive Chat History
+                            </Label>
+                            <p className="text-sm text-muted-foreground">
+                              Save your current chat history
+                            </p>
+                          </div>
+                          <Button size="sm" variant="outline">
+                            <Archive size={16} className="mr-2" />
+                            Archive
+                          </Button>
                         </div>
-                        <Checkbox
-                          id={key}
-                          checked={
-                            notifications[key as keyof typeof notifications]
-                          }
-                          onCheckedChange={(checked) =>
-                            setNotifications((prev) => ({
-                              ...prev,
-                              [key]: checked,
-                            }))
-                          }
-                          className={`h-5 w-5 text-blue-500 border-gray-700 dark:border-gray-800 dark:checked:bg-blue-400`}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </TabsContent>
 
-                <TabsContent value="personalisation">
-                  <div className="grid gap-10 mb-10">
-                    <div className="flex items-center justify-between space-x-2 ">
-                      <div className="space-y-0.5 ">
-                        <Label className="text-md lg:text-lg">
-                          Archive Chat History
-                        </Label>
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-1">
+                            <Label className="text-md sm:text-lg">
+                              Clear Chat History
+                            </Label>
+                            <p className="text-sm text-muted-foreground">
+                              Permanently delete all chat history
+                            </p>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={clearCache}
+                            className="flex items-center"
+                          >
+                            <Trash2 size={16} className="mr-2" />
+                            Clear
+                          </Button>
+                        </div>
                       </div>
-                      <Button>
-                        <Archive size={16} />
-                      </Button>
-                    </div>
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
 
-                    <div className="flex items-center justify-between space-x-2 ">
-                      <div className="space-y-0.5 ">
-                        <Label className="text-md lg:text-lg">
-                          Clear Chat History
-                        </Label>
-                      </div>
-                      <Button
-                        variant="destructive"
-                        onClick={clearCahce}
-                        className="flex items-center justify-center space-x-2"
-                      >
-                        <Trash2 size={16} />
-                        <span className="text-sm lg:text-md">Clear</span>
-                      </Button>
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-            <CardFooter className="flex justify-end">
-              <Button
-                onClick={handleSave}
-                className="bg-gray-800 text-white rounded-xl"
-              >
-                Save Changes
-              </Button>
-            </CardFooter>
-          </Card>
-          <Footer />
+                <CardFooter className="flex justify-end mt-4">
+                  <Button
+                    onClick={handleSave}
+                    className="w-full sm:w-auto bg-gray-800 text-white rounded-xl"
+                  >
+                    Save Changes
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+          </div>
         </div>
       </div>
     </TooltipProvider>

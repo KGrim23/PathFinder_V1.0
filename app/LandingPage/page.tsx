@@ -8,7 +8,7 @@ import { useTheme } from "../components/ThemeContext";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import Footer from "../components/Footer";
+
 import {
   Brain,
   CheckCircle,
@@ -23,6 +23,7 @@ export default function LandingPage() {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const router = useRouter();
   const [startChat, setStartChat] = useState(false);
+  const [messages, setMessages] = useState<any[]>([]);
 
   useEffect(() => {
     document.body.classList.toggle("dark", isDarkMode);
@@ -39,13 +40,14 @@ export default function LandingPage() {
 
   const handleStartChat = () => {
     setStartChat(true);
+    setMessages([]);
     router.push("/chats"); // This will navigate to the 'Chats' page
   };
 
   return (
     <TooltipProvider>
       <div
-        className={`grid min-h-screen w-full md:grid-cols-[auto_1fr] ${
+        className={`grid min-h-screen w-full items-center justify-center md:grid-cols-[auto_1fr] ${
           isDarkMode ? "dark" : ""
         }`}
       >
@@ -54,7 +56,9 @@ export default function LandingPage() {
           <Navbar isMobile={isMobile} />
 
           <main
-            className={`flex-1 mt-16 lg:mt-2 mb-20 ${isDarkMode ? "dark" : ""}`}
+            className={`flex-1 w-full mb-20 lg:ml-64 items-center justify-center ${
+              isDarkMode ? "dark" : ""
+            }`}
           >
             <section
               id="about"
@@ -62,7 +66,7 @@ export default function LandingPage() {
             >
               <div className="container px-4 md:px-6">
                 <div className="flex flex-col items-center space-y-4 text-center">
-                  <div className="space-y-6">
+                  <div className="space-y-6 mt-8 lg:mt-2">
                     <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
                       Welcome to PathFinder AI
                     </h1>
@@ -73,6 +77,7 @@ export default function LandingPage() {
                       development tips.
                     </p>
                   </div>
+
                   {/* Button Section */}
                   <div className="flex flex-col items-center justify-center mt-6 lg:mt-20">
                     <Button
@@ -81,7 +86,7 @@ export default function LandingPage() {
                       onClick={handleStartChat}
                       className={`mt-10 gap-1.5 text-lg lg:text-xl lg:mt-4 lg:p-6 bg-zinc-800 rounded-full ${
                         isDarkMode ? "text-white" : "text-white"
-                      }`}
+                      } hover:bg-zinc-700 hover:text-white hover:shadow-none`}
                     >
                       Start Chat <MessageCircleMore />
                     </Button>
@@ -277,9 +282,9 @@ export default function LandingPage() {
                   <div className="space-x-4">
                     <Button
                       size="lg"
-                      className={`mt-10 gap-1.5 text-md lg:text-xl lg:mt-4 lg:p-6 bg-zinc-800 rounded-xl ${
+                      className={`mt-10 gap-1.5 text-lg lg:text-xl lg:mt-4 lg:p-6 bg-zinc-800 rounded-full ${
                         isDarkMode ? "text-white" : "text-white"
-                      }`}
+                      } hover:bg-zinc-700 hover:text-white hover:shadow-none`}
                     >
                       <Link href="/signup">Sign Up</Link>
                     </Button>
