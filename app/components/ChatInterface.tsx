@@ -286,7 +286,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           handleSendMessage={handleMessageSend}
           handleOptionClick={handleOptionClick}
         />
-        <p className="text-sm mb-2">
+        <p className="text-sm mb-2 text-center">
           PathFinder AI can make mistakes. Check important info.
         </p>
       </div>
