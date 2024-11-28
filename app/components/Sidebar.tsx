@@ -83,7 +83,7 @@ export default function Sidebar() {
               }}
             >
               <MessageSquarePlus className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white text-lg">
+              <span className="text-black dark:text-white text-md">
                 New Chat
               </span>
             </Button>
@@ -105,7 +105,7 @@ export default function Sidebar() {
               onClick={navigateToSavedChats}
             >
               <History className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white text-lg">
+              <span className="text-black dark:text-white text-md">
                 History
               </span>
             </Button>
@@ -130,7 +130,7 @@ export default function Sidebar() {
               }}
             >
               <Settings2 className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white text-lg">
+              <span className="text-black dark:text-white text-md">
                 Settings
               </span>
             </Button>
@@ -155,7 +155,7 @@ export default function Sidebar() {
               }}
             >
               <LifeBuoy className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white text-lg">Help</span>
+              <span className="text-black dark:text-white text-md">Help</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right">Help</TooltipContent>
@@ -171,7 +171,7 @@ export default function Sidebar() {
               className={`flex items-center gap-2 rounded-lg transition-colors duration-200 w-full p-2 justify-start`}
             >
               <Bell className="w-5 h-5 text-black dark:text-white" />
-              <span className="text-black dark:text-white text-lg">
+              <span className="text-black dark:text-white text-md">
                 Notifications
               </span>
             </Button>
@@ -181,7 +181,7 @@ export default function Sidebar() {
       </nav>
 
       {/* Profile Section */}
-      <nav className="p-2 bottom-0">
+      <nav className="p-2 bottom-0 mb-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
