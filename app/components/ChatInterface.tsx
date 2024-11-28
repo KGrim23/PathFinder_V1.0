@@ -226,8 +226,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   return (
     <div
-      className={`flex flex-col h-full text-lg ${
-        isDarkMode ? "bg-black text-gray-400" : "bg-white text-black"
+      className={`flex flex-col h-full text-md font-normal ${
+        isDarkMode ? "bg-black text-gray-200" : "bg-white text-black"
       }`}
     >
       <div className="flex-1 overflow-y-auto mt-6 mb-4 p-2">
@@ -268,7 +268,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         ))}
       </div>
 
-      {messages.length > 0 && (
+      {/* {messages.length > 0 && (
         <div className="flex justify-start mb-4">
           <Button
             className="bg-primary hover:bg-primary-dark text-gray-700 "
@@ -277,7 +277,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             <Save />
           </Button>
         </div>
-      )}
+      )} */}
 
       <div className="mt-auto">
         <ChatInput
