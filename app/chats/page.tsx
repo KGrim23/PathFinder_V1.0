@@ -8,11 +8,12 @@ import { TooltipProvider } from "@radix-ui/react-tooltip";
 import ChatInterface from "../components/ChatInterface";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import { Button } from "@/components/ui/button";
 
 type MessageType = {
   type: "user" | "ai";
   content: string;
-  feedback?: {
+  feedback: {
     liked: boolean;
     disliked: boolean;
     sound: boolean;
@@ -26,6 +27,9 @@ const Chats = () => {
   const [inputMessage, setInputMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [currentChatSessionIndex, setCurrentChatSessionIndex] = useState<
+    number | null
+  >(null);
 
   // Detect mobile screen size
   useEffect(() => {
@@ -34,27 +38,93 @@ const Chats = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // Save chat history to local storage
   const saveChatHistory = () => {
-    localStorage.setItem("savedChats", JSON.stringify(messages));
+    const chatSessions = JSON.parse(
+      localStorage.getItem("chatSessions") || "[]"
+    );
+
+    console.log("Current Chat Session Index:", currentChatSessionIndex);
+    console.log("Existing Chat Sessions:", chatSessions);
+
+    if (
+      currentChatSessionIndex !== null &&
+      chatSessions[currentChatSessionIndex]
+    ) {
+      // Update existing chat session
+      chatSessions[currentChatSessionIndex] = messages;
+      console.log(
+        "Updating existing session at index:",
+        currentChatSessionIndex
+      );
+    } else {
+      // Add new chat session
+      chatSessions.push(messages);
+      const newIndex = chatSessions.length - 1;
+      setCurrentChatSessionIndex(newIndex);
+      console.log("Creating new session at index:", newIndex);
+    }
+
+    localStorage.setItem("chatSessions", JSON.stringify(chatSessions));
     alert("Chat history saved!");
   };
+
+  useEffect(() => {
+    const continuedChat = localStorage.getItem("continuedChatSession");
+    const continuedChatIndex = localStorage.getItem(
+      "continuedChatSessionIndex"
+    );
+
+    console.log("Continued Chat:", continuedChat);
+    console.log("Continued Chat Index:", continuedChatIndex);
+
+    if (continuedChat && continuedChatIndex !== null) {
+      setMessages(JSON.parse(continuedChat));
+      const parsedIndex = parseInt(continuedChatIndex, 10);
+      console.log("Setting Current Chat Session Index:", parsedIndex);
+      setCurrentChatSessionIndex(parsedIndex);
+    }
+
+    // Clear session flags after loading
+    localStorage.removeItem("continuedChatSession");
+    localStorage.removeItem("continuedChatSessionIndex");
+  }, []);
 
   // Retrieve the continued chat session from localStorage so user can continue the chat
   useEffect(() => {
     const continuedChat = localStorage.getItem("continuedChatSession");
+    const continuedChatIndex = localStorage.getItem(
+      "continuedChatSessionIndex"
+    );
     const isFreshChat = localStorage.getItem("isFreshChat");
 
-    if (continuedChat && isFreshChat === "false") {
+    if (continuedChat && isFreshChat === "false" && continuedChatIndex) {
       const parsedChat = JSON.parse(continuedChat);
-      setMessages(parsedChat); // Set the chat messages in the state
+      setMessages(parsedChat);
+      setCurrentChatSessionIndex(parseInt(continuedChatIndex, 10));
     }
 
     // Remove the fresh chat flag and continued chat session after checking
     localStorage.removeItem("isFreshChat");
     localStorage.removeItem("continuedChatSession");
+    localStorage.removeItem("continuedChatSessionIndex");
   }, []);
+
+  // Modify the closeChat function to save before closing
+  const closeChat = () => {
+    saveChatHistory(); // Save chat before closing
+    console.log("Closing chat...");
+    router.push("/LandingPage");
+  };
+
+  // Add a save button in the interface
+  const renderSaveButton = () => (
+    <button
+      onClick={saveChatHistory}
+      className="absolute top-1 right-2 rounded-xl px-3 py-1 z-10 bg-zinc-800 text-white"
+    >
+      Save Chat
+    </button>
+  );
 
   const sendMessageToOpenAI = async (message: string) => {
     try {
@@ -120,7 +190,11 @@ const Chats = () => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
-    const newUserMessage: MessageType = { type: "user", content: inputMessage };
+    const newUserMessage: MessageType = {
+      type: "user",
+      content: inputMessage,
+      feedback: { liked: false, disliked: false, sound: false },
+    };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
 
     await sendMessageToOpenAI(inputMessage);
@@ -129,7 +203,11 @@ const Chats = () => {
 
   // Handle user option click
   const handleOptionClick = (option: string) => {
-    const newUserMessage: MessageType = { type: "user", content: option };
+    const newUserMessage: MessageType = {
+      type: "user",
+      content: option,
+      feedback: { liked: false, disliked: false, sound: false },
+    };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
     sendMessageToOpenAI(option);
   };
@@ -140,15 +218,9 @@ const Chats = () => {
     type: "liked" | "disliked" | "sound"
   ) => {
     const updatedMessages = [...messages];
-    updatedMessages[index].feedback![type] =
-      !updatedMessages[index].feedback![type];
+    updatedMessages[index].feedback[type] =
+      !updatedMessages[index].feedback[type];
     setMessages(updatedMessages);
-  };
-
-  // Close the chat and reset state
-  const closeChat = () => {
-    console.log("Closing chat...");
-    router.push("/LandingPage");
   };
 
   return (
@@ -164,13 +236,17 @@ const Chats = () => {
 
           <main className="flex-1 overflow-auto w-full lg:ml-64 h-full md:w-[90%] lg:w-[85%] mt-4 lg:mt-10 p-4 flex flex-col relative">
             {messages.length > 0 && (
-              <button
-                onClick={closeChat}
-                className="absolute top-1 left-2 rounded-full p-2 z-10 dark:text-gray-400"
-                aria-label="Close chat"
-              >
-                <CircleX />
-              </button>
+              <>
+                <button
+                  onClick={closeChat}
+                  className="absolute top-1 left-2 rounded-full p-2 z-10 dark:text-gray-400"
+                  aria-label="Close chat"
+                >
+                  <CircleX />
+                </button>
+
+                <div className="space-x-4">{renderSaveButton()}</div>
+              </>
             )}
 
             <ChatInterface

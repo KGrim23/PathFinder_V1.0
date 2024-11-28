@@ -82,13 +82,14 @@ const SavedChatsPage: React.FC = () => {
 
   const continueChatSession = (chatIndex: number) => {
     const selectedChat = savedChats[chatIndex];
-    // Store the selected chat in localStorage
+
+    // Store the selected chat in localStorage for continuation
     localStorage.setItem("continuedChatSession", JSON.stringify(selectedChat));
-    // Set flag to indicate this is a continued chat session
+    localStorage.setItem("continuedChatSessionIndex", chatIndex.toString());
     localStorage.setItem("isFreshChat", "false");
-    // Debugging to check if the chat is being saved correctly
-    console.log("Selected Chat Saved to localStorage:", selectedChat);
-    // Navigate to the chat page
+
+    // This is the key change: explicitly set the current chat session index
+    // instead of creating a new session
     router.push("/chats");
   };
 
