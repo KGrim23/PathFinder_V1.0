@@ -64,12 +64,12 @@ const Chats = () => {
     localStorage.setItem("chatSessions", JSON.stringify(chatSessions));
   }, [messages, currentChatSessionIndex]);
 
-  // Trigger saving the chat history automatically when messages change
+  // Saving chats automatically when messages change
   useEffect(() => {
     saveChatHistory();
   }, [messages, saveChatHistory]);
 
-  // Load saved chats from localStorage and initialize session when the user continues a chat
+  // Load saved chats from localStorage with preload old messages
   useEffect(() => {
     const continuedChat = localStorage.getItem("continuedChatSession");
     const continuedChatIndex = localStorage.getItem(
@@ -201,7 +201,7 @@ const Chats = () => {
           <Navbar isMobile={isMobile} />
 
           <main className="flex-1 overflow-auto w-full lg:ml-64 h-full md:w-[90%] lg:w-[85%] mt-4 lg:mt-10 p-4 flex flex-col relative">
-            {messages.length > 0 && (
+            {/* {messages.length > 0 && (
               <>
                 <button
                   onClick={closeChat}
@@ -211,7 +211,7 @@ const Chats = () => {
                   <CircleX />
                 </button>
               </>
-            )}
+            )} */}
 
             <ChatInterface
               messages={messages}
