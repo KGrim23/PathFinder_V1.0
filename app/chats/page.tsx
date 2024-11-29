@@ -1,12 +1,25 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, FormEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  FormEvent,
+  useRef,
+} from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "../components/ThemeContext";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import ChatInterface from "../components/ChatInterface";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Mic, Paperclip } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type MessageType = {
   type: "user" | "ai";
@@ -28,6 +41,47 @@ const Chats = () => {
   const [currentChatSessionIndex, setCurrentChatSessionIndex] = useState<
     number | null
   >(null);
+  const [isListening, setIsListening] = useState(false);
+  const SpeechRecognition =
+    typeof window !== "undefined" &&
+    (window.SpeechRecognition || (window as any).webkitSpeechRecognition);
+
+  const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+  const startListening = () => {
+    if (recognition) {
+      setIsListening(true);
+      recognition.lang = "en-UK";
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      //debugging
+      recognition.onstart = () => console.log("Voice recognition started.");
+
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
+        const transcript = event.results[0][0].transcript;
+        setInputMessage(transcript);
+        recognition.stop(); // Stop listening after getting the result
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        console.log("Voice recognition ended.");
+        setIsListening(false);
+      };
+
+      recognition.start();
+    } else {
+      console.error("Speech recognition not supported in this browser.");
+    }
+  };
+
+  // Ref for the last message in the chat
+  const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
   // Detect mobile screen size
   useEffect(() => {
@@ -188,6 +242,13 @@ const Chats = () => {
     setMessages(updatedMessages);
   };
 
+  // Scroll to the bottom when new message is added
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
     <TooltipProvider>
       <div
@@ -199,33 +260,98 @@ const Chats = () => {
         <div className="flex flex-col h-full">
           <Navbar isMobile={isMobile} />
 
-          <main className="flex-1 overflow-auto w-full lg:ml-64 h-full md:w-[90%] lg:w-[85%] mt-4 lg:mt-10 p-4 flex flex-col relative">
-            {/* {messages.length > 0 && (
-              <>
-                <button
-                  onClick={closeChat}
-                  className="absolute top-1 left-2 rounded-full p-2 z-10 dark:text-gray-400"
-                  aria-label="Close chat"
-                >
-                  <CircleX />
-                </button>
-              </>
-            )} */}
-
-            <ChatInterface
-              messages={messages}
-              inputMessage={inputMessage}
-              setInputMessage={setInputMessage}
-              handleSendMessage={handleSendMessage}
-              handleOptionClick={handleOptionClick}
-              handleFeedback={handleFeedback}
-              saveChatHistory={saveChatHistory}
-            />
+          <main className="flex-1 overflow-hidden w-full lg:ml-64 h-full md:w-[90%] lg:w-[85%] mt-4 lg:mt-10 p-4 flex flex-col relative">
+            {/* Chat message content with scroll */}
+            <div
+              className="flex-1 overflow-y-auto mb-20"
+              style={{ paddingBottom: "80px" }}
+            >
+              <ChatInterface
+                messages={messages}
+                inputMessage={inputMessage}
+                setInputMessage={setInputMessage}
+                handleSendMessage={handleSendMessage}
+                handleOptionClick={handleOptionClick}
+                handleFeedback={handleFeedback}
+                saveChatHistory={saveChatHistory}
+              />
+              {/* Last message ref */}
+              <div ref={lastMessageRef}></div>
+            </div>
           </main>
+        </div>
+
+        {/* Chat input box fixed at the bottom */}
+        <div className="fixed bottom-0 left-0 w-full p-6 bg-white dark:bg-black">
+          <form
+            onSubmit={handleSendMessage}
+            className="flex flex-col gap-2" // Flex column to stack the elements
+          >
+            {/* Input and send button in one row */}
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                className="flex-grow p-2 rounded-xl border-0 bg-gray-200 dark:bg-gray-700 dark:text-white"
+                placeholder="Type a message"
+              />
+              <Button
+                type="submit"
+                size="sm"
+                className={`ml-2 text-white ${
+                  isDarkMode
+                    ? "bg-black text-white border-2 border-white"
+                    : "text-black border-2 border-black bg-white"
+                } rounded-xl px-3.5 py-2`}
+                disabled={loading || !inputMessage.trim()}
+              >
+                Send
+                {/* <CornerDownLeft className="size-3.5" /> */}
+              </Button>
+            </div>
+
+            {/* Attach file and mic buttons in a separate row */}
+            <div className="flex gap-4 justify-start">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Paperclip className="size-4" />
+                    <span className="sr-only">Attach file</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top">Attach File</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={startListening}
+                    disabled={isListening}
+                  >
+                    <Mic
+                      className={`size-4 ${
+                        isListening ? "text-red-500 size-5" : ""
+                      }`}
+                    />
+                    <span className="sr-only">Use Microphone</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top">
+                  {isListening ? "Listening..." : "Use Microphone"}
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </form>
+
+          {/* Footer Text */}
+          <p className="text-xs text-center mt-6 text-gray-500">
+            PathFinder AI can make mistakes. Check important info.
+          </p>
         </div>
       </div>
     </TooltipProvider>
   );
 };
-
 export default Chats;

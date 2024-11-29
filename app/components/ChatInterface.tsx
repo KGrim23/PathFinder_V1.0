@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
-import ChatInput from "./ChatInput";
 import { Save, Volume2, VolumeX } from "lucide-react";
 import AWS from "aws-sdk";
 import { marked } from "marked"; //for markdown parsing
@@ -52,12 +51,8 @@ type ChatInterfaceProps = {
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
   messages,
-  inputMessage,
   setInputMessage,
   handleSendMessage,
-  handleOptionClick,
-  handleFeedback,
-  saveChatHistory,
 }) => {
   const { isDarkMode } = useTheme();
   const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Track audio playing state
@@ -279,7 +274,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         </div>
       )} */}
 
-      <div className="mt-auto">
+      {/* <div className="mt-auto">
         <ChatInput
           inputMessage={inputMessage}
           setInputMessage={setInputMessage}
@@ -289,7 +284,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <p className="text-xs mb-16 text-center">
           PathFinder AI can make mistakes. Check important info.
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };
