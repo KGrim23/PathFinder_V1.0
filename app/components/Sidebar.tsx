@@ -181,7 +181,7 @@ export default function Sidebar() {
       </nav>
 
       {/* Profile Section */}
-      <nav className="p-2 bottom-0 mb-2">
+      <nav className="p-2 bottom-0 mb-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <CustomUserButton />
