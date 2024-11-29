@@ -16,6 +16,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "cdn.minicoursegenerator.com", // Added domain for Mini Course images
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com", //
+      },
     ],
   },
   // Disable CSS minification during development to prevent errors

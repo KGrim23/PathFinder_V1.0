@@ -17,6 +17,7 @@ import {
   MessageCircleMore,
   Users,
 } from "lucide-react";
+import { Waitlist } from "@clerk/nextjs";
 
 export default function LandingPage() {
   const { isDarkMode, toggleDarkMode } = useTheme();
@@ -279,7 +280,8 @@ export default function LandingPage() {
                       perfect career path for you.
                     </p>
                   </div>
-                  <div className="space-x-4">
+                  <Waitlist />
+                  {/* <div className="space-x-4">
                     <Button
                       size="lg"
                       className={`mt-10 gap-1.5 text-lg lg:text-xl lg:mt-4 lg:p-6 bg-zinc-800 rounded-full ${
@@ -288,7 +290,7 @@ export default function LandingPage() {
                     >
                       <Link href="/signup">Sign Up</Link>
                     </Button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </section>

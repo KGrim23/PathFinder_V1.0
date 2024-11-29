@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "./ThemeContext";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 import {
   Tooltip,
@@ -22,6 +21,7 @@ import {
   Bell,
 } from "lucide-react";
 import Image from "next/image";
+import CustomUserButton from "./CustomUserButton";
 
 export default function Sidebar() {
   const { isDarkMode } = useTheme();
@@ -43,7 +43,7 @@ export default function Sidebar() {
   return (
     <aside
       className={`lg:fixed top-0 flex flex-col min-h-screen w-64 transition-all duration-300 ease-in-out position-fixed mb-10 ${
-        isDarkMode ? "bg-black text-white" : "bg-white text-black"
+        isDarkMode ? "bg-zinc-900 text-white" : "bg-white text-black"
       }`}
     >
       {/* Logo Section */}
@@ -184,21 +184,7 @@ export default function Sidebar() {
       <nav className="p-2 bottom-0 mb-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              onClick={goToSettingPage}
-              variant="ghost"
-              size="icon"
-              className={`rounded-lg w-full flex items-center justify-start p-2 ${
-                isDarkMode ? "text-white" : "text-black"
-              }`}
-            >
-              <Avatar>
-                <AvatarImage src="/profile1.png" alt="Profile" />
-              </Avatar>{" "}
-              <span className="ml-2 text-lg text-black dark:text-white font-semibold">
-                Calab
-              </span>
-            </Button>
+            <CustomUserButton />
           </DropdownMenuTrigger>
         </DropdownMenu>
       </nav>
