@@ -1,15 +1,7 @@
 import "./globals.css";
 import { ReactNode } from "react";
 import { ThemeProvider } from "./components/ThemeContext";
-
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
-import Footer from "./components/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata = {
   title: "Path Finder",

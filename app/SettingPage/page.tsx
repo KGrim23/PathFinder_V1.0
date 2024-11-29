@@ -83,53 +83,63 @@ export default function SettingPage() {
               <TabsContent value="general">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-10">
                   {/* General Settings Cards */}
-                  <Card className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
-                    <CardHeader>
-                      <CardTitle className="text-lg">Theme</CardTitle>
-                      <CardDescription>
-                        Customize your app theme
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p>Select between light and dark modes.</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" className="rounded-xl">
-                        Change Theme
-                      </Button>
-                    </CardFooter>
+                  <Card className="grid grid-cols-3 gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
+                    {/* Left side: 2/3 for Title and Description */}
+                    <div className="col-span-2">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Theme</CardTitle>
+                        <CardDescription>
+                          Select light or dark modes.
+                        </CardDescription>
+                      </CardHeader>
+                    </div>
+
+                    {/* Right side: 1/3 for Footer and Button */}
+                    <div className="col-span-1 flex items-center justify-center">
+                      <CardFooter className="w-full">
+                        <Button variant="ghost" className="rounded-xl w-full">
+                          Change Theme
+                        </Button>
+                      </CardFooter>
+                    </div>
                   </Card>
 
-                  <Card className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
-                    <CardHeader>
-                      <CardTitle className="text-lg">System</CardTitle>
-                      <CardDescription>System-level settings</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p>Configure system-wide settings.</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" className="rounded-xl">
-                        Adjust System Settings
-                      </Button>
-                    </CardFooter>
+                  <Card className="grid grid-cols-3 gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
+                    <div className="col-span-2">
+                      <CardHeader>
+                        <CardTitle className="text-lg">System</CardTitle>
+                        <CardDescription>System-level settings</CardDescription>
+                      </CardHeader>
+                    </div>
+
+                    <div className="col-span-1 flex items-center justify-center">
+                      <CardFooter className="w-full">
+                        <Button variant="ghost" className="rounded-xl w-full">
+                          Adjust Settings
+                        </Button>
+                      </CardFooter>
+                    </div>
                   </Card>
 
-                  <Card className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
-                    <CardHeader>
-                      <CardTitle className="text-lg">Archived Chats</CardTitle>
-                      <CardDescription>
-                        Manage your archived chats
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p>View and manage archived chats.</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" className="rounded-xl">
-                        Manage Archived Chats
-                      </Button>
-                    </CardFooter>
+                  <Card className="grid grid-cols-3 gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
+                    <div className="col-span-2">
+                      <CardHeader>
+                        <CardTitle className="text-lg">
+                          Archived Chats
+                        </CardTitle>
+                        <CardDescription>
+                          Manage your archived chats
+                        </CardDescription>
+                      </CardHeader>
+                    </div>
+
+                    <div className="col-span-1 flex items-center justify-center">
+                      <CardFooter className="w-full">
+                        <Button variant="ghost" className="rounded-xl w-full">
+                          Manage Chats
+                        </Button>
+                      </CardFooter>
+                    </div>
                   </Card>
                 </div>
               </TabsContent>
@@ -138,42 +148,56 @@ export default function SettingPage() {
               <TabsContent value="notifications">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-10">
                   {/* Notifications Settings Cards */}
-                  <Card className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
-                    <CardHeader>
-                      <CardTitle className="text-lg">
-                        Email Notifications
-                      </CardTitle>
-                      <CardDescription>
-                        Manage your email notifications
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p>Enable or disable email notifications for updates.</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" className="rounded-xl">
-                        Manage Email Settings
-                      </Button>
-                    </CardFooter>
+                  <Card className="grid grid-cols-3 gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
+                    {/* Left side: 2/3 for Title and Description */}
+                    <div className="col-span-2">
+                      <CardHeader>
+                        <CardTitle className="text-lg">
+                          Email Notifications
+                        </CardTitle>
+                        <CardDescription>
+                          Manage your email notifications
+                        </CardDescription>
+                      </CardHeader>
+                      {/* <CardContent className="flex-grow">
+                        <p>
+                          Enable or disable email notifications for updates.
+                        </p>
+                      </CardContent> */}
+                    </div>
+
+                    {/* Right side: 1/3 for Footer and Button */}
+                    <div className="col-span-1 flex items-center justify-center p-4">
+                      <CardFooter className="w-full">
+                        <Button variant="ghost" className="rounded-xl w-full">
+                          Manage
+                        </Button>
+                      </CardFooter>
+                    </div>
                   </Card>
 
-                  <Card className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
-                    <CardHeader>
-                      <CardTitle className="text-lg">
-                        Push Notifications
-                      </CardTitle>
-                      <CardDescription>
-                        Configure push notifications
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p>Set your preferences for push notifications.</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" className="rounded-xl">
-                        Manage Push Notifications
-                      </Button>
-                    </CardFooter>
+                  <Card className="grid grid-cols-3 gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
+                    <div className="col-span-2">
+                      <CardHeader>
+                        <CardTitle className="text-lg">
+                          Push Notifications
+                        </CardTitle>
+                        <CardDescription>
+                          Configure push notifications
+                        </CardDescription>
+                      </CardHeader>
+                      {/* <CardContent className="flex-grow">
+                        <p>Set your preferences for push notifications.</p>
+                      </CardContent> */}
+                    </div>
+
+                    <div className="col-span-1 flex items-center justify-center p-4">
+                      <CardFooter className="w-full">
+                        <Button variant="ghost" className="rounded-xl w-full">
+                          Manage
+                        </Button>
+                      </CardFooter>
+                    </div>
                   </Card>
                 </div>
               </TabsContent>
@@ -182,53 +206,70 @@ export default function SettingPage() {
               <TabsContent value="goals">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-10">
                   {/* Goals Settings Cards */}
-                  <Card className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
-                    <CardHeader>
-                      <CardTitle className="text-lg">
-                        Short-term Goals (GCSE options)
-                      </CardTitle>
-                      <CardDescription>Your short-term goals</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p>Set your preferences for short term goals.</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" className="rounded-xl">
-                        Manage Short-Term Goals
-                      </Button>
-                    </CardFooter>
+                  <Card className="grid grid-cols-3 gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
+                    {/* Left side: 2/3 for Title and Description */}
+                    <div className="col-span-2">
+                      <CardHeader>
+                        <CardTitle className="text-lg">
+                          Short-term Goals
+                        </CardTitle>
+                        <CardDescription>Your GCSE goals</CardDescription>
+                      </CardHeader>
+                      {/* <CardContent className="flex-grow">
+                        <p>Set your preferences for short term goals.</p>
+                      </CardContent> */}
+                    </div>
+
+                    {/* Right side: 1/3 for Footer and Button */}
+                    <div className="col-span-1 flex items-center justify-center p-4">
+                      <CardFooter className="w-full">
+                        <Button variant="ghost" className="rounded-xl w-full">
+                          Manage
+                        </Button>
+                      </CardFooter>
+                    </div>
                   </Card>
 
-                  <Card className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
-                    <CardHeader>
-                      <CardTitle className="text-lg">
-                        Long-term Goals ('A' Levels)
-                      </CardTitle>
-                      <CardDescription>Your Long-term goals</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p>Set your preferences for Long term goals.</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" className="rounded-xl">
-                        Manage Long-Term Goals
-                      </Button>
-                    </CardFooter>
+                  <Card className="grid grid-cols-3 gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
+                    <div className="col-span-2">
+                      <CardHeader>
+                        <CardTitle className="text-lg">
+                          Long-term Goals
+                        </CardTitle>
+                        <CardDescription>Your 'A' Levels goals</CardDescription>
+                      </CardHeader>
+                      {/* <CardContent className="flex-grow">
+                        <p>Set your preferences for Long term goals.</p>
+                      </CardContent> */}
+                    </div>
+
+                    <div className="col-span-1 flex items-center justify-center p-4">
+                      <CardFooter className="w-full">
+                        <Button variant="ghost" className="rounded-xl w-full">
+                          Manage
+                        </Button>
+                      </CardFooter>
+                    </div>
                   </Card>
 
-                  <Card className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
-                    <CardHeader>
-                      <CardTitle className="text-lg">Career Goals</CardTitle>
-                      <CardDescription>Your Career Goals</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <p>Set your preferences for Career goals.</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button variant="outline" className="rounded-xl">
-                        Manage Career Goals
-                      </Button>
-                    </CardFooter>
+                  <Card className="grid grid-cols-3 gap-4 shadow-md hover:shadow-lg transition-shadow duration-300 bg-gray-200 text-black dark:bg-gray-700 dark:text-white border-0 rounded-xl">
+                    <div className="col-span-2">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Career Goals</CardTitle>
+                        <CardDescription>Your Career Goals</CardDescription>
+                      </CardHeader>
+                      {/* <CardContent className="flex-grow">
+                        <p>Set your preferences for Career goals.</p>
+                      </CardContent> */}
+                    </div>
+
+                    <div className="col-span-1 flex items-center justify-center p-4">
+                      <CardFooter className="w-full">
+                        <Button variant="ghost" className="rounded-xl w-full">
+                          Manage
+                        </Button>
+                      </CardFooter>
+                    </div>
                   </Card>
                 </div>
               </TabsContent>
