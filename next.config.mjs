@@ -10,18 +10,15 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "images.unsplash.com", // Also cover images served by Unsplash
+        hostname: "images.unsplash.com",
       },
       {
         protocol: "https",
-        hostname: "cdn.minicoursegenerator.com", // Added domain for Mini Course images
-      },
-      {
-        protocol: "https",
-        hostname: "img.clerk.com", //
+        hostname: "img.clerk.com", // Allow images from Clerk
       },
     ],
   },
+
   // Disable CSS minification during development to prevent errors
   webpack(config, { isServer }) {
     if (!isServer) {
@@ -29,8 +26,30 @@ const nextConfig = {
     }
     return config;
   },
+
   reactStrictMode: true, // Always a good practice to have strict mode enabled
-  // Other Next.js settings...
+
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains",
+          },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-XSS-Protection", value: "1; mode=block" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            key: "Feature-Policy",
+            value: "geolocation 'self'; microphone 'none'",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 const config = withPWA({
