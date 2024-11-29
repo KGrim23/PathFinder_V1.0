@@ -12,7 +12,7 @@ export default function CustomUserButton() {
 
   return (
     <button
-      className={`w-full flex items-center justify-start p-2 ${
+      className={`w-full flex items-center justify-start p-2 mb-4 ${
         isDarkMode ? "text-white" : "text-black"
       }`}
       aria-label="User Profile Button"
