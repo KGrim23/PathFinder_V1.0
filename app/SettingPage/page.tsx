@@ -44,7 +44,7 @@ export default function SettingPage() {
         <div className="flex flex-col h-full mb-10">
           <Navbar isMobile={isMobile} />
 
-          <div className="container mx-auto lg:ml-64 p-4 md:p-4 lg:p-6">
+          <div className="container w-full lg:ml-64 p-4 items-center justify-center">
             <h1 className="text-2xl md:text-3xl font-bold mb-4">Settings</h1>
             <div className="relative mb-6">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -62,19 +62,19 @@ export default function SettingPage() {
               <TabsList className="grid w-full grid-cols-3 mb-4 mt-16">
                 <TabsTrigger
                   value="general"
-                  className="text-md lg:text-lg rounded-xl transition-colors duration-300 peer hover:bg-slate-400"
+                  className="text-md lg:text-lg rounded-lg transition-colors duration-300 peer hover:bg-slate-400 peer-checked:bg-blue-500 peer-checked:text-white"
                 >
                   General
                 </TabsTrigger>
                 <TabsTrigger
                   value="notifications"
-                  className="text-md lg:text-lg rounded-xl transition-colors duration-300 peer hover:bg-slate-400"
+                  className="text-md lg:text-lg rounded-lg transition-colors duration-300 peer hover:bg-slate-400 peer-checked:bg-blue-500 peer-checked:text-white"
                 >
                   Notifications
                 </TabsTrigger>
                 <TabsTrigger
                   value="goals"
-                  className="text-md lg:text-lg rounded-xl transition-colors duration-300 peer hover:bg-slate-400"
+                  className="text-md lg:text-lg rounded-lg transition-colors duration-300 peer hover:bg-slate-400 peer-checked:bg-blue-500 peer-checked:text-white"
                 >
                   Goals
                 </TabsTrigger>
