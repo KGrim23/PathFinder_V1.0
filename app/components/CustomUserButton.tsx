@@ -22,8 +22,8 @@ export default function CustomUserButton() {
         <Image
           src={imageUrl}
           alt={`${fullName}'s profile`}
-          width={32}
-          height={32}
+          width={40}
+          height={40}
           className="rounded-full mr-4 dark:text-white text-black"
           priority
         />
